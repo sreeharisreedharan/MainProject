@@ -11,7 +11,7 @@
         <table border="1">
             <tr>
                 <td>Course</td>
-                <td><select name="sel_course" id="sel_course">
+                <td><select required name="sel_course" id="sel_course">
                     <option value="">Select Course</option>
                     {% for i in coursedata %}
                     <option value="{{i.id}}">{{i.course_name}}</option>
@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td>Semester</td>
-                <td><select name="sel_semester" id="sel_semester" onchange="getsubject()">
+                <td><select required name="sel_semester" id="sel_semester" onchange="getsubject()">
                     <option value="">Select Semester</option>
                     {% for i in semesterdata %}
                     <option value="{{i.id}}">{{i.semester_name}}</option>
@@ -29,17 +29,17 @@
             </tr>
             <tr>
                 <td>Subject</td>
-                <td><select name="sel_subject" id="sel_subject">
+                <td><select required name="sel_subject" id="sel_subject">
                     <option value="">Select Subject</option>
                 </select></td>
             </tr>
             <tr>
                 <td>Notes Title</td>
-                <td><input type="text" name="txt_title" id=""></td>
+                <td><input type="text" required placeholder="Enter Notes Title" name="txt_title" id=""></td>
             </tr>
             <tr>
                 <td>Notes</td>
-                <td><input type="file" name="file_notes" id=""></td>
+                <td><input type="file" required placeholder="Upload Notes" name="file_notes" id=""></td>
             </tr>
             <tr>
                 <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>

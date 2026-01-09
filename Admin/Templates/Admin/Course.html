@@ -11,7 +11,7 @@
         <table border="1">
             <tr>
                 <td>Department</td>
-                <td><select name="sel_department" id="">
+                <td><select  required name="sel_department" id="">
                     <option value="">Select Department</option>
                     {% for i in departmentdata %}
                     <option value="{{i.id}}"
@@ -21,10 +21,10 @@
             </tr>
             <tr>
                 <td>Course</td>
-                <td><input type="text" name="txt_course" id="" value="{{editdata.course_name}}"></td>
+                <td><input type="text" required placeholder="Enter Course Name" name="txt_course" id="" value="{{editdata.course_name}}"></td>
             </tr>
             <td>Amount</td>
-            <td><input type="text" name="txt_amount" id="" value="{{editdata.course_amount}}"></td>
+            <td><input type="text" required placeholder="Enter Fee Amount" name="txt_amount" id="" value="{{editdata.course_amount}}"></td>
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
             </tr>

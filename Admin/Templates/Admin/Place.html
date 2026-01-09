@@ -11,7 +11,7 @@
         <table border="1">
             <tr>
                 <td>District</td>
-                <td><select name="sel_district" id="">
+                <td><select  required name="sel_district" id="">
                     <option value="">Select District</option>
                     {% for i in dis %}
                     <option value="{{i.id}}"
@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td>Place</td>
-                <td><input type="text" name="txt_place" id="" value="{{editdata.place_name}}"></td>
+                <td><input type="text" required placeholder="Enter Place Name" name="txt_place" id="" value="{{editdata.place_name}}"></td>
             </tr>
             <tr>
                 <td align="center" colspan="2"><input type="submit" name="btn_submit" value="Submit"><input type="reset" name="btn_submit" value="Clear"></td>

@@ -11,7 +11,7 @@
         <table border="1">
             <tr>
                 <td>Category</td>
-                <td><select name="sel_category" id="">
+                <td><select required  name="sel_category" id="">
                     <option value="">Select Category</option>
                     {% for i in cat %}
                     <option value="{{i.id}}"
@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <td>Subcategory</td>
-                <td><input type="text" name="txt_subcategory" id="" value="{{editdata.subcategory_name}}"></td>
+                <td><input type="text" required placeholder="Enter Subcategory Name" name="txt_subcategory" id="" value="{{editdata.subcategory_name}}"></td>
             </tr>
             <tr>
                 <td align="center" colspan="2"><input type="Submit" name="btn_submit" value="Submit"></td>

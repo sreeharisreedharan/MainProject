@@ -11,7 +11,7 @@
         <table border="1">
             <tr>
                 <td>Semester</td>
-                <td><select name="sel_semester" id="sel_semester">
+                <td><select  required name="sel_semester" id="sel_semester">
                     <option value="">Select Semester</option>
                     {% for i in semester %}
                     <option value="{{i.id}}">{{i.semester_name}}</option>
@@ -20,13 +20,13 @@
             </tr>
             <tr>
                 <td>Subject</td>
-                <td><select name="sel_subject" id="sel_subject">
+                <td><select  required name="sel_subject" id="sel_subject">
                     <option>Select Subject</option>
                 </select></td>
             </tr>
             <tr>
                 <td>Mark</td>
-                <td><input type="text" name="txt_mark" id=""></td>
+                <td><input type="text" required placeholder="Enter Internal Mark" name="txt_mark" id=""></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>

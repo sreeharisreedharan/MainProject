@@ -11,39 +11,39 @@
         <table border="1">
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="txt_name" id=""></td>
+                <td><input type="text" required placeholder="Enter Staff Name" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" id=""></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="txt_email" id=""></td>
+                <td><input type="email" required placeholder="Enter Staff Email" name="txt_email" id=""></td>
             </tr>
             <tr>
                 <td>Contact</td>
-                <td><input type="text" name="txt_contact" id=""></td>
+                <td><input  type="text" required placeholder="Enter Phone Number" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id=""></td>
             </tr>
             <tr>
                 <td>Photo</td>
-                <td><input type="file" name="file_photo" id=""></td>
+                <td><input type="file" required placeholder="Upload Staff Photo" name="file_photo" id=""></td>
             </tr>
             <tr>
                 <td>Gender</td>
-                <td><input type="radio" name="txt_gender" id="" value="Male">Male<input type="radio" name="txt_gender" id="" value="Female">Female</td>
+                <td><input type="radio" required  name="txt_gender" id="" value="Male">Male<input type="radio" name="txt_gender" id="" value="Female">Female</td>
             </tr>
             <tr>
                <td>DOB</td>
-                <td><input type="date" name="txt_date" id=""></td>  
+                <td><input type="date" required name="txt_date" id=""></td>  
             </tr>
             <tr>
                 <td>Qualification</td>
-                <td><input type="text" name="txt_qualification" id=""></td>
+                <td><input type="text" required placeholder="Enter Qualification" name="txt_qualification" id=""></td>
             </tr>
             <tr>
                 <td>Role</td>
-                <td><input type="text" name="txt_role" id=""></td>
+                <td><input type="text" required placeholder="Enetr Staff Designation" name="txt_role" id=""></td>
             </tr>
             <tr>
                 <td>Department</td>
-                <td><select name="sel_department" id="">
+                <td><select  required name="sel_department" id="">
                     <option value="">Select Department</option>
                     {% for i in departmentdata %}
                     <option value="{{i.id}}">{{i.department_name}}</option>
@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input type="text" name="txt_password" id=""></td>
+                <td><input type="text" required placeholder="Enter Staff Password" name="txt_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" id=""></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>

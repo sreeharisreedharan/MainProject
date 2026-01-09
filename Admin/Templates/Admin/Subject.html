@@ -11,11 +11,11 @@
         <table border="1">
             <tr>
                 <td>Subject Name</td>
-                <td><input type="text" name="txt_subject" id=""></td>
+                <td><input type="text" required placeholder="Enter Subject Name" name="txt_subject" id=""></td>
             </tr>
             <tr>
                 <td>Department</td>
-                <td><select name="sel_department" id="sel_department">
+                <td><select  required name="sel_department" id="sel_department">
                     <option>Select Department</option>
                     {% for i in departmentdata %}
                     <option value="{{i.id}}">{{i.department_name}}</option>
@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <td>Course</td>
-                <td><select name="sel_course" id="sel_course">
+                <td><select required  name="sel_course" id="sel_course">
                     <option>Select Course</option>
                     
                     <option></option>
@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <td>Semester</td>
-                <td><select name="sel_semester" id="">
+                <td><select required name="sel_semester" id="">
                     <option>Select Semester</option>
                     {% for i in semesterdata %}
                     <option value="{{i.id}}">{{i.semester_name}}</option>

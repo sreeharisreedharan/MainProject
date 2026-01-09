@@ -13,7 +13,7 @@
         <tr>
             <td>Department</td>
             <td>
-                <select name="sel_department" id="sel_department">
+                <select  required name="sel_department" id="sel_department">
                     <option value="">Select Department</option>
                     {% for i in departmentdata %}
                     <option value="{{ i.id }}">{{ i.department_name }}</option>
@@ -23,14 +23,14 @@
 
             <td>Course</td>
             <td>
-                <select name="course" id="sel_course">
+                <select required  name="course" id="sel_course">
                     <option value="">Select Course</option>
                 </select>
             </td>
 
             <td>Semester</td>
             <td>
-                <select name="semester">
+                <select required name="semester">
                     <option value="">Select</option>
                     {% for s in semesters %}
                     <option value="{{ s.id }}" >

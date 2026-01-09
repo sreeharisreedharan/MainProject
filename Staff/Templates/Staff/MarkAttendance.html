@@ -2,7 +2,7 @@
 
 <form method="get">
     Department:
-    <select name="department" id="sel_department">
+    <select  required name="department" id="sel_department">
         <option value="">Select</option>
         {% for d in departments %}
         <option value="{{ d.id }}" {% if d.id|stringformat:"s" == selected_department %}selected{% endif %}>
@@ -12,7 +12,7 @@
     </select>
 
     Course:
-    <select name="course" id="sel_course">
+    <select required  name="course" id="sel_course">
         <option value="">Select</option>
         {% for c in courses %}
         <option value="{{ c.id }}" {% if c.id|stringformat:"s" == selected_course %}selected{% endif %}>
@@ -22,7 +22,7 @@
     </select>
 
     Semester:
-    <select name="semester">
+    <select required  name="semester">
         <option value="">Select</option>
         {% for s in semesters %}
         <option value="{{ s.id }}" {% if s.id|stringformat:"s" == selected_semester %}selected{% endif %}>
@@ -32,14 +32,14 @@
     </select>
 
     Day:
-    <select name="day">
+    <select required name="day">
         {% for d in days %}
         <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
         {% endfor %}
     </select>
 
     Hour:
-    <select name="hour">
+    <select  required name="hour">
         {% for h in hours %}
         <option value="{{ h.0 }}" {% if h.0 == selected_hour %}selected{% endif %}>
             {{ h.1 }}
@@ -70,12 +70,12 @@
 
             <!-- PRESENT -->
             <td align="center">
-                <input type="checkbox" name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
+                <input type="checkbox" required name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
             </td>
 
             <!-- ABSENT -->
             <td align="center">
-                <input type="checkbox" name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
+                <input type="checkbox" required name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
             </td>
 
             <td>{{ s.subject.subject_name }}</td>

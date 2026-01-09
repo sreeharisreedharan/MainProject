@@ -11,19 +11,19 @@
         <table border="1">
             <tr>
                 <td>Name</td>
-                <td><input type="text" name="txt_name" id="" value="{{data.staff_name}}"></td>
+                <td><input type="text" required placeholder="Enter Your Name"  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" name="txt_name" id="" value="{{data.staff_name}}"></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="text" name="txt_email" id="" value="{{data.staff_email}}"></td>
+                <td><input type="email"  required placeholder="Enter Your Email" name="txt_email" id="" value="{{data.staff_email}}"></td>
             </tr>
             <tr>
                 <td>Contact</td>
-                <td><input type="text" name="txt_contact" id="" value="{{data.staff_contact}}"></td>
+                <td><input type="text"  required pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9"  name="txt_contact" id="" value="{{data.staff_contact}}"></td>
             </tr>
             <tr>
                 <td>Choose Photo</td>
-                <td><input type="file" name="file_photo" value="{{data.staff_photo}}" id=""></td>
+                <td><input type="file" required placeholder="Upload Photo" name="file_photo" value="{{data.staff_photo}}" id=""></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="btn_submit"  value="Update" id=""></td>
