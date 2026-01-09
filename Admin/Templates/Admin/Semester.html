@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Semester</td>
+                <td><input type="text" name="txt_semester" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Submit" id=""></td>
+            </tr>
+        </table>
+    </form>
+    <table border="1">
+        <tr>
+            <td>SINO</td>
+            <td>Semester</td>
+            <td>Action</td>
+        </tr>
+        {% for i in semester %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.semester_name}}</td>
+            <td><a href="{% url 'Admin:delsemester' i.id%}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Semester' %}"
+</script>
+{% endif %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User HomePage</title>
+</head>
+<body>
+    <h2>User HomePage</h2>
+    <tr>
+        <td colspan="2" align="center"><a href="{% url 'User:MyProfile' %}">My Profile</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:ViewBook' %}">View Books</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:ViewNotes' %}">View Notes</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:ViewAssignments' %}">View Assignments</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:ViewTimeTable' %}">View TimeTable</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:ViewExam' %}">View Exam</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:MyInternalMark' %}">View InternalMark</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:CertificateRequest' %}">Certificate Request</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:Complaint' %}">Post Complaint</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'User:Feedback' %}">Post Feedback</a></td><br>
+    </tr>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Book</title>
+</head>
+
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txt_name" id=""></td>
+                <td>Genre</td>
+                <td><select name="sel_genre" id="">
+                        <option value="">Select Genre</option>
+                        {% for i in genredata %}
+                        <option value="{{i.id}}">{{i.genre_name}}</option>
+                        {% endfor %}
+                    </select></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="4"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+
+        </table>
+        <h2>Book List</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Title</td>
+                <td>Details</td>
+                <td>Genre</td>
+                <td>Photo</td>
+                <td>Author</td>
+            </tr>
+            {% for i in book %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.book_title}}</td>
+                <td>{{i.book_details}}</td>
+                <td>{{i.genre.genre_name}}</td>
+                <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
+                <td>{{i.book_author}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+
+</html>

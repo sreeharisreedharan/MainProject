@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>information</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id=""></td>
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input type="text" name="txt_details" id=""></td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td><input type="file" name="file_information" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    <table border="1">
+        <tr>
+            <td>SINO</td>
+            <td>Title</td>
+            <td>Details</td>
+            <td>File</td>
+            <td>Action</td>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.info_title}}</td>
+            <td>{{i.info_details}}</td>
+            <td><a href="{{i.info_file.url}}">view</a></td>
+            <td><a href="{% url 'Admin:delinfo' i.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Announcement' %}"
+</script>
+{% endif %}

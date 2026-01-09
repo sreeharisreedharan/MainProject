@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Date</td>
+                <td><input type="date" name="txt_date" id=""></td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td><input type="text" name="txt_type" id=""></td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td><select name="sel_department" id="sel_department">
+                    <option value="">Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{i.id}}">{{i.department_name}}</option>
+                    {% endfor %}
+
+                </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                    <option>Select Course</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="">
+                    <option value="">Select Semester</option>
+                    {% for i in semesterdata %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Academic Year</td>
+                <td><select name="sel_academicyear" id="">
+                    <option value="">Select Academic Year</option>
+                    {% for i in academicyeardata %}
+                    <option value="{{i.id}}">{{i.academicyear_year}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><input type="submit" name="btn_submit"  value="Submit" id=""></td>
+            </tr>
+        </table>
+        <h2>Exam List </h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Date</td>
+                <td>Type</td>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Semester</td>
+                <td>Academic Year</td>
+                <td>Action</td>
+            </tr>
+            {% for i in examdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.exam_date}}</td>
+                <td>{{i.exam_type}}</td>
+                <td>{{i.course.department.department_name}}</td>
+                <td>{{i.course.course_name}}</td>
+                <td>{{i.semester.semester_name}}</td>
+                <td>{{i.academicyear.academicyear_year}}</td>
+                <td><a href="{% url 'Admin:delexam' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_department").change(function () {
+      var dpid = $(this).val();
+      var ur = "{% url 'Admin:AjaxCourse' %}";
+      $.ajax({
+        url: ur,
+        data: { dpid: dpid },
+        success: function (data) {
+          $("#sel_course").html(data);
+        },
+      });
+    });
+  </script>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Exam' %}"
+</script>
+{% endif %}

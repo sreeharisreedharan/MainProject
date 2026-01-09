@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Registration</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txt_name" id=""></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" name="txt_contact" id=""></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td><input type="radio" name="txt_gender" id="" value="Male">Male<input type="radio" name="txt_gender" id="" value="Female">Female</td>
+            </tr>
+            <tr>
+               <td>DOB</td>
+                <td><input type="date" name="txt_date" id=""></td>  
+            </tr>
+            <tr>
+                <td>Qualification</td>
+                <td><input type="text" name="txt_qualification" id=""></td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td><input type="text" name="txt_role" id=""></td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td><select name="sel_department" id="">
+                    <option value="">Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{i.id}}">{{i.department_name}}</option>
+                    {% endfor %}
+
+                </select></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="text" name="txt_password" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1"></table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Photo</td>
+                <td>Gender</td>
+                <td>DOB</td>
+                <td>Qualification</td>
+                <td>Role</td>
+                <td>Department</td>
+                <td>Password</td>
+                <td>Action</td>
+            </tr>
+            {% for i in staff %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.staff_name}}</td>
+                <td>{{i.staff_email}}</td>
+                <td>{{i.staff_contact}}</td>
+                <td  align="center"><img width="50" src="{{i.staff_photo.url}}" alt=""></td>
+                <td>{{i.staff_gender}}</td>
+                <td>{{i.staff_dob}}</td>
+                <td>{{i.staff_qualification}}</td>
+                <td>{{i.staff_role}}</td>
+                <td>{{i.department.department_name}}</td>
+                <td>{{i.staff_password}}</td>
+                <td><a href="{% url 'Admin:delstaff' i.id%}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:StaffRegistration' %}"
+</script>
+{% endif %}

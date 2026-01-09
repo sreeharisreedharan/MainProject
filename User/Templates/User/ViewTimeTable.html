@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Timetable</title>
+</head>
+<body>
+
+<h2 align="center">
+    Timetable<br>
+    {{ course.course_name }}<br>
+    Semester {{ semester.semester.semester_name }}<br>
+    Academic Year: {{ academicyear.academicyear_year }}
+</h2>
+
+<table border="1" cellpadding="10" cellspacing="0" align="center">
+
+    <!-- HEADER -->
+    <tr>
+        <th>Day</th>
+        <th>10:00 - 10:55</th>
+        <th>10:55 - 11:50</th>
+        <th>12:05 - 01:00</th>
+        <th>LUNCH</th>
+        <th>02:00 - 03:00</th>
+        <th>03:00 - 04:00</th>
+    </tr>
+
+    <!-- BODY -->
+    {% for day in days %}
+    <tr>
+        <td><b>{{ day }}</b></td>
+
+        {% for h in "12345" %}
+        <td>
+            {% for t in timetable %}
+                {% if t.day == day and t.hour == h %}
+                    {{ t.subject.subject_name }}<br>
+                    <small>{{ t.staff.staff_name }}</small>
+                {% endif %}
+            {% endfor %}
+        </td>
+
+        {% if h == "3" and forloop.parentloop.first %}
+        <td rowspan="5" align="center">
+            <b>L<br>U<br>N<br>C<br>H</b>
+        </td>
+        {% endif %}
+
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

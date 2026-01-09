@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Class</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td><select name="sel_department" id="sel_department">
+                    <option>Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{i.id}}">{{i.department_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                    <option>Select Course</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td><select name="sel_class" id="sel_class">
+                    <option>Select Class</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Academic Year</td>
+                <td><select name="sel_academicyear" id="">
+                    <option>Select Academicyear</option>
+                    {% for i in academicyeardata %}
+                    <option value="{{i.id}}">{{i.academicyear_year}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_department").change(function () {
+      var dpid = $(this).val();
+      var ur = "{% url 'Admin:AjaxCourse' %}";
+      $.ajax({
+        url: ur,
+        data: { dpid: dpid },
+        success: function (data) {
+          $("#sel_course").html(data);
+        },
+      });
+    });
+  </script>
+
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_course").change(function () {
+      var cid = $(this).val();
+      var ur = "{% url 'Admin:AjaxClass' %}";
+      $.ajax({
+        url: ur,
+        data: { cid: cid },
+        success: function (data) {
+          $("#sel_class").html(data);
+        },
+      });
+    });
+  </script>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:StaffList' %}"
+</script>
+{% endif %}

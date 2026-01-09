@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Complaint</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id="" value="{{editdata.complaint_title}}"></td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td><input type="text" name="txt_content" id="" value="{{editdata.complaint_content}}"></td>
+            </tr>
+            <tr> 
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Submit"></td>
+            </tr>
+
+        </table>
+
+        <h2>Complaints Registered</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Title</td>
+                <td>Complaint</td>
+                <td>Reply</td>
+                <td>Action</td>
+            </tr>
+            {% for i in complaintdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.complaint_title}}</td>
+                <td>{{i.complaint_content}}</td>
+                <td>{% if i.complaint_status == 0 %}
+                    Pending
+                    {% else %}
+                    {{i.complaint_reply}}
+                    {% endif %}
+                </td>
+                <td><a href="{% url 'User:delcomplaint' i.id %}">Delete</a>||<a href="{% url 'User:editcomplaint' i.id %}">Edit</a></td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'User:Complaint' %}"
+</script>
+{% endif %}

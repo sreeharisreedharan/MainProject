@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Timetable</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2 align="center">
+    Timetable
+    {% if academicyear %}
+        ({{ academicyear.academicyear_year }})
+    {% endif %}
+</h2>
+
+<!-- FILTERS -->
+<form method="get">
+    <table border="1" cellpadding="8">
+        <tr>
+            <td>Department</td>
+            <td>
+                <select name="department" id="sel_department">
+                    <option value="">Select Department</option>
+                    {% for d in departmentdata %}
+                    <option value="{{ d.id }}">{{ d.department_name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>Course</td>
+            <td>
+                <select name="course" id="sel_course">
+                    <option value="">Select Course</option>
+                </select>
+            </td>
+
+            <td>Semester</td>
+            <td>
+                <select name="semester">
+                    <option value="">Select</option>
+                    {% for s in semesters %}
+                    <option value="{{ s.id }}" {% if s.id|stringformat:"s" == semester_id %}selected{% endif %}>
+                        {{ s.semester_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td><button type="submit">View</button></td>
+        </tr>
+    </table>
+</form>
+
+<!-- EDIT BUTTON -->
+{% if course_id and semester_id %}
+<div align="center" style="margin:10px;">
+    {% if not edit %}
+        <a href="?course={{ course_id }}&semester={{ semester_id }}&edit=1">
+            <button>Edit Timetable</button>
+        </a>
+    {% else %}
+        <a href="?course={{ course_id }}&semester={{ semester_id }}">
+            <button>View Only</button>
+        </a>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- TIMETABLE -->
+{% if course_id and semester_id %}
+<table border="1" cellpadding="10" cellspacing="0" align="center">
+    <tr>
+        <th>Day</th>
+        <th>10:00 - 10:55</th>
+        <th>10:55 - 11:50</th>
+        <th>12:05 - 01:00</th>
+        <th>LUNCH</th>
+        <th>02:00 - 03:00</th>
+        <th>03:00 - 04:00</th>
+    </tr>
+
+    {% for day in days %}
+    <tr>
+        <td><b>{{ day }}</b></td>
+        {% for h in hours %}
+            {% if forloop.parentloop.first and h.0 == "4" %}
+                <td rowspan="5" align="center"><b>L<br>U<br>N<br>C<br>H</b></td>
+            {% endif %}
+            <td>
+            {% if edit %}
+                <select onchange="saveTimetable('{{ day }}','{{ h.0 }}',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}"
+                        {% for t in timetable %}
+                            {% if t.day == day and t.hour == h.0 and t.subject_id == sub.id %} selected {% endif %}
+                        {% endfor %}
+                    >{{ sub.subject_name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                {% for t in timetable %}
+                    {% if t.day == day and t.hour == h.0 %}
+                        {{ t.subject.subject_name }}<br>
+                        <small>{{ t.staff.staff_name }}</small>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<script>
+$("#sel_department").change(function () {
+    var dpid = $(this).val();
+    $.ajax({
+        url: "{% url 'Admin:AjaxCourse' %}",
+        data: { dpid: dpid },
+        success: function(data) {
+            $("#sel_course").html(data);
+        }
+    });
+});
+
+function saveTimetable(day, hour, subject) {
+    $.get("{% url 'Admin:save_timetable' %}", {
+        day: day,
+        hour: hour,
+        subject: subject,
+        course: "{{ course_id }}",
+        semester: "{{ semester_id }}"
+    }, function() {
+        console.log("Saved: " + day + " Hour " + hour);
+    });
+}
+</script>
+
+</body>
+</html>

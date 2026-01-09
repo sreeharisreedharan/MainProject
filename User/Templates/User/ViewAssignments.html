@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Assignments</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Faculty</td>
+                <td>Title</td>
+                <td>Topic</td>
+                <td>Date</td>
+                <td>Due Date</td>
+                <td>Action</td>
+            </tr>
+            {% for i in assignmentdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.staff.staff_name}}</td>
+                <td>{{i.assignments_title}}</td>
+                <td><a href="{{i.assignments_topic.url}}">view</a></td>
+                <td>{{i.assignments_date}}</td>
+                <td>{{i.assignments_duedate}}</td>
+                <td><a href="{% url 'User:UploadAssignment' i.id %}">Upload Assignment</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View My Subject</title>
+</head>
+<body>
+    <h2>View Assigned Subject</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Semester</td>
+                <td>Subject</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{i.subject.course.department.department_name}}</td>
+                <td>{{i.subject.course.course_name}}</td>
+                <td>{{i.subject.semester.semester_name}}</td>
+                <td>{{i.subject.subject_name}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

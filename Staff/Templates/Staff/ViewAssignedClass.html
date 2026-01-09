@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Assigned Class</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Class</td>
+                <td>Academic Year</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{i.classid.course.department.department_name}}</td>
+                <td>{{i.classid.course.course_name}}</td>
+                <td>{{i.classid.class_name}}</td>
+                <td>{{i.academicyear.academicyear_year}}</td>
+                <td><a href="{% url 'Staff:ClassSem' i.id %}">Add Semester</a></td>                
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

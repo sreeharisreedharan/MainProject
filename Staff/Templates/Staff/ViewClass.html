@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Class</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                    <option value="">Select Course</option>
+                    {% for i in coursedata %}
+                    <option value="{{i.id}}">{{i.course_name}}</option>
+                    {% endfor %}
+                </select></td>
+                <td>Class</td>
+                <td><select name="sel_class" id="sel_class" onchange="getClass()"
+                    >
+                    <option value="">Select Class</option>
+                    <option></option>
+                </select></td>
+                <td>Academic Year</td>
+                <td><select name="sel_academicyear" id="sel_academicyear" onchange="getClass()">
+                    <option value="">Select Academic year</option>
+                    {% for i in data %}
+                    <option value="{{i.id}}">{{i.academicyear_year}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            
+    </form>
+    <br><br><br>
+    <div id="result"></div>
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_course").change(function () {
+      var cid = $(this).val();
+      var ur = "{% url 'Staff:AjaxClass' %}";
+      $.ajax({
+        url: ur,
+        data: { cid: cid },
+        success: function (data) {
+          $("#sel_class").html(data);
+        },
+      });
+    });
+
+    function getClass() {
+      var cid = document.getElementById('sel_class').value
+      var aid = document.getElementById('sel_academicyear').value
+      var ur = "{% url 'Staff:AjaxClasses' %}";
+      $.ajax({
+        url: ur,
+        data: { cid: cid, aid: aid, },
+        success: function (data) {
+          $("#result").html(data);
+        },
+      });
+    }
+  </script>
+  

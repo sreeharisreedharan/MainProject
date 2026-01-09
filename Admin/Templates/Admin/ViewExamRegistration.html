@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Exam Registrations</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Student Name</td>
+                <td>Exam Type</td>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Academic Year</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.student.user_name}}</td>
+                <td>{{i.exam.exam_type}}</td>
+                <td>{{i.exam.course.department.department_name}}</td>
+                <td>{{i.exam.course.course_name}}</td>
+                <td>{{i.exam.academicyear.academicyear_year}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>

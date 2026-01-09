@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NLP Result</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 60%; margin-top: 20px; }
+        table, th, td { border: 1px solid #333; padding: 10px; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+
+<h2>Query: {{ query }}</h2>
+
+{% if type == "marks" %}
+    <h3>Marks of {{ student }} (Semester {{ semester }})</h3>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Total Mark</th>
+        </tr>
+        {% for m in results %}
+        <tr>
+            <td>{{ m.mark_subject }}</td>
+            <td>{{ m.mark_total }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+{% if type == "student_details" %}
+    <h3>Student Details: {{ student }}</h3>
+    {% for s in results %}
+        <p><strong>Name:</strong> {{ s.student_name }}</p>
+        <p><strong>Department:</strong> {{ s.student_department }}</p>
+        <p><strong>Course:</strong> {{ s.student_course }}</p>
+        <p><strong>Semester:</strong> {{ s.student_sem }}</p>
+        <p><strong>Email:</strong> {{ s.student_email }}</p>
+        <p><strong>Contact:</strong> {{ s.student_contact }}</p>
+        <p><strong>Address:</strong> {{ s.student_address }}</p>
+    {% endfor %}
+{% endif %}
+
+
+{% if type == "department_students" %}
+    <h3>Students in {{ department }} Department</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Semester</th>
+        </tr>
+        {% for s in results %}
+        <tr>
+            <td>{{ s.student_name }}</td>
+            <td>{{ s.student_course }}</td>
+            <td>{{ s.student_sem }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+
+{% if type == "unknown" %}
+    <h3>❌ Could not understand your query.</h3>
+{% endif %}
+
+</body>
+</html>

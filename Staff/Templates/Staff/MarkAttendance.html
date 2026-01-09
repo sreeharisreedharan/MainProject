@@ -1,0 +1,120 @@
+<h2>Mark Attendance</h2>
+
+<form method="get">
+    Department:
+    <select name="department" id="sel_department">
+        <option value="">Select</option>
+        {% for d in departments %}
+        <option value="{{ d.id }}" {% if d.id|stringformat:"s" == selected_department %}selected{% endif %}>
+            {{ d.department_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    Course:
+    <select name="course" id="sel_course">
+        <option value="">Select</option>
+        {% for c in courses %}
+        <option value="{{ c.id }}" {% if c.id|stringformat:"s" == selected_course %}selected{% endif %}>
+            {{ c.course_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    Semester:
+    <select name="semester">
+        <option value="">Select</option>
+        {% for s in semesters %}
+        <option value="{{ s.id }}" {% if s.id|stringformat:"s" == selected_semester %}selected{% endif %}>
+            {{ s.semester_name }}
+        </option>
+        {% endfor %}
+    </select>
+
+    Day:
+    <select name="day">
+        {% for d in days %}
+        <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+    </select>
+
+    Hour:
+    <select name="hour">
+        {% for h in hours %}
+        <option value="{{ h.0 }}" {% if h.0 == selected_hour %}selected{% endif %}>
+            {{ h.1 }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Load Students</button>
+</form>
+
+<hr>
+
+{% if selected_students %}
+<form method="post" action="{% url 'Staff:save_attendance_selection' %}">
+    {% csrf_token %}
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Student</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>Subject</th>
+        </tr>
+
+        {% for s in selected_students %}
+        <tr>
+            <td>{{ s.student.user_name }}</td>
+
+            <!-- PRESENT -->
+            <td align="center">
+                <input type="checkbox" name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
+            </td>
+
+            <!-- ABSENT -->
+            <td align="center">
+                <input type="checkbox" name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
+            </td>
+
+            <td>{{ s.subject.subject_name }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <input type="hidden" name="hour" value="{{ selected_hour }}">
+    <input type="hidden" name="day" value="{{ selected_day }}">
+    <input type="hidden" name="course" value="{{ selected_course }}">
+    <input type="hidden" name="semester" value="{{ selected_semester }}">
+
+    <br>
+    <button type="submit">Save Attendance</button>
+
+</form>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    /* Allow only ONE checkbox per student */
+    function toggleAttendance(cb) {
+        let row = cb.closest("tr");
+        let boxes = row.querySelectorAll("input[type='checkbox']");
+        boxes.forEach(b => {
+            if (b !== cb) b.checked = false;
+        });
+    }
+
+    /* Department → Course AJAX */
+    $("#sel_department").change(function () {
+        $.ajax({
+            url: "{% url 'Admin:AjaxCourse' %}",
+            data: { dpid: $(this).val() },
+            success: function (data) {
+                $("#sel_course").html(data);
+            }
+        });
+    });
+</script>

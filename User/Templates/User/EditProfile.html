@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" value="{{data.user_name}}" name="txt_name" id=""></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email"  value="{{data.user_email}}" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" value="{{data.user_contact}}" name="txt_contact" id=""></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" value="{{data.user_address}}" name="txt_address" id=""></td>
+            </tr>
+            <tr>
+                <td>Choose Photo</td>
+                <td><input type="file" value="{{data.user_photo}}" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="txt_submit" value="Update"></td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'User:MyProfile' %}"
+</script>
+{% endif %}

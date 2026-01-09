@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td><input type="text" name="txt_department" id="" value="{{editdata.department_name}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Department Name</td>
+                <td>Actions</td>
+            </tr>
+            {% for i in department %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.department_name}}</td>
+                <td><a href="{% url 'Admin:deldepartment' i.id %} ">Delete</a>||<a href="{% url 'Admin:editdepartment' i.id %} ">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Department' %}"
+</script>
+{% endif %}

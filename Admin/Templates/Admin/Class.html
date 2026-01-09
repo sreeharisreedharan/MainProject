@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Class Name</td>
+                <td><input type="text" name="txt_class" id=""></td>
+            </tr>
+            <tr>
+                 <td>Department</td>
+                <td><select name="sel_department" id="sel_department">
+                    <option>Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{i.id}}">{{i.department_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                    <option>Select Course</option>
+                </select></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Class Name</td>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.class_name}}</td>
+                <td>{{i.course.department.department_name}}</td>
+                <td>{{i.course.course_name}}</td>
+                <td><a href="{% url 'Admin:delclass' i.id %}">Delete</a></td>   
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_department").change(function () {
+      var dpid = $(this).val();
+      var ur = "{% url 'Admin:AjaxCourse' %}";
+      $.ajax({
+        url: ur,
+        data: { dpid: dpid },
+        success: function (data) {
+          $("#sel_course").html(data);
+        },
+      });
+    });
+  </script>
+
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Class' %}"
+</script>
+{% endif %}

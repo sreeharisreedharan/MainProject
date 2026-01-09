@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Mark</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="sel_semester">
+                    <option value="">Select Semester</option>
+                    {% for i in semester %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td><select name="sel_subject" id="sel_subject">
+                    <option>Select Subject</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td><input type="text" name="txt_mark" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Semester</td>
+                <td>Subject</td>
+                <td>Date</td>
+                <td>Mark</td>
+                <td>Action</td>
+            </tr>
+            {% for i in internalmark %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.subject.semester.semester_name}}</td>
+                <td>{{i.subject.subject_name}}</td>
+                <td>{{i.internalmark_date}}</td>
+                <td>{{i.internalmark_mark}}</td>
+                <td><a href="{% url 'Staff:delinternalmark' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_semester").change(function () {
+      var semid = $(this).val();
+      var ur = "{% url 'Staff:AjaxSubjects' %}";
+      $.ajax({
+        url: ur,
+        data: { semid: semid },
+        success: function (data) {
+          $("#sel_subject").html(data);
+        },
+      });
+    });
+  </script>
+  {% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:InternalMark' %}"
+</script>
+{% endif %}

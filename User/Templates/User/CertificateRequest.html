@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Request</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Type</td>
+                <td><input type="radio" name="txt_type" id="" value="SSLC">SSLC<input type="radio" name="txt_type" id="" value="Plus Two">Plus Two<input type="radio" name="txt_type" id="" value="TC">TC</td>
+               
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td><input type="text" name="txt_content" id=""></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Type</td>
+                <td>Content</td>
+                <td>Date</td>
+                <td>Action</td>
+                <td>Reply</td>
+            </tr>
+            {% for i in certificatedata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.certificaterequest_type}}</td>
+                <td>{{i.certificaterequest_content}}</td>
+                <td>{{i.certificaterequest_date}}</td>
+                <td><a href="{% url 'User:delcertificate' i.id %}">Delete</a></td>
+                <td>
+                    {% if certificaterequest_status == 0%}
+                    Pending
+                    {% elif i.certificaterequest_status == 1 %}
+                    Accepted
+                    {% elif i.certificaterequest_status == 2 %}
+                    Rejected
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'User:CertificateRequest' %}"
+</script>
+{% endif %}

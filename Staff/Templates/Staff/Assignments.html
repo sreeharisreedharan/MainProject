@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id=""></td>
+            </tr>
+            <tr>
+                <td>Topic</td>
+                <td><input type="file" name="file_topic" id=""></td>
+            </tr>
+            <tr>
+                <td>Last Date</td>
+                <td><input type="date" name="txt_date" id=""></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table> 
+        <h2>List</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Title</td>
+                <td>Topic</td>
+                <td>Date</td>
+                <td>Last Date</td>
+                <td>Action</td>
+            </tr>
+            {% for i in assignmentdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.assignments_title}}</td>
+                <td><a href="{{i.assignments_topic.url}}">view</a></td>
+                <td>{{i.assignments_date}}</td>
+                <td>{{i.assignments_duedate}}</td>
+                <td><a href="{% url 'Staff:delassignments' i.id %}">Delete</a>|<a href="{% url 'Staff:ViewUploads' i.id %}">View Uploads</a></td>
+            </tr>
+            {% endfor %}
+        </table>  
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:Assignments' %}"
+</script>
+{% endif %}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book</title>
+</head>
+<body>
+    <form method="POST"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id=""></td>
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input type="text" name="txt_details" id=""></td>
+            </tr>
+            <tr>
+                <td>Genre</td>
+                <td><select name="sel_genre" id="">
+                    <option value="">Select Genre</option>
+                    {% for i in genredata %}
+                    <option value="{{i.id}}">{{i.genre_name}}</option>
+                    {% endfor %}
+                 
+                </select></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td>Author</td>
+                <td><input type="text" name="txt_author" id=""></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Title</td>
+                <td>Details</td>
+                <td>Genre</td>
+                <td>Photo</td>
+                <td>Author</td>
+                <td>Action</td>
+            </tr>
+            {% for i in bookdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.book_title}}</td>
+                <td>{{i.book_details}}</td>
+                <td>{{i.genre.genre_name}}</td>
+                <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
+                <td>{{i.book_author}}</td>
+                <td><a href="{% url 'Admin:delbook' i.id%}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Book' %}"
+</script>
+{% endif %}

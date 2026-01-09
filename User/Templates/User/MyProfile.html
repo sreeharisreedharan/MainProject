@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <td colspan="2" align="center"><img width="200" src="{{data.user_photo.url}}" alt=""></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{data.user_name}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{data.user_email}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{data.user_contact}}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{data.user_address}}</td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td>{{data.place.district.district_name}}</td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>{{data.place.place_name}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><a href="{% url 'User:EditProfile' %}">Edit Profile</a>&nbsp&nbsp&nbsp<a href="{% url 'User:ChangePassword' %}">Change Password</a></td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>

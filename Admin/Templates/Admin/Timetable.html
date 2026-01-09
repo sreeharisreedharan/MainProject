@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+</head>
+
+<body>
+
+    <form method="get">
+    <table border="1" cellpadding="8">
+        <tr>
+            <td>Department</td>
+            <td>
+                <select name="sel_department" id="sel_department">
+                    <option value="">Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{ i.id }}">{{ i.department_name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>Course</td>
+            <td>
+                <select name="course" id="sel_course">
+                    <option value="">Select Course</option>
+                </select>
+            </td>
+
+            <td>Semester</td>
+            <td>
+                <select name="semester">
+                    <option value="">Select</option>
+                    {% for s in semesters %}
+                    <option value="{{ s.id }}" >
+                        {{ s.semester_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>
+    <br>
+
+    {% if course_id and semester_id %}
+    <table border="1" cellpadding="10" cellspacing="0" align="center">
+
+        <!-- HEADER -->
+        <tr>
+            <th>Day</th>
+            <th>10:00 - 10:55</th>
+            <th>10:55 - 11:50</th>
+            <th>12:05 - 01:00</th>
+            <th>LUNCH</th>
+            <th>02:00 - 03:00</th>
+            <th>03:00 - 04:00</th>
+        </tr>
+
+        <!-- BODY -->
+        {% for day in days %}
+        <tr>
+            <td><b>{{ day }}</b></td>
+
+            <!-- Hour 1 -->
+            <td>
+                <select onchange="saveTimetable('{{ day }}','1',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}" {% for t in timetable %} {% if t.day == day and t.hour == '1' and t.subject_id == sub.id %} selected {% endif %} {% endfor %}>
+                        {{ sub.subject_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <!-- Hour 2 -->
+            <td>
+                <select onchange="saveTimetable('{{ day }}','2',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}" {% for t in timetable %} {% if t.day == day and t.hour == '2' and t.subject_id == sub.id %} selected {% endif %} {% endfor %}>
+                        {{ sub.subject_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <!-- Hour 3 -->
+            <td>
+                <select onchange="saveTimetable('{{ day }}','3',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}" {% for t in timetable %} {% if t.day == day and t.hour == '3' and t.subject_id == sub.id %} selected {% endif %} {% endfor %}>
+                        {{ sub.subject_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <!-- LUNCH COLUMN -->
+            {% if forloop.first %}
+            <td rowspan="5" align="center">
+                <b>L<br>U<br>N<br>C<br>H</b>
+            </td>
+            {% endif %}
+
+            <!-- Hour 4 -->
+            <td>
+                <select onchange="saveTimetable('{{ day }}','4',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}" {% for t in timetable %} {% if t.day == day and t.hour == '4' and t.subject_id == sub.id %} selected {% endif %} {% endfor %}>
+                        {{ sub.subject_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <!-- Hour 5 -->
+            <td>
+                <select onchange="saveTimetable('{{ day }}','5',this.value)">
+                    <option value="">Select</option>
+                    {% for sub in subjects %}
+                    <option value="{{ sub.id }}" {% for t in timetable %} {% if t.day == day and t.hour == '5' and t.subject_id == sub.id %} selected {% endif %} {% endfor %}>
+                        {{ sub.subject_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function saveTimetable(day, hour, subject) {
+            $.get("{% url 'Admin:save_timetable' %}", {
+                day: day,
+                hour: hour,
+                subject: subject,
+                course: "{{ course_id }}",
+                semester: "{{ semester_id }}"
+            }, function () {
+                location.reload();
+            });
+        }
+
+           $("#sel_department").change(function () {
+      var dpid = $(this).val();
+      var ur = "{% url 'Admin:AjaxCourse' %}";
+      $.ajax({
+        url: ur,
+        data: { dpid: dpid },
+        success: function (data) {
+          $("#sel_course").html(data);
+        },
+      });
+    });
+    </script>
+
+</body>
+
+</html>

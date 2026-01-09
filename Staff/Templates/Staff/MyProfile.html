@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Profile</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <td colspan="2" align="center"><img width="200" src="{{data.staff_photo.url}}" alt=""></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{data.staff_name}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{data.staff_email}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{data.staff_contact}}</td>
+            </tr>
+            <tr>
+                <td>Designation</td>
+                <td>{{data.staff_role}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><a href="{% url 'Staff:EditProfile' %}">Edit Profile</a>&nbsp&nbsp&nbsp<a href="{% url 'Staff:ChangePassword' %}">Change Password</a></td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>

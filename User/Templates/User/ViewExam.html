@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Exam</title>
+</head>
+<body>
+    <h2>View Exams</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Exam Type</td>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Academic Year</td>
+                <td>Exam Date</td>
+                <td>Action</td>
+            </tr>
+            {% for i in examdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.exam_type}}</td>
+                <td>{{i.course.department.department_name}}</td>
+                <td>{{i.course.course_name}}</td>
+                <td>{{i.academicyear.academicyear_year}}</td>
+                <td>{{i.exam_date}}</td>
+                <td><a href="{% url 'User:apply' i.id %}">Apply</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'User:ViewExam' %}"
+</script>
+{% endif %}

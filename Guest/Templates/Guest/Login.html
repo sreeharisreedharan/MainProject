@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Email</td>
+                <td><input type="email" placeholder="Enter Your Email" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password"  placeholder="Enter Your Password" name="txt_password" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Guest:Login' %}"
+</script>
+{% endif %}

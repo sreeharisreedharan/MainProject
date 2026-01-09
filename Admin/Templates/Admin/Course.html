@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td><select name="sel_department" id="">
+                    <option value="">Select Department</option>
+                    {% for i in departmentdata %}
+                    <option value="{{i.id}}"
+                    {% if i.id == editdata.department_id %} selected {% endif %}>{{i.department_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><input type="text" name="txt_course" id="" value="{{editdata.course_name}}"></td>
+            </tr>
+            <td>Amount</td>
+            <td><input type="text" name="txt_amount" id="" value="{{editdata.course_amount}}"></td>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Department Name</td>
+                <td>Course Name</td>
+                <td>Course Amount</td>
+                <td>Actions</td>
+                </tr>
+                {% for i in coursedata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.department.department_name}}</td>
+                <td>{{i.course_name}}</td>
+                <td>{{i.course_amount}}</td>
+                <td><a href="{% url 'Admin:delcourse' i.id%}">Delete</a><a href="{% url 'Admin:editcourse' i.id %}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Course' %}"
+</script>
+{% endif %}

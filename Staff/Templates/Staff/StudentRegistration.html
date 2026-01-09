@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Rgistration</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="'1">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" placeholder="Enter Your Name" name="txt_name" id=""></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" placeholder="Enter Your Email" name="txt_email" id=""></td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" placeholder="Enter Your Contact" name="txt_contact" id=""></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><input type="text" placeholder="Enter Your Address" name="txt_address" id=""></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td><input type="radio" name="txt_gender" id="" value="Male">Male<input type="radio" name="txt_gender" id="" value="Female">Female</td>
+            </tr>
+            <tr>
+                <td>DOB</td>
+                <td><input type="date" name="txt_date" id=""></td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td><select name="sel_district" id="sel_district">
+                    <option value="">Select District</option>
+                    {% for i in dis %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td><select name="sel_place" id="sel_place">
+                    <option value="">Select Place</option>
+                     
+                </select></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="text" placeholder="Enter Your Password" name="txt_password" id=""></td>
+            </tr>
+            <tr>
+                <td>Re-Password</td>
+                <td><input type="text" placeholder="Confirm Your Password" name="txt_repassword" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Sign Up"><input type="reset" name="btn_submit" value="Cancel"></td>
+            </tr>
+
+        </table>
+
+    </form>
+</body>
+</html>
+
+  <!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_district").change(function () {
+      var disid = $(this).val();
+      var ur = "{% url 'Staff:AjaxPlace' %}";
+      $.ajax({
+        url: ur,
+        data: { disid: disid },
+        success: function (data) {
+          $("#sel_place").html(data);
+        },
+      });
+    });
+  </script>
+
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:StudentRegistration' %}"
+</script>
+{% endif %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Assignments</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Assignment Title</td>
+                <td>Assignment Topic</td>
+                <td>assignment Submitted</td>
+                <td>Mark</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.assignment.assignments_title}}</td>
+                <td><a href="{{i.assignment.assignments_topic.url}}">view</a></td>
+                <td><a href="{{i.assignmentbody_file.url}}">view</a></td>
+                <td>{{i.assignmentbody_mark}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

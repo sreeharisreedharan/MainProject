@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Certificate Request</title>
+</head>
+<body>
+    <h2>Certificate Requests</h2>
+    <form method=""POST>
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Name</td>
+                <td>Certificate Requested</td>
+                <td>Content</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user.user_name}}</td>
+                <td>{{i.certificaterequest_type}}</td>
+                <td>{{i.certificaterequest_content}}</td>
+                <td>
+                    {% if i.certificaterequest_status == 0 %}
+                    <a href="{% url 'Admin:Accept' i.id %}">Accept</a><a href="{% url 'Admin:Reject' i.id %}">Reject</a>
+                    {% elif i.certificaterequest_status == 1 %}
+                    Accepted
+                    {% elif i.certificaterequest_status == 2 %}
+                    Rejected
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+
+       <table border="1">
+        <tr>
+            <td>Department</td>
+            <td><select name="sel_department" id="sel_department">
+                <option value="">Select Department</option>
+                {% for i in departmentdata %}
+                <option value="{{i.id}}">{{i.department_name}}</option>
+                {% endfor %}
+            </select></td>
+        </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                    <option value="">Select Course</option>
+                    <option></option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="">
+                    <option value="">Select Semester</option>
+                    {% for i in semesterdata %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+       </table>
+       <h2>Students List</h2>
+    
+        <table border="1">
+            <tr>
+            <td>SINO</td>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Contact</td>
+            <td>Address</td>
+            <td>Gender</td>
+            <td>Date of Birth</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Photo</td>
+            <td>Action</td>
+           
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user_name}}</td>
+                <td>{{i.user_email}}</td>
+                <td>{{i.user_contact}}</td>
+                <td>{{i.user_address}}</td>
+                <td>{{i.user_gender}}</td>
+                <td>{{i.user_dob}}</td>
+                <td>{{i.place.district.district_name}}</td>
+                <td>{{i.place.place_name}}</td>
+                <td><img width="40" src="{{i.user_photo.url}}" alt=""></td>
+                <td></td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+<!-- jQuery & AJAX -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $("#sel_department").change(function () {
+      var dpid = $(this).val();
+      var ur = "{% url 'Admin:AjaxCourse' %}";
+      $.ajax({
+        url: ur,
+        data: { dpid: dpid },
+        success: function (data) {
+          $("#sel_course").html(data);
+        },
+      });
+    });
+  </script>

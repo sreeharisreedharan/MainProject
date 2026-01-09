@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Semester</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="">
+                    <option value="">Select Semester</option>
+                    {% for i in semesterdata %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td  align="center" colspan="2"><input type="submit" name="btn_submit" value="Submit" id=""></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Semester</td>
+                <td>Action</td>
+            </tr>
+            {% for i in classsemdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.semester.semester_name}}</td>
+                <td><a href="{% url 'Staff:delclasssem' i.id%}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:ViewAssignedClass' %}"
+</script>
+{% endif %}

@@ -1,0 +1,18 @@
+
+<table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Class</td>
+                <td>Academic Year</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.classid.class_name}}</td>
+                <td>{{i.academicyear.academicyear_year}}</td>
+                <td><a href="{% url 'Staff:ViewStudents' i.id %}">View Students</a></td>
+
+            </tr>
+            {% endfor %}
+        </table>

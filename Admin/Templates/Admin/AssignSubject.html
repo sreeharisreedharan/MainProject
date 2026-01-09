@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Subject</title>
+</head>
+
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td><select name="sel_department" id="sel_department">
+                        <option value="">Select Department</option>
+                        {% for i in departmentdata %}
+                        <option value="{{i.id}}">{{i.department_name}}</option>
+                        {% endfor %}
+                    </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course">
+                        <option value="">Select Course</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="sel_semester" onchange="getsubject()">
+                        <option value="">Select Semester</option>
+                        {% for i in semesterdata %}
+                        <option value="{{i.id}}">{{i.semester_name}}</option>
+                        {% endfor %}
+                    </select></td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td><select name="sel_subject" id="sel_subject">
+                        <option value="">Select Subject</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>Department</td>
+                <td>Faculty</td>
+                <td>Course</td>
+                <td>Semester</td>
+                <td>Subject</td>
+                <td>Action</td>
+            </tr>
+            {% for i in subdata %}
+            <tr>
+                <td>{{i.subject.course.department.department_name}}</td>
+                <td>{{i.staff.staff_name}}</td>
+                <td>{{i.subject.course.course_name}}</td>
+                <td>{{i.subject.semester.semester_name}}</td>
+                <td>{{i.subject.subject_name}}</td>
+                <td><a href="{% url 'Admin:delsubject' i.id %}">Delete</a></td>
+               
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+
+</html>
+<!-- jQuery & AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_department").change(function () {
+        var dpid = $(this).val();
+        var ur = "{% url 'Admin:AjaxCourse' %}";
+        $.ajax({
+            url: ur,
+            data: { dpid: dpid },
+            success: function (data) {
+                $("#sel_course").html(data);
+            },
+        });
+    });
+
+
+    function getsubject() {
+        var cid = document.getElementById('sel_course').value
+        var semid = document.getElementById('sel_semester').value
+
+        var ur = "{% url 'Admin:AjaxSubject' %}";
+        $.ajax({
+            url: ur,
+            data: { cid: cid, semid: semid },
+            success: function (data) {
+                $("#sel_subject").html(data);
+            },
+        });
+    };
+</script>
+
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:StaffList' %}"
+</script>
+{% endif %}

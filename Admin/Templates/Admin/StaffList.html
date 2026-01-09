@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff List</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Staff List</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Designation</td>
+                <td>Photo</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.staff_name}}</td>
+                <td>{{i.staff_email}}</td>
+                <td>{{i.staff_contact}}</td>
+                <td>{{i.staff_role}}</td>
+                <td><img width="40" src="{{i.staff_photo.url}}" alt=""></td>
+                <td><a href="{% url 'Admin:AssignClass'  i.id %}"> Assign Class</a><a href="{% url 'Admin:AssignSubject'  i.id %}"> Assign Subject</a></td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </form>
+</body>
+</html>

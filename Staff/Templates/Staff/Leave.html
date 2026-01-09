@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>From Date</td>
+                <td><input type="date" name="txt_date" id=""></td>
+            </tr>
+            <tr>
+                <td>To Date</td>
+                <td><input type="date" name="txt_date" id=""></td>
+            </tr>
+            <tr>
+                <td>Reason</td>
+                <td><input type="text" name="txt_reason" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <h2>Leave Requests</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>From Date</td>
+                <td>To Date</td>
+                <td>Reason</td>
+                <td>Status</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.leave_fromdate}}</td>
+                <td>{{i.leave_todate}}</td>
+                <td>{{i.leave_reason}}</td>
+                <td>
+                    {% if i.leave_status == 0 %}
+                    Pending
+                    {% elif i.leave_status == 1 %}
+                    Accepted
+                    {% elif i.leave_status == 2 %}
+                    Rejected
+                    {% endif %}
+
+                </td>
+                <td><a href="{% url 'Staff:delleave' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:Leave' %}"
+</script>
+{% endif %}
