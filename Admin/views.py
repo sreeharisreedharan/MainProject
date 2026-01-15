@@ -438,6 +438,20 @@ def delbook(request,did):
     tbl_book.objects.get(id=did).delete()
     return redirect("Admin:Book")
 
+def BookStock(request,bid):
+    bookdata=tbl_stock.objects.all()
+    if request.method =="POST":
+        stock=request.POST.get("txt_stock")
+        bookid=tbl_book.objects.get(id=bid)
+        tbl_stock.objects.create(stock_count=stock,book=bookid)
+        return render(request,"Admin/BookStock.html",{'msg':"Data Inserted",'data':bookdata})
+    else:
+        return render(request,"Admin/BookStock.html",{'data':bookdata})
+
+def delstock(request,did):
+    tbl_stock.objects.get(id=did).delete()
+    return redirect("Admin:Book")
+
 
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 

@@ -25,8 +25,16 @@
                 <td>{{data.staff_contact}}</td>
             </tr>
             <tr>
-                <td>Designation</td>
-                <td>{{data.staff_role}}</td>
+                <td>Role</td>
+                <td>
+                    {% if data.staff_role == 1 %}
+                    Teacher
+                    {% elif data.staff_role == 2 %}
+                    Office Staff
+                    {% elif data.staff_role == 3 %}
+                    Librarian
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><a href="{% url 'Staff:EditProfile' %}">Edit Profile</a>&nbsp&nbsp&nbsp<a href="{% url 'Staff:ChangePassword' %}">Change Password</a></td>

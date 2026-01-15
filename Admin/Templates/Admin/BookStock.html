@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Stock</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Stock</td>
+                <td><input type="text" name="txt_stock" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <h2>Book Stock</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Stock</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.stock_count}}</td>
+                <td><a href="{% url 'Admin:delstock' i.id%}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:Book' %}"
+</script>
+{% endif %}

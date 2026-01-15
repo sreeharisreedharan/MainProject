@@ -37,7 +37,7 @@ class tbl_staff(models.Model):
     staff_gender=models.CharField(max_length=200)
     staff_dob=models.DateField()
     staff_qualification=models.CharField(max_length=200)
-    staff_role=models.CharField(max_length=200)
+    staff_role=models.IntegerField(null=True)
     staff_password=models.CharField(max_length=50)
     department=models.ForeignKey(tbl_department,on_delete=models.CASCADE)
 
@@ -100,4 +100,8 @@ class tbl_info(models.Model):
     info_details=models.CharField(max_length=200)
     info_file=models.FileField(upload_to="Assets/Admin/Photo")
 
+
+class tbl_stock(models.Model):
+    stock_count=models.IntegerField()
+    book=models.ForeignKey(tbl_book,on_delete=models.CASCADE)
     

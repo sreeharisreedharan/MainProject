@@ -36,6 +36,7 @@
                 <td>Genre</td>
                 <td>Photo</td>
                 <td>Author</td>
+                <td>Action</td>
             </tr>
             {% for i in book %}
             <tr>
@@ -45,6 +46,13 @@
                 <td>{{i.genre.genre_name}}</td>
                 <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
                 <td>{{i.book_author}}</td>
+                <td>
+                    {% if i.total_stock > 0 %}
+                    <a href="{% url 'User:takebook' i.id %}">Take Book</a>
+                    {% else %} 
+                    Not Available
+                    {% endif %}   
+                </td>
             </tr>
             {% endfor %}
         </table>

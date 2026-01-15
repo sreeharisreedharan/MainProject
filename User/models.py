@@ -46,6 +46,12 @@ class tbl_payment(models.Model):
     student=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
     semester=models.ForeignKey(tbl_semester,on_delete=models.CASCADE)
 
+class tbl_issue(models.Model):
+    issue_date=models.DateField(auto_now_add=True)
+    issue_status=models.IntegerField(default=1)
+    book=models.ForeignKey(tbl_book,on_delete=models.CASCADE)
+    student=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
+
 
 
 

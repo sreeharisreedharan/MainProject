@@ -41,6 +41,8 @@ urlpatterns = [
     path("staff_mark_attendance/",views.staff_mark_attendance,name="staff_mark_attendance"),
     path('Leave/',views.Leave,name="Leave"),
     path('delleave/<int:did>',views.delleave,name="delleave"),
+    path('IssuedBooks/',views.IssuedBooks,name="IssuedBooks"),
+    path('returnbook/<int:id>',views.returnbook,name="returnbook"),
 
 
 

@@ -3,6 +3,7 @@ from Guest.models import *
 from User.models import*
 from Staff.models import*
 from Admin.models import*
+from django.db.models import Sum
 # Create your views here.
 
 def HomePage(request):
@@ -115,8 +116,21 @@ def apply(request,eid):
 
 def ViewBook(request):
     genredata=tbl_genre.objects.all()
+
     bookdata=tbl_book.objects.all()
-    if request.method =="POST":
+    for i in bookdata:
+        total_stock = tbl_stock.objects.filter(
+            book=i.id
+        ).aggregate(total=Sum('stock_count'))['total'] or 0
+        totak_issue = tbl_issue.objects.filter(
+            book=i.id,
+            issue_status=1
+        ).count()
+
+        i.total_stock = total_stock - totak_issue
+        # print(i.total_stock)
+
+    if request.method =="POST": 
         name=request.POST.get("txt_name")
         genreid=request.POST.get("sel_genre")
         if genreid != "":
@@ -130,6 +144,17 @@ def ViewBook(request):
             return render(request,"User/ViewBook.html",{'book':book,'genredata':genredata})
     else:
         return render(request,"User/ViewBook.html",{'genredata':genredata,'book':bookdata})
+
+def takebook(request,id):
+    
+    bookid=tbl_book.objects.get(id=id)
+    userid=tbl_user.objects.get(id=request.session['uid'])
+    tbl_issue.objects.create(book=bookid,student=userid)
+    return redirect("User:ViewBook")
+
+def MyBooks(request):
+    bookdata=tbl_issue.objects.filter(student=request.session['uid'])
+    return render(request,"User/MyBooks.html",{'data':bookdata})
 
 def ViewNotes(request):
     semesterdata=tbl_semester.objects.all()

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issued Books</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Issued Books</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Student Name</td>
+                <td>Course</td>
+                <td>Class</td>
+                <td>Book Name</td>
+                <td>Date</td>
+                <td>Action</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.student.user_name}}</td>
+                <td>{{i.student.assignclass.classid.course.course_name}}</td>
+                <td>{{i.student.assignclass.classid.class_name}}</td>
+                <td>{{i.book.book_title}}</td>
+                <td>{{i.issue_date}}</td>
+                <td>
+                    {% if i.issue_status == 1 %}
+                    <a href="{% url 'Staff:returnbook' i.id %}">Return</a>
+                    {% elif i.issue_status == 0 %}
+                    Book Returned
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

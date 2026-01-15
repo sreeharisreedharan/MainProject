@@ -57,7 +57,7 @@
                 <td>{{i.genre.genre_name}}</td>
                 <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
                 <td>{{i.book_author}}</td>
-                <td><a href="{% url 'Admin:delbook' i.id%}">Delete</a></td>
+                <td><a href="{% url 'Admin:delbook' i.id%}">Delete</a><a href="{% url 'Admin:BookStock' i.id%}">Book Stock</a></td>
             </tr>
             {% endfor %}
         </table>

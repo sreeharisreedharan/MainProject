@@ -58,7 +58,10 @@ urlpatterns = [
     path('Genre/',views.Genre,name="Genre"),
     path('delgenre/<int:did>',views.delgenre,name="delgenre"),
     path('Book/',views.Book,name="Book"),
+    path('BookStock/',views.BookStock,name="BookStock"),
+    path("BookStock/<int:bid>",views.BookStock,name="BookStock"),
     path('delbook/<int:did>',views.delbook,name="delbook"),
+    path('delstock/<int:did>',views.delstock,name='delstock'),
 
     path("timetable/", views.timetable, name="timetable"),
     path("savetimetable/", views.save_timetable, name="save_timetable"),

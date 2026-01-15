@@ -466,3 +466,14 @@ def Leave(request):
 def delleave(request,did):
     tbl_leave.objects.get(id=did).delete()
     return redirect("Staff:Leave")
+
+def IssuedBooks(request):
+    issuedata=tbl_issue.objects.all()
+    return render(request,"Staff/IssuedBooks.html",{'data':issuedata})
+
+def returnbook(request,id):
+    data = tbl_issue.objects.get(id=id)
+    data.issue_status = 0
+    data.save()
+    return redirect("Staff:IssuedBooks")
+
