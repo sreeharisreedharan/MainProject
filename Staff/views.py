@@ -4,12 +4,14 @@ from Staff.models import*
 from User.models import*
 from django.utils import timezone
 from datetime import datetime
+from django.db.models import Sum
 
 
 # Create your views here.
 
 def HomePage(request):
-    return render(request,'Staff/HomePage.html')
+    staffdata=tbl_staff.objects.get(id=request.session['sid'])
+    return render(request,'Staff/HomePage.html',{'data':staffdata})
 
 def MyProfile(request):
     data=tbl_staff.objects.get(id=request.session['sid'])
@@ -23,15 +25,22 @@ def EditProfile(request):
         email=request.POST.get("txt_email")
         contact=request.POST.get("txt_contact")
         photo=request.FILES.get("file_photo")
-        data.staff_name=name
-        data.staff_email=email
-        data.staff_contact=contact
-        if not photo:
-            data.staff_photo=staffp
+        staffcount1=tbl_staff.objects.filter(staff_email=email).exclude(id=data.id).count()
+        staffcount2=tbl_staff.objects.filter(staff_contact=contact).exclude(id=data.id).count()
+        if staffcount1 > 0:
+            return render(request,"Staff/EditProfile.html",{'msg':"Email Already Exist"})
+        elif staffcount2 > 0:
+            return render(request,"Staff/EditProfile.html",{'msg':"Contact Already Exist"})
         else:
-            data.staff_photo=photo
-        data.save()
-        return render(request, 'Staff/EditProfile.html', {'data':data,'msg':"Profile Updated"})  
+            data.staff_name=name
+            data.staff_email=email
+            data.staff_contact=contact
+            if not photo:
+                data.staff_photo=staffp
+            else:
+                data.staff_photo=photo
+            data.save()
+            return render(request, 'Staff/EditProfile.html', {'data':data,'msg':"Profile Updated"})  
     else:
         return render(request, 'Staff/EditProfile.html', {'data':data})
 
@@ -43,9 +52,13 @@ def ChangePassword(request):
         newpassord=request.POST.get("txt_newpassword")
         repassword=request.POST.get("txt_repassword")
         if dbpass == oldpassword:
-            data.staff_password=repassword
-            data.save()
-            return render(request, 'Staff/ChangePassword.html', {'msg':"Password Updated"})
+            passwordcount=tbl_staff.objects.filter(staff_password=repassword).exclude(id=data.id).count()
+            if passwordcount > 0:
+                return render(request,"Staff/EditProfile.html",{'msg':"Password Already Exist"})
+            else:
+                data.staff_password=repassword
+                data.save()
+                return render(request, 'Staff/ChangePassword.html', {'msg':"Password Updated"})
         else:
             return render(request, 'Staff/ChangePassword.html' ,{'msg':"Password Incorrect"})
 
@@ -71,10 +84,16 @@ def StudentRegistration(request):
         password=request.POST.get("txt_password")
         repassword=request.POST.get("txt_repassword")
         if password == repassword:
-            studentdata=tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,assignclass=assignclass,user_password=password)
-            classsem= tbl_classsem.objects.filter(assignclass=assignclass).last()
-            tbl_payment.objects.create(student=studentdata,semester=classsem.semester)
-            return render(request, "Staff/StudentRegistration.html", {'msg':"Data Inserted"})
+            usercount1=tbl_user.objects.filter(user_email=email).count()
+            usercount2=tbl_user.objects.filter(user_contact=contact).count()
+            if usercount1 > 0:
+                return render(request, "Staff/StudentRegistration.html",{'msg':"Email Already Exist"})
+            elif usercount2 > 0:
+                return render(request,"Staff/StudentRegistration.html",{'msg':"Contact Already Exist"})
+            else:
+                tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,assignclass=assignclass,user_password=password)
+
+                return render(request, "Staff/StudentRegistration.html", {'msg':"Data Inserted"})
         else:
             return render(request, "Staff/StudentRegistration.html", {'msg':"Password Mismatched"})
 
@@ -95,7 +114,10 @@ def ClassSem(request,aid):
     if request.method =="POST":
         semester=tbl_semester.objects.get(id=request.POST.get('sel_semester'))
         assignclassid=tbl_assignclass.objects.get(id=aid)
+        studentdata=tbl_user.objects.filter(assignclass=aid)
         tbl_classsem.objects.create(semester=semester,assignclass=assignclassid)
+        for i in studentdata:
+            tbl_payment.objects.create(semester=semester,student=i)
         return render(request,'Staff/ClassSem.html',{'msg':"Data Inserted",'semesterdata':semesterdata})
     else:
         return render(request,'Staff/ClassSem.html',{'semesterdata':semesterdata,'classsemdata':classsemdata})
@@ -476,4 +498,44 @@ def returnbook(request,id):
     data.issue_status = 0
     data.save()
     return redirect("Staff:IssuedBooks")
+
+def ViewBooks(request):
+    genredata=tbl_genre.objects.all()
+
+    bookdata=tbl_book.objects.all()
+    for i in bookdata:
+        total_stock = tbl_stock.objects.filter(
+            book=i.id
+        ).aggregate(total=Sum('stock_count'))['total'] or 0
+        total_issue = tbl_issue.objects.filter(
+            book=i.id,
+            issue_status=1
+        ).count()
+
+        i.total_stock = total_stock - total_issue
+        # print(i.total_stock)
+
+    if request.method =="POST": 
+        name=request.POST.get("txt_name")
+        genreid=request.POST.get("sel_genre")
+        if genreid != "":
+            book=tbl_book.objects.filter(genre=genreid)
+        elif name != "" and genreid == "":
+            book = tbl_book.objects.filter(book_title__icontains=name)
+        elif genreid !="" and name != "":
+            book  = tbl_book.objects.filter(book_title__icontains=name,genre=genreid)
+        for i in book:
+            total_stock = tbl_stock.objects.filter(
+                book=i.id
+            ).aggregate(total=Sum('stock_count'))['total'] or 0
+            total_issue = tbl_issue.objects.filter(
+                book=i.id,
+                issue_status=1
+            ).count()
+
+            i.total_stock = total_stock - total_issue
+        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':book,'totalstock':total_stock,'totalissue':total_issue})
+    else:
+        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':bookdata,'totalstock':total_stock,'totalissue':total_issue})
+
 

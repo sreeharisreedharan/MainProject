@@ -9,8 +9,13 @@ def District(request):
     districtdata=tbl_district.objects.all()
     if request.method =="POST":
         district=request.POST.get("txt_district")
-        tbl_district.objects.create(district_name=district)
-        return render(request,"Admin/District.html",{'msg':"Data Inserted.."})
+        districtcount=tbl_district.objects.filter(district_name=district).count()
+        if districtcount > 0:
+            return render(request,"Admin/District.html",{'msg':"District Already Exist"})
+        else:
+
+            tbl_district.objects.create(district_name=district)
+            return render(request,"Admin/District.html",{'msg':"Data Inserted.."})
         # return redirect("Admin:District")
     else:
         return render(request,"Admin/District.html",{'district':districtdata})
@@ -38,9 +43,12 @@ def AdminRegistration(request):
         name=request.POST.get("txt_name")
         email=request.POST.get("txt_email")
         password=request.POST.get("txt_password")
-        tbl_admin.objects.create(admin_name=name,admin_email=email,admin_password=password)
-
-        return render(request,"Admin/AdminRegistration.html",{'msg':"Data Inserted.."})
+        admincount=tbl_admin.objects.filter(admin_email=email).count()
+        if admincount > 0:
+            return render(request,"Admin/AdminRegistration.html",{'msg':"Email Already Exist"})
+        else:    
+            tbl_admin.objects.create(admin_name=name,admin_email=email,admin_password=password)
+            return render(request,"Admin/AdminRegistration.html",{'msg':"Data Inserted.."})
     else:
         return render(request,"Admin/AdminRegistration.html",{'admin':admindata})
 
@@ -67,8 +75,12 @@ def Category(request):
     categorydata=tbl_category.objects.all()
     if request.method == "POST":
         name=request.POST.get("txt_category")
-        tbl_category.objects.create(category_name=name)
-        return render(request,"Admin/Category.html",{'msg':"Data Inserted.."})
+        categorycount=tbl_category.objects.filter(category_name=category).count()
+        if categorycount > 0:
+            return render(request,"Admin/Category.html",{'msg':"Category Already Exist"})
+        else:
+            tbl_category.objects.create(category_name=name)
+            return render(request,"Admin/Category.html",{'msg':"Data Inserted.."})
     else:
         return render(request,"Admin/Category.html",{'category':categorydata})
 def delcategory(request,cid):
@@ -119,9 +131,13 @@ def Subcategory(request):
     subcategorydata=tbl_subcategory.objects.all()
     if request.method == 'POST':
         subcategory=request.POST.get("txt_subcategory")
-        categoryid=tbl_category.objects.get(id=request.POST.get('sel_category'))
-        tbl_subcategory.objects.create(subcategory_name=subcategory,category=categoryid)
-        return render(request, "Admin/Subcategory.html", {'msg':"Data Inserted" })
+        categoryid=tbl_category.objects.get(id=request.POST.get('sel_category')).count()
+        subcategorycount=tbl_subcategory.objects.filter(subcategory_name=subcategory)
+        if subcategorycount > 0:
+            return render(request,"Admin/Subcategory.html",{'msg':"Subcategory Already Exist"})
+        else:
+            tbl_subcategory.objects.create(subcategory_name=subcategory,category=categoryid)
+            return render(request, "Admin/Subcategory.html", {'msg':"Data Inserted" })
     else:
         return render(request, "Admin/Subcategory.html", {'cat':categorydata,'scat':subcategorydata})
 
@@ -181,8 +197,13 @@ def Department(request):
     departmentdata=tbl_department.objects.all()
     if request.method == "POST":
         department=request.POST.get("txt_department")
-        tbl_department.objects.create(department_name=department)
-        return render(request, "Admin/Department.html", {'msg':"Data Inserted"})
+        departmentcount = tbl_department.objects.filter(department_name=department).count()
+        if departmentcount > 0:
+            return render(request, "Admin/Department.html", {'msg':"Department Already Exist"})
+        else:
+
+            tbl_department.objects.create(department_name=department)
+            return render(request, "Admin/Department.html", {'msg':"Data Inserted"})
     else:
         return render(request, "Admin/Department.html", {'department':departmentdata})
 
@@ -193,8 +214,12 @@ def Course(request):
         course=request.POST.get("txt_course")
         amount=request.POST.get("txt_amount")
         departmentid=tbl_department.objects.get(id=request.POST.get("sel_department"))
-        tbl_course.objects.create(course_name=course,course_amount=amount,department=departmentid)
-        return render(request, "Admin/Course.html", {'msg':"Data Inserted"})
+        coursecount=tbl_course.objects.filter(course_name=course).count()
+        if coursecount > 0:
+            return render(request,"Admin/Course.html",{'msg':"Course Already Exist"})
+        else:
+            tbl_course.objects.create(course_name=course,course_amount=amount,department=departmentid)
+            return render(request, "Admin/Course.html", {'msg':"Data Inserted"})
     else:
         return render(request, "Admin/Course.html", {'departmentdata':departmentdata,'coursedata':coursedata})
 
@@ -247,8 +272,15 @@ def StaffRegistration(request):
         role=request.POST.get("txt_role")
         departmentid=tbl_department.objects.get(id=request.POST.get("sel_department"))
         password=request.POST.get("txt_password")
-        tbl_staff.objects.create(staff_name=name,staff_email=email,staff_contact=contact,staff_photo=photo,staff_gender=gender,staff_dob=dob,staff_qualification=qualification,staff_role=role,department=departmentid,staff_password=password)
-        return render(request, "Admin/StaffRegistration.html", {'msg':"Data Inserted"})
+        staffcount=tbl_staff.objects.filter(staff_email=email).count()
+        staffcount2=tbl_staff.objects.filter(staff_contact=contact).count()
+        if staffcount > 0:
+            return render(request,"Admin/StaffRegistration.html",{'msg':"Email Already Exist"})
+        elif staffcount2 > 0:
+            return render(request,"Admin/StaffRegistration.html",{'msg':"Contact Already Exist"})
+        else:
+            tbl_staff.objects.create(staff_name=name,staff_email=email,staff_contact=contact,staff_photo=photo,staff_gender=gender,staff_dob=dob,staff_qualification=qualification,staff_role=role,department=departmentid,staff_password=password)
+            return render(request, "Admin/StaffRegistration.html", {'msg':"Data Inserted"})
     else:
         return render(request, "Admin/StaffRegistration.html",{'staff':staff,'departmentdata':departmentdata})
 
@@ -260,8 +292,12 @@ def Semester(request):
     semesterdata=tbl_semester.objects.all()
     if request.method == "POST":
         semester=request.POST.get("txt_semester")
-        tbl_semester.objects.create(semester_name=semester)
-        return render(request, "Admin/Semester.html", {'msg':"Data Inserted"})
+        semestercount=tbl_semester.objects.filter(semester_name=semester).count()
+        if semestercount > 0:
+            return render(request, "Admin/Semester.html", {'msg':"Semester Already Exist"})
+        else:     
+            tbl_semester.objects.create(semester_name=semester)
+            return render(request, "Admin/Semester.html", {'msg':"Data Inserted"})
     else:
         return render(request, "Admin/Semester.html",{'semester':semesterdata})
 
@@ -273,8 +309,12 @@ def AcademicYear(request):
     data=tbl_academicyear.objects.all()
     if request.method == "POST":
         academic=request.POST.get("txt_academicyear")
-        tbl_academicyear.objects.create(academicyear_year=academic)
-        return render(request, "Admin/AcademicYear.html", {'msg':"Data Inserted"})
+        academicyearcount=tbl_academicyear.objects.filter(academicyear_year=academic).count()
+        if academicyearcount > 0:
+            return render(request,"Admin/AcademicYear.html",{'msg':"Academic Year Already Exist"})
+        else:
+            tbl_academicyear.objects.create(academicyear_year=academic)
+            return render(request, "Admin/AcademicYear.html", {'msg':"Data Inserted"})
     else:
         return render(request, "Admin/AcademicYear.html",{'data':data})
 
@@ -291,8 +331,12 @@ def Subject(request):
         name=request.POST.get("txt_subject")
         courseid=tbl_course.objects.get(id=request.POST.get("sel_course"))
         semesterid=tbl_semester.objects.get(id=request.POST.get("sel_semester"))
-        tbl_subject.objects.create(subject_name=name,course=courseid,semester=semesterid)
-        return render(request,"Admin/Subject.html",{'msg':"Data Inserted"})
+        subjectcount=tbl_subject.objects.filter(subject_name=name,course=courseid,semester=semesterid).count()
+        if subjectcount > 0:
+            return render(request,"Admin/Subject.html",{'msg':"Subject Already Exist"})
+        else:
+            tbl_subject.objects.create(subject_name=name,course=courseid,semester=semesterid)
+            return render(request,"Admin/Subject.html",{'msg':"Data Inserted"})
     else:
         return render(request,"Admin/Subject.html",{'departmentdata':departmentdata,'coursedata':coursedata,'semesterdata':semesterdata,'subject':subject})
 
@@ -312,8 +356,12 @@ def Class(request):
     if request.method == "POST":
         name=request.POST.get("txt_class")
         courseid=tbl_course.objects.get(id=request.POST.get("sel_course"))
-        tbl_class.objects.create(class_name=name,course=courseid)
-        return render(request,"Admin/Class.html",{'msg':"Data Inserted"})
+        classcount=tbl_class.objects.filter(class_name=name,course=courseid).count()
+        if classcount > 0:
+            return render(request,"Admin/Class.html",{'msg':" Same Class already Exist in the Course"})
+        else:
+            tbl_class.objects.create(class_name=name,course=courseid)
+            return render(request,"Admin/Class.html",{'msg':"Data Inserted"})
     else:
         return render(request, "Admin/Class.html",{'departmentdata':departmentdata,'coursedata':coursedata,'data':classdata})
 
@@ -410,8 +458,12 @@ def Genre(request):
     data=tbl_genre.objects.all()
     if request.method =="POST":
         name=request.POST.get("txt_genre")
-        tbl_genre.objects.create(genre_name=name)
-        return render(request,"Admin/Genre.html",{'msg':"Data Inserted"})
+        genrecount=tbl_genre.objects.filter(genre_name=name).count()
+        if genrecount > 0:
+            return render(request,"Admin/Genre.html",{'msg':"Genre Already Exist"})
+        else:
+            tbl_genre.objects.create(genre_name=name)
+            return render(request,"Admin/Genre.html",{'msg':"Data Inserted"})
     else:
         return render(request,"Admin/Genre.html",{'data':data})
 
@@ -429,8 +481,12 @@ def Book(request):
         photo=request.FILES.get("file_photo")
         author=request.POST.get("txt_author")
         genreid=tbl_genre.objects.get(id=request.POST.get("sel_genre"))
-        tbl_book.objects.create(book_title=title,book_details=details,book_photo=photo,book_author=author,genre=genreid)
-        return render(request,"Admin/Book.html",{'msg':"Data Inserted"})
+        bookcount=tbl_book.objects.filter(book_title=title,book_author=author,genre=genreid).count()
+        if bookcount > 0:
+            return render(request,"Admin/Book.html",{'msg':"Book Already Exist"})
+        else:
+            tbl_book.objects.create(book_title=title,book_details=details,book_photo=photo,book_author=author,genre=genreid)
+            return render(request,"Admin/Book.html",{'msg':"Data Inserted"})
     else:
         return render(request,"Admin/Book.html",{'genredata':genredata,'bookdata':bookdata})
 
@@ -626,5 +682,8 @@ def Announcement(request):
 def delinfo(request,did):
     tbl_info.objects.get(id=did).delete()
     return redirect("Admin:Announcement")
-
+ 
+def FeeList(request,id):
+    data=tbl_payment.objects.filter(student=id)
+    return render(request,"Admin/FeeList.html",{'data':data})
 

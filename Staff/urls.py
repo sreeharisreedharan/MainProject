@@ -43,6 +43,7 @@ urlpatterns = [
     path('delleave/<int:did>',views.delleave,name="delleave"),
     path('IssuedBooks/',views.IssuedBooks,name="IssuedBooks"),
     path('returnbook/<int:id>',views.returnbook,name="returnbook"),
+    path('ViewBooks/',views.ViewBooks,name="ViewBooks"),
 
 
 

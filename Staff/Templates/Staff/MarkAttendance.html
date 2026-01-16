@@ -70,12 +70,12 @@
 
             <!-- PRESENT -->
             <td align="center">
-                <input type="checkbox" required name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
+                <input type="checkbox"  name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
             </td>
 
             <!-- ABSENT -->
             <td align="center">
-                <input type="checkbox" required name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
+                <input type="checkbox" name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
             </td>
 
             <td>{{ s.subject.subject_name }}</td>

@@ -71,6 +71,8 @@ urlpatterns = [
     path('Reject/<int:rid>',views.Reject,name="Reject"),
     path('Announcement/',views.Announcement,name="Announcement"),
     path('delinfo/<int:did>',views.delinfo,name="delinfo"),
+    path('FeeList/<int:id>',views.FeeList,name="FeeList"),
+    
 
 
    

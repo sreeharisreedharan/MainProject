@@ -26,12 +26,19 @@ def EditProfile(request):
         data.user_email=email
         data.user_contact=contact
         data.user_address=address
-        if not photo:
-            data.user_photo=userp
+        usercount1=tbl_user.objects.filter(user_email=email).exclude(id=data.id).count()
+        usercount2=tbl_user.objects.filter(user_contact=contact).exclude(id=data.id).count()
+        if usercount1 > 0:
+            return render(request,"User/EditProfile.html",{'msg':"Email Already Exist"})
+        elif usercount2 > 0:
+            return render(request,"User/EditProfile.html",{'msg':"Contact Already Exist"})
         else:
-            data.user_photo=photo
-        data.save()
-        return render(request, 'User/EditProfile.html',{'data':data ,'msg':"Data Updated"})
+            if not photo:
+                data.user_photo=userp
+            else:
+                data.user_photo=photo
+            data.save()
+            return render(request, 'User/EditProfile.html',{'data':data ,'msg':"Data Updated"})
     else:
         return render(request, 'User/EditProfile.html',{'data':data})
 
@@ -43,9 +50,13 @@ def ChangePassword(request):
         newpassword=request.POST.get("txt_newpassword")
         repassword=request.POST.get("txt_repassword")
         if dbpass == oldpassword:
-            data.user_password=repassword
-            data.save()
-            return render(request, 'User/ChangePassword.html', {'msg':"Password Updated"})   
+            passwordcount=tbl_user.objects.filter(user_password=repassword).exclude(id=data.id).count()
+            if passwordcount > 0:
+                return render(request,"User/ChangePassword.html",{'msg':"Password Already Exist"})
+            else:
+                data.user_password=repassword
+                data.save()
+                return render(request, 'User/ChangePassword.html', {'msg':"Password Updated"})   
         else:
             return render(request, 'User/ChangePassword.html', {'msg':"Password Incorrect"})     
 
@@ -135,13 +146,21 @@ def ViewBook(request):
         genreid=request.POST.get("sel_genre")
         if genreid != "":
             book=tbl_book.objects.filter(genre=genreid)
-            return render(request,"User/ViewBook.html",{'book':book,'genredata':genredata})
         elif name != "" and genreid == "":
             book = tbl_book.objects.filter(book_title__icontains=name)
-            return render(request,"User/ViewBook.html",{'book':book,'genredata':genredata})
         elif genreid !="" and name != "":
-            book  = tbl_book.objects.filter(book_title__icontains=name,generid=gener)
-            return render(request,"User/ViewBook.html",{'book':book,'genredata':genredata})
+            book  = tbl_book.objects.filter(book_title__icontains=name,genre=genreid)
+        for i in book:
+            total_stock = tbl_stock.objects.filter(
+                book=i.id
+            ).aggregate(total=Sum('stock_count'))['total'] or 0
+            totak_issue = tbl_issue.objects.filter(
+                book=i.id,
+                issue_status=1
+            ).count()
+
+            i.total_stock = total_stock - totak_issue
+        return render(request,"User/ViewBook.html",{'genredata':genredata,'book':book})
     else:
         return render(request,"User/ViewBook.html",{'genredata':genredata,'book':bookdata})
 

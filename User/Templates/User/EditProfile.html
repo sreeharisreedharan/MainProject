@@ -11,23 +11,23 @@
         <table border="1">
             <tr>
                 <td>Name</td>
-                <td><input type="text" value="{{data.user_name}}" name="txt_name" id=""></td>
+                <td><input required type="text" value="{{data.user_name}}" name="txt_name"  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" id=""></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type="email"  value="{{data.user_email}}" name="txt_email" id=""></td>
+                <td><input required type="email"  value="{{data.user_email}}" name="txt_email" id=""></td>
             </tr>
             <tr>
                 <td>Contact</td>
-                <td><input type="text" value="{{data.user_contact}}" name="txt_contact" id=""></td>
+                <td><input type="text" value="{{data.user_contact}}" name="txt_contact" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id=""></td>
             </tr>
             <tr>
                 <td>Address</td>
-                <td><input type="text" value="{{data.user_address}}" name="txt_address" id=""></td>
+                <td><input  required type="text" value="{{data.user_address}}" name="txt_address" placeholder="Enter Your Address" id=""></td>
             </tr>
             <tr>
                 <td>Choose Photo</td>
-                <td><input type="file" value="{{data.user_photo}}" name="file_photo" id=""></td>
+                <td><input  type="file" value="{{data.user_photo}}" name="file_photo" id=""></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="txt_submit" value="Update"></td>

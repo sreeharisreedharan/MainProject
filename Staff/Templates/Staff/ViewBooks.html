@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Book</title>
+    <title>View Books</title>
 </head>
-
 <body>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table border="1">
             <tr>
                 <td>Name</td>
-                <td><input  type="text" name="txt_name" placeholder="Enter Book Name" id=""></td>
+                <td><input  type="text" placeholder="Enter Book Name" name="txt_name" id=""></td>
                 <td>Genre</td>
                 <td><select required name="sel_genre" id="">
                         <option value="">Select Genre</option>
@@ -25,7 +23,6 @@
             <tr>
                 <td align="center" colspan="4"><input type="submit" name="btn_submit" id="" value="Submit"></td>
             </tr>
-
         </table>
         <h2>Book List</h2>
         <table border="1">
@@ -36,7 +33,9 @@
                 <td>Genre</td>
                 <td>Photo</td>
                 <td>Author</td>
-                <td>Action</td>
+                <td>Total Books</td>
+                <td>Books Taken</td>
+                <td>Remaining Books</td>
             </tr>
             {% for i in book %}
             <tr>
@@ -46,17 +45,14 @@
                 <td>{{i.genre.genre_name}}</td>
                 <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
                 <td>{{i.book_author}}</td>
-                <td>
-                    {% if i.total_stock > 0 %}
-                    <a href="{% url 'User:takebook' i.id %}">Take Book</a>
-                    {% else %} 
-                    Not Available
-                    {% endif %}   
-                </td>
+                <td>{{totalstock}}</td> 
+                <td>{{totalissue}}</td>
+                <td>{{i.total_stock}}</td>
             </tr>
             {% endfor %}
         </table>
+
+
     </form>
 </body>
-
 </html>

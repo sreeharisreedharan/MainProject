@@ -9,16 +9,25 @@
     <h2>Staff HomePage</h2>
     <tr>
         <td colspan="2" align="center"><a href="{% url 'Staff:MyProfile' %}">View Profile</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'Staff:Leave' %}">Leave Request</a></td><br>
+        {% if data.staff_role == 1 %}
         <td colspan="2" align="center"><a href="{% url 'Staff:ViewAssignedClass' %}">View Assigned Class</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:StudentRegistration' %}">Student Registration</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:Assignments' %}">Assignments</a></td><br>
+        {% endif %}
+
+        {% if data.staff_role == 3 %}
         <td colspan="2" align="center"><a href="{% url 'Staff:IssuedBooks' %}">Issued Books</a></td><br>
-        <td colspan="2" align="center"><a href="{% url 'Staff:Leave' %}">Leave Request</a></td><br>
+        <td colspan="2" align="center"><a href="{% url 'Staff:ViewBooks' %}">View Books List</a></td><br> 
+        {% endif %} 
+
+        {% if data.staff_role == 1 %}
         <td colspan="2" align="center"><a href="{% url 'Staff:Notes' %}">Notes</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:ViewTimeTable' %}">View Time Table</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:MyStudents' %}">My Students</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:ViewClass' %}">View Class</a></td><br>
         <td colspan="2" align="center"><a href="{% url 'Staff:staff_attendance' %}">Mark Attendance</a></td><br>
+        {% endif %}
     </tr>    
 </body>
 </html>

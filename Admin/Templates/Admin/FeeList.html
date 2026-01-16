@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee List</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Student Fee List</h2>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Student Name</td>
+                <td>Department</td>
+                <td>Course</td>
+                <td>Semester</td>
+                <td>Course fees</td>
+                <td>Fee Status</td>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.student.user_name}}</td>
+                <td>{{i.student.assignclass.classid.course.department.department_name}}</td>
+                <td>{{i.student.assignclass.classid.course.course_name}}</td>
+                <td>{{i.semester.semester_name}}</td>
+                <td>{{i.student.assignclass.classid.course.course_amount}}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
