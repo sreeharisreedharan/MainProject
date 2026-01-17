@@ -108,19 +108,30 @@ def ViewMySubject(request):
     data=tbl_assignsubject.objects.filter(staff=request.session['sid'])
     return render(request,'Staff/ViewMySubject.html',{'data':data})
 
-def ClassSem(request,aid):
-    semesterdata=tbl_semester.objects.all()
-    classsemdata=tbl_classsem.objects.all()
-    if request.method =="POST":
-        semester=tbl_semester.objects.get(id=request.POST.get('sel_semester'))
-        assignclassid=tbl_assignclass.objects.get(id=aid)
-        studentdata=tbl_user.objects.filter(assignclass=aid)
-        tbl_classsem.objects.create(semester=semester,assignclass=assignclassid)
-        for i in studentdata:
-            tbl_payment.objects.create(semester=semester,student=i)
-        return render(request,'Staff/ClassSem.html',{'msg':"Data Inserted",'semesterdata':semesterdata})
-    else:
-        return render(request,'Staff/ClassSem.html',{'semesterdata':semesterdata,'classsemdata':classsemdata})
+def ClassSem(request, aid):
+    semesterdata = tbl_semester.objects.all()
+    classsemdata = tbl_classsem.objects.all()
+
+    if request.method == "POST":
+        semester = tbl_semester.objects.get(id=request.POST.get('sel_semester'))
+        assignclass = tbl_assignclass.objects.get(id=aid)
+        students = tbl_user.objects.filter(assignclass=aid)
+        tbl_classsem.objects.create(semester=semester,assignclass=assignclass)
+
+        for student in students:
+            tbl_fee.objects.create(
+                student=student,
+                semester=semester,
+                total_amount=student.assignclass.classid.course.course_amount
+            )
+
+        return render(request, 'Staff/ClassSem.html', {
+            'msg': "Semester Updated",
+            'semesterdata': semesterdata
+        })
+
+    return render(request, 'Staff/ClassSem.html', {'semesterdata': semesterdata,'data':classsemdata})
+
 
 def delclasssem(request,did):
     tbl_classsem.objects.get(id=did).delete()

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Fees</title>
+</head>
+<body>
+
+{% for f in fees %}
+<h3>
+    Semester: {{ f.semester.semester_name }} |
+    Total: {{ f.total_amount }} |
+    Paid: {{ f.paid }} |
+    Remaining: {{ f.remaining }} |
+    Status:
+    {% if f.remaining == 0 %}
+        Completed
+    {% else %}
+        Pending
+    {% endif %}
+</h3>
+
+<table border="1" width="70%">
+    <tr>
+        <th>Sl No</th>
+        <th>Payment Date</th>
+        <th>Amount Paid</th>
+    </tr>
+
+    {% for p in f.payments.all %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.payment_date }}</td>
+        <td>{{ p.amount }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No payments done yet</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+{% endfor %}
+
+</body>
+</html>

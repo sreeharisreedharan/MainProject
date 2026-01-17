@@ -60,3 +60,8 @@ class tbl_leave(models.Model):
     leave_reason=models.CharField(max_length=200)
     leave_status=models.IntegerField(default=0)
     staff=models.ForeignKey(tbl_staff,on_delete=models.CASCADE)
+
+class tbl_fee(models.Model):
+    student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+    semester = models.ForeignKey(tbl_semester, on_delete=models.CASCADE)
+    total_amount = models.IntegerField()

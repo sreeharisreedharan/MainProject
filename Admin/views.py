@@ -3,6 +3,8 @@ from Admin.models import *
 from Guest.models import*
 from User.models import*
 from django.http import JsonResponse
+from datetime import date
+from django.db.models import Sum
 # Create your views here.
 
 def District(request):
@@ -683,7 +685,45 @@ def delinfo(request,did):
     tbl_info.objects.get(id=did).delete()
     return redirect("Admin:Announcement")
  
-def FeeList(request,id):
-    data=tbl_payment.objects.filter(student=id)
-    return render(request,"Admin/FeeList.html",{'data':data})
+def FeeList(request, id):
+    student = tbl_user.objects.get(id=id)
+    fees = tbl_fee.objects.filter(student=student)
+
+    for fee in fees:
+        fee.paid = fee.payments.aggregate(total=Sum('amount'))['total'] or 0
+        fee.remaining = fee.total_amount - fee.paid
+
+    return render(request, "Admin/FeeList.html", {
+        'fees': fees,
+        'student': student
+    })
+
+def Payment(request, id):
+    fee = tbl_fee.objects.get(id=id)
+
+    if request.method == "POST":
+        amount = int(request.POST.get("txt_amount"))
+
+        paid = fee.payments.aggregate(total=Sum('amount'))['total'] or 0
+        remaining = fee.total_amount - paid
+
+        if amount > remaining:
+            return render(request, "Admin/Payment.html", {
+                'fee': fee,
+                'msg': "Amount exceeds remaining balance"
+            })
+
+        tbl_payment.objects.create(
+            fee=fee,
+            amount=amount
+        )
+
+        return render(request, "Admin/Payment.html", {
+            'fee': fee,
+            'msg': "Payment Successful"
+        })
+
+    return render(request, "Admin/Payment.html", {'fee': fee})
+
+    
 

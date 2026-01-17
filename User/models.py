@@ -40,11 +40,10 @@ class tbl_assignmentbody(models.Model):
     user=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
 
 class tbl_payment(models.Model):
-    payment_date = models.DateField(null=True)
-    payment_amount = models.CharField(max_length=200)
-    payment_status = models.IntegerField(default=0)
-    student=models.ForeignKey(tbl_user,on_delete=models.CASCADE)
-    semester=models.ForeignKey(tbl_semester,on_delete=models.CASCADE)
+    fee = models.ForeignKey(tbl_fee, on_delete=models.CASCADE, related_name="payments")
+    amount = models.IntegerField()
+    payment_date = models.DateField(auto_now_add=True)
+
 
 class tbl_issue(models.Model):
     issue_date=models.DateField(auto_now_add=True)

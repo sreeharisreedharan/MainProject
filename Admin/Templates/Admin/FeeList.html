@@ -1,3 +1,4 @@
+{% load mathfilters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,26 +12,54 @@
         <h2>Student Fee List</h2>
         <table border="1">
             <tr>
-                <td>SINO</td>
                 <td>Student Name</td>
-                <td>Department</td>
-                <td>Course</td>
-                <td>Semester</td>
-                <td>Course fees</td>
-                <td>Fee Status</td>
+                <td>{{student.user_name}}</td>
             </tr>
-            {% for i in data %}
             <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.student.user_name}}</td>
-                <td>{{i.student.assignclass.classid.course.department.department_name}}</td>
-                <td>{{i.student.assignclass.classid.course.course_name}}</td>
-                <td>{{i.semester.semester_name}}</td>
-                <td>{{i.student.assignclass.classid.course.course_amount}}</td>
-                <td></td>
+                <td>Department</td>
+                <td>{{student.assignclass.classid.course.department.department_name}}</td>
             </tr>
-            {% endfor %}
-        </table>
+            <tr>
+                <td>Course</td>
+                <td>{{student.assignclass.classid.course.course_name}}</td>
+            </tr>
+        </table><br><br>
+        <table border="1">
+    <tr>
+        <th>Sl No</th>
+        <th>Semester</th>
+        <th>Total</th>
+        <th>Paid</th>
+        <th>Remaining</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for f in fees %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ f.semester.semester_name }}</td>
+        <td>{{ f.total_amount }}</td>
+        <td>{{ f.paid }}</td>
+        <td>{{ f.remaining }}</td>
+        <td>
+            {% if f.remaining == 0 %}
+                Completed
+            {% else %}
+                Pending
+            {% endif %}
+        </td>
+        <td>
+            {% if f.remaining > 0 %}
+            <a href="{% url 'Admin:Payment' f.id %}">Pay Fees</a>
+            {% else %}
+            —
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
     </form>
 </body>
 </html>

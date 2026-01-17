@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Payment</h2>
+        <table border="1">
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" name="txt_amount" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:UserList' %}"
+</script>
+{% endif %}

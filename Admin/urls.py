@@ -72,6 +72,7 @@ urlpatterns = [
     path('Announcement/',views.Announcement,name="Announcement"),
     path('delinfo/<int:did>',views.delinfo,name="delinfo"),
     path('FeeList/<int:id>',views.FeeList,name="FeeList"),
+    path('Payment/<int:id>',views.Payment,name="Payment"),
     
 
 

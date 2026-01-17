@@ -269,3 +269,16 @@ def ViewTimeTable(request):
 def ViewAnnouncement(request):
     data=tbl_info.objects.all()
     return render(request,"User/ViewAnnouncement.html",{'data':data})
+
+def MyFees(request):
+    fees = tbl_fee.objects.filter(student_id=request.session['uid']).prefetch_related('payments')
+
+    for fee in fees:
+        fee.paid = fee.payments.aggregate(
+            total=Sum('amount')
+        )['total'] or 0
+        fee.remaining = fee.total_amount - fee.paid
+
+    return render(request, "User/MyFees.html", {
+        'fees': fees
+    })
