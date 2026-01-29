@@ -9,6 +9,7 @@
     <form method="POST">
         {% csrf_token %}
         <table border="1">
+            <input type="hidden" name="txt_id" id="txt_id" value="{{uid}}">
             <tr>
                 <td>Semester</td>
                 <td><select  required name="sel_semester" id="sel_semester">
@@ -23,6 +24,23 @@
                 <td><select  required name="sel_subject" id="sel_subject">
                     <option>Select Subject</option>
                 </select></td>
+            </tr>
+            
+            <tr>
+                <td>Internal Examination Mark</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Model Examination Mark</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Assignment Mark</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Attendance Percentage</td>
+                <td><input type="text" name="txt_percentage" id="txt_percentage"></td>
             </tr>
             <tr>
                 <td>Mark</td>
@@ -70,6 +88,22 @@
       });
     });
   </script>
+
+<script>
+    $("#sel_semester").change(function () {
+      var semid = $(this).val();
+      var uid = document.getElementById("txt_id").value
+      var ur = "{% url 'Staff:AjaxAttendancePercentage' %}";
+      $.ajax({
+        url: ur,
+        data: { semid: semid, uid:uid },
+        success: function (data) {
+          $("#txt_percentage").val(data.percentage + "%");
+        },
+      });
+    });
+  </script>
+
   {% if msg %}
 <script>
     alert("{{msg}}");

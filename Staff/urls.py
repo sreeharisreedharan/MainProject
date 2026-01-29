@@ -32,7 +32,8 @@ urlpatterns = [
     path('ViewStudents<int:id>',views.ViewStudents,name="ViewStudents"),
     path('InternalMark/',views.InternalMark,name="InternalMark"),
     path('AjaxSubjects/',views.AjaxSubjects,name="AjaxSubjects"),
-    path('InternalMark<int:sid>/',views.InternalMark,name="InternalMark"),
+    path('InternalMark<int:uid>/',views.InternalMark,name="InternalMark"),
+    path('AjaxAttendancePercentage/',views.AjaxAttendancePercentage,name="AjaxAttendancePercentage"),
     path('delinternalmark/<int:did>',views.delinternalmark,name="delinternalmark"),
 
     path("ViewTimeTable/", views.ViewTimeTable, name="ViewTimeTable"),

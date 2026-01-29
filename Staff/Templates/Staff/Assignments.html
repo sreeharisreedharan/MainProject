@@ -9,6 +9,22 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table border="1">
+
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="sel_semester">
+                    <option value="">Select Semester</option>
+                    {% for i in semester %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td><select name="sel_subject" id="sel_subject">
+                    <option value="">Select Subject</option>
+                </select></td>
+            </tr>
             <tr>
                 <td>Title</td>
                 <td><input type="text" required placeholder="Enter Assignment Title " name="txt_title" id=""></td>
@@ -29,6 +45,7 @@
         <table border="1">
             <tr>
                 <td>SINO</td>
+                <td>Subject</td>
                 <td>Title</td>
                 <td>Topic</td>
                 <td>Date</td>
@@ -38,6 +55,7 @@
             {% for i in assignmentdata %}
             <tr>
                 <td>{{forloop.counter}}</td>
+                <td>{{i.subject.subject_name}}</td>
                 <td>{{i.assignments_title}}</td>
                 <td><a href="{{i.assignments_topic.url}}">view</a></td>
                 <td>{{i.assignments_date}}</td>
@@ -49,6 +67,22 @@
     </form>
 </body>
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $("#sel_semester").change(function () {
+      var semid = $(this).val();
+      var ur = "{% url 'Staff:AjaxSubjects' %}";
+      $.ajax({
+        url: ur,
+        data: { semid: semid },
+        success: function (data) {
+          $("#sel_subject").html(data);
+        },
+      });
+    });
+  </script>
+
 {% if msg %}
 <script>
     alert("{{msg}}");

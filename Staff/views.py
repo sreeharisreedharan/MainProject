@@ -5,6 +5,7 @@ from User.models import*
 from django.utils import timezone
 from datetime import datetime
 from django.db.models import Sum
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -163,14 +164,17 @@ def delnotes(request,did):
 def Assignments(request):
     staffid = tbl_staff.objects.get(id=request.session['sid'])
     assignmentdata=tbl_assignments.objects.all()
+    semesterdata=tbl_semester.objects.all()
+    subjectdata=tbl_subject.objects.all()
     if request.method =="POST":
+        subjectid=tbl_subject.objects.get(id=request.POST.get('sel_subject'))
         title=request.POST.get("txt_title")
         topic=request.FILES.get("file_topic")
         lastdate=request.POST.get("txt_date")
-        tbl_assignments.objects.create(assignments_title=title,assignments_topic=topic,assignments_duedate=lastdate,staff=staffid)
+        tbl_assignments.objects.create(assignments_title=title,assignments_topic=topic,assignments_duedate=lastdate,staff=staffid,subject=subjectid)
         return render(request,"Staff/Assignments.html",{'msg':"Assignment Inserted"})
     else:
-        return render(request,"Staff/Assignments.html",{'assignmentdata':assignmentdata})
+        return render(request,"Staff/Assignments.html",{'assignmentdata':assignmentdata,'semester':semesterdata,'subject':subjectdata})
 
 def delassignments(request,did):
     tbl_assignments.objects.get(id=did).delete()
@@ -217,18 +221,29 @@ def AjaxClasses(request):
     else:
         return render(request,"Staff/AjaxClasses.html")
 
-def InternalMark(request,sid):
+def InternalMark(request,uid):
     semesterdata=tbl_semester.objects.all()
     subjectdata=tbl_subject.objects.all()
-    internalmarkdata=tbl_internalmark.objects.filter(student=sid)
+    internalmarkdata=tbl_internalmark.objects.filter(student=uid)
+    assignment=tbl_assignmentbody.objects.filter(assignment__staff=request.session['sid'])
+    total = tbl_attendance.objects.filter(student=uid).count()
+    present = tbl_attendance.objects.filter(student=uid,status=1).count()
+    percentage = (present / total) * 100 if total > 0 else 0
+
     if request.method =="POST":
         mark=request.POST.get('txt_mark')
         subjectid=tbl_subject.objects.get(id=request.POST.get('sel_subject'))
-        studentid=tbl_user.objects.get(id=sid)
+        studentid=tbl_user.objects.get(id=uid)
         tbl_internalmark.objects.create(internalmark_mark=mark,subject=subjectid,student=studentid)
         return render(request,"Staff/InternalMark.html",{'msg':"Internal Mark Inserted"})
     else:
-        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata})
+        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata,'percentage':percentage,'assignment':assignment,'uid':uid})
+
+def AjaxAttendancePercentage(request):
+    total = tbl_attendance.objects.filter(student=request.GET.get("uid"),semester=request.GET.get("semid")).count()
+    present = tbl_attendance.objects.filter(student=request.GET.get("uid"),semester=request.GET.get("semid"),status=1).count()
+    percentage = (present / total) * 100 if total > 0 else 0
+    return JsonResponse({'percentage':percentage})
 
 def AjaxSubjects(request):
     assignsubjectdata=tbl_assignsubject.objects.filter(staff=request.session['sid'],subject__semester=request.GET.get("semid"))

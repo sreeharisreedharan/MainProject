@@ -34,6 +34,7 @@ class tbl_assignments(models.Model):
     assignments_duedate=models.DateField()
     assignments_status=models.IntegerField(default=0)
     staff=models.ForeignKey(tbl_staff,on_delete=models.CASCADE)
+    subject=models.ForeignKey(tbl_subject,on_delete=models.CASCADE)
 
 class tbl_internalmark(models.Model):
     internalmark_date=models.DateField(auto_now_add=True)
