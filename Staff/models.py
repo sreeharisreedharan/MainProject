@@ -66,3 +66,10 @@ class tbl_fee(models.Model):
     student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
     semester = models.ForeignKey(tbl_semester, on_delete=models.CASCADE)
     total_amount = models.IntegerField()
+
+
+class tbl_exammark(models.Model):
+    exammark_examtype = models.CharField(max_length=200)
+    exammark_mark = models.CharField(max_length=200)
+    subject = models.ForeignKey(tbl_subject, on_delete=models.CASCADE)
+    student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)

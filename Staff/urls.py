@@ -30,10 +30,13 @@ urlpatterns = [
     path('AjaxClass/',views.AjaxClass,name="AjaxClass"),
     path('AjaxClasses/',views.AjaxClasses,name="AjaxClasses"),
     path('ViewStudents<int:id>',views.ViewStudents,name="ViewStudents"),
-    path('InternalMark/',views.InternalMark,name="InternalMark"),
-    path('AjaxSubjects/',views.AjaxSubjects,name="AjaxSubjects"),
-    path('InternalMark<int:uid>/',views.InternalMark,name="InternalMark"),
-    path('AjaxAttendancePercentage/',views.AjaxAttendancePercentage,name="AjaxAttendancePercentage"),
+
+    path('InternalMark/<int:uid>/', views.InternalMark, name="InternalMark"),
+    path('AjaxSubjects/', views.AjaxSubjects, name="AjaxSubjects"),
+    path('AjaxAttendancePercentage/', views.AjaxAttendancePercentage, name="AjaxAttendancePercentage"),
+    path('AjaxAssignmentMark/', views.AjaxAssignmentMark, name="AjaxAssignmentMark"),
+    path('AjaxExamMark/', views.AjaxExamMark, name="AjaxExamMark"),
+
     path('delinternalmark/<int:did>',views.delinternalmark,name="delinternalmark"),
 
     path("ViewTimeTable/", views.ViewTimeTable, name="ViewTimeTable"),
@@ -45,6 +48,8 @@ urlpatterns = [
     path('IssuedBooks/',views.IssuedBooks,name="IssuedBooks"),
     path('returnbook/<int:id>',views.returnbook,name="returnbook"),
     path('ViewBooks/',views.ViewBooks,name="ViewBooks"),
+    path('ExamMark/<int:uid>',views.ExamMark,name="ExamMark"),
+    path('delExamMark/<int:did>',views.delExamMark,name="delExamMark"),
 
 
 

@@ -4,8 +4,10 @@ from Staff.models import*
 from User.models import*
 from django.utils import timezone
 from datetime import datetime
-from django.db.models import Sum
+from django.db.models import Sum,Avg
 from django.http import JsonResponse
+
+
 
 
 # Create your views here.
@@ -224,20 +226,20 @@ def AjaxClasses(request):
 def InternalMark(request,uid):
     semesterdata=tbl_semester.objects.all()
     subjectdata=tbl_subject.objects.all()
+    markdata=tbl_exammark.objects.filter(student=uid)
     internalmarkdata=tbl_internalmark.objects.filter(student=uid)
-    assignment=tbl_assignmentbody.objects.filter(assignment__staff=request.session['sid'])
+    assignment=tbl_assignmentbody.objects.filter()
     total = tbl_attendance.objects.filter(student=uid).count()
     present = tbl_attendance.objects.filter(student=uid,status=1).count()
     percentage = (present / total) * 100 if total > 0 else 0
-
     if request.method =="POST":
         mark=request.POST.get('txt_mark')
         subjectid=tbl_subject.objects.get(id=request.POST.get('sel_subject'))
         studentid=tbl_user.objects.get(id=uid)
         tbl_internalmark.objects.create(internalmark_mark=mark,subject=subjectid,student=studentid)
-        return render(request,"Staff/InternalMark.html",{'msg':"Internal Mark Inserted"})
+        return render(request,"Staff/InternalMark.html",{'msg':"Internal Mark Inserted",'uid':uid})
     else:
-        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata,'percentage':percentage,'assignment':assignment,'uid':uid})
+        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata,'percentage':percentage,'assignment':assignment,'uid':uid,'markdata':markdata})
 
 def AjaxAttendancePercentage(request):
     total = tbl_attendance.objects.filter(student=request.GET.get("uid"),semester=request.GET.get("semid")).count()
@@ -249,6 +251,48 @@ def AjaxSubjects(request):
     assignsubjectdata=tbl_assignsubject.objects.filter(staff=request.session['sid'],subject__semester=request.GET.get("semid"))
     return render(request,"Staff/AjaxSubjects.html",{'data':assignsubjectdata})
 
+
+def AjaxExamMark(request):
+    subject_id = request.GET.get("subjectid")
+    user_id = request.GET.get("uid")
+
+    first = tbl_exammark.objects.filter(
+        student=user_id,
+        subject=subject_id,
+        exammark_examtype="First"
+    ).first()
+
+    second = tbl_exammark.objects.filter(
+        student=user_id,
+        subject=subject_id,
+        exammark_examtype="Second"
+    ).first()
+
+    data = {
+        'first': first.exammark_mark if first else 0,
+        'second': second.exammark_mark if second else 0
+    }
+
+    return JsonResponse(data)
+
+
+
+def AjaxAssignmentMark(request):
+    subject_id = request.GET.get("subjectid")
+    user_id = request.GET.get("uid")
+
+    assignment_marks = tbl_assignmentbody.objects.filter(
+        user=user_id,
+        assignment__subject=subject_id,
+        assignmentbody_status=1  # only evaluated assignments
+    ).aggregate(avg_mark=Avg('assignmentbody_mark'))
+
+    mark = assignment_marks['avg_mark']
+
+    if mark is None:
+        mark = 0
+
+    return JsonResponse({'mark': mark})
 
 def delinternalmark(request,did):
     tbl_internalmark.objects.get(id=did).delete()
@@ -564,4 +608,21 @@ def ViewBooks(request):
     else:
         return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':bookdata,'totalstock':total_stock,'totalissue':total_issue})
 
-
+def ExamMark(request,uid):
+    semesterdata=tbl_semester.objects.all()
+    coursedata=tbl_course.objects.all()
+    markdata=tbl_exammark.objects.filter(student=uid)
+    
+    if request.method =="POST":
+        type=request.POST.get("txt_type")
+        mark=request.POST.get("txt_mark")
+        assign=tbl_assignsubject.objects.get(id=request.POST.get('sel_subject'))
+        studentid=tbl_user.objects.get(id=uid)
+        tbl_exammark.objects.create(subject=assign.subject,exammark_examtype=type,exammark_mark=mark,student=studentid)
+        return render(request,"Staff/ExamMark.html",{'msg':"Mark Inserted"})
+    else:
+        return render(request,"Staff/ExamMark.html",{'semester':semesterdata,'course':coursedata,'markdata':markdata})
+        
+def delExamMark(request,did):
+    tbl_exammark.objects.get(id=did).delete()
+    return redirect("Staff:ViewClass")

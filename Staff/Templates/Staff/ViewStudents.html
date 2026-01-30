@@ -30,7 +30,7 @@
                 <td>{{i.assignclass.classid.class_name}}</td>
                 <td>{{i.assignclass.academicyear.academicyear_year}}</td>
                 <td>{{i.assignclass.classid.course.course_name}}</td>
-                <td><a href="{% url 'Staff:InternalMark' i.id %}">Add Internal Mark</a></td>
+                <td><a href="{% url 'Staff:InternalMark' i.id %}">Add Internal Mark</a><a href="{% url 'Staff:ExamMark' i.id %}">Add Exam Mark</a></td>
             </tr>
             {% endfor %}
         </table>

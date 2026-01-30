@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Exam Mark</title>
+</head>
+<body>
+    <form method="POST">
+        <h2>Exam Mark</h2>
+
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Semester</td>
+                <td><select name="sel_semester" id="sel_semester">
+                    <option value="">Select Semester</option>
+                    {% for i in semester %}
+                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Course</td>
+                <td><select name="sel_course" id="sel_course" onchange="getsubject()" >
+                    <option value="">Select Course</option>
+                    {% for i in course %}
+                    <option value="{{i.id}}">{{i.course_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td><select name="sel_subject" id="sel_subject">
+                    <option value="">Select Subject</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Exam Type</td>
+                <td><input type="radio" required  name="txt_type" id="" value="First">First Internal<input type="radio" name="txt_type" id="" value="Second">Second Internal</td>
+            </tr>
+            <tr>
+                <td>Mark</td>
+                <td><input type="text" name="txt_mark" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+            </tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td>SINO</td>
+                <td>Student Name</td>
+                <td>Semester</td>
+                <td>Course</td>
+                <td>Subject</td>
+                <td>Exam Type</td>
+                <td>Mark</td>
+                <td>Action</td>
+            </tr>
+            {% for i in markdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.student.user_name}}</td>
+                <td>{{i.subject.semester.semester_name}}</td>
+                <td>{{i.subject.course.course_name}}</td>
+                <td>{{i.subject.subject_name}}</td>
+                <td>{{i.exammark_examtype}}</td>
+                <td>{{i.exammark_mark}}</td>
+                <td><a href="{% url 'Staff:delExamMark' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </form>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+     function getsubject() {
+        var semid = document.getElementById('sel_semester').value
+        var cid = document.getElementById('sel_course').value
+
+        var ur = "{% url 'Staff:AjaxSubject' %}";
+        $.ajax({
+            url: ur,
+            data: { semid: semid, cid: cid },
+            success: function (data) {
+                $("#sel_subject").html(data);
+            },
+        });
+    };
+</script>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:ViewClass' %}"
+</script>
+{% endif %}
+

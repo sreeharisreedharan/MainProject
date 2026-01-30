@@ -1,6 +1,4 @@
-<select required name="" id="">
-    <option value="">Select Subject</option>
-    {% for i in data %}
-    <option value="{{i.subject.id}}">{{i.subject.subject_name}}</option>
-    {% endfor %}
-</select>
+<option value="">Select Subject</option>
+{% for i in data %}
+<option value="{{i.id}}">{{i.subject.subject_name}}</option>
+{% endfor %}
