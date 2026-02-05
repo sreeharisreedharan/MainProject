@@ -84,6 +84,7 @@ def StudentRegistration(request):
         dob=request.POST.get("txt_date")
         place=tbl_place.objects.get(id=request.POST.get('sel_place'))
         photo=request.FILES.get("file_photo")
+        addon=request.POST.get("txt_addon")
         password=request.POST.get("txt_password")
         repassword=request.POST.get("txt_repassword")
         if password == repassword:
@@ -94,7 +95,7 @@ def StudentRegistration(request):
             elif usercount2 > 0:
                 return render(request,"Staff/StudentRegistration.html",{'msg':"Contact Already Exist"})
             else:
-                tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,assignclass=assignclass,user_password=password)
+                tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,user_addon=addon,assignclass=assignclass,user_password=password)
 
                 return render(request, "Staff/StudentRegistration.html", {'msg':"Data Inserted"})
         else:
@@ -122,10 +123,12 @@ def ClassSem(request, aid):
         tbl_classsem.objects.create(semester=semester,assignclass=assignclass)
 
         for student in students:
+            courseamount = student.assignclass.classid.course.course_amount
+    
             tbl_fee.objects.create(
                 student=student,
                 semester=semester,
-                total_amount=student.assignclass.classid.course.course_amount
+                total_amount= courseamount
             )
 
         return render(request, 'Staff/ClassSem.html', {

@@ -104,4 +104,9 @@ class tbl_info(models.Model):
 class tbl_stock(models.Model):
     stock_count=models.IntegerField()
     book=models.ForeignKey(tbl_book,on_delete=models.CASCADE)
+
+class tbl_addon(models.Model):
+    department=models.ForeignKey(tbl_department,on_delete=models.CASCADE)
+    course=models.ForeignKey(tbl_course,on_delete=models.CASCADE)
+    addon_amount=models.CharField(max_length=200)
     

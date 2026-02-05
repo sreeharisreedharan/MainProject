@@ -9,6 +9,7 @@ class tbl_user(models.Model):
     user_contact=models.CharField(max_length=50)
     user_address=models.CharField(max_length=200)
     user_gender=models.CharField(max_length=200)
+    user_addon=models.IntegerField(default=0)
     user_dob=models.DateField()
     place=models.ForeignKey(tbl_place,on_delete=models.CASCADE)
     user_photo=models.FileField(upload_to="Assets/User/Photo")
@@ -66,7 +67,7 @@ class tbl_fee(models.Model):
     student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
     semester = models.ForeignKey(tbl_semester, on_delete=models.CASCADE)
     total_amount = models.IntegerField()
-
+    add_on = models.IntegerField(default=0)
 
 class tbl_exammark(models.Model):
     exammark_examtype = models.CharField(max_length=200)

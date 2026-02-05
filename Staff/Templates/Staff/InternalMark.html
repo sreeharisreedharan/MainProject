@@ -11,100 +11,122 @@
 <input type="hidden" id="txt_id" value="{{uid}}">
 
 <table border="1">
-    <tr>
-        <td>Semester</td>
-        <td>
-            <select id="sel_semester" name="sel_semester" required>
-                <option value="">Select Semester</option>
-                {% for i in semester %}
-                <option value="{{i.id}}">{{i.semester_name}}</option>
-                {% endfor %}
-            </select>
-        </td>
-    </tr>
 
-    <tr>
-        <td>Subject</td>
-        <td>
-            <select id="sel_subject" name="sel_subject" required>
-                <option value="">Select Subject</option>
-            </select>
-        </td>
-    </tr>
+<tr>
+<td>Semester</td>
+<td>
+<select id="sel_semester" name="sel_semester" required>
+<option value="">Select Semester</option>
+{% for i in semester %}
+<option value="{{i.id}}">{{i.semester_name}}</option>
+{% endfor %}
+</select>
+</td>
+</tr>
 
-    <tr>
-        <td>First Internal</td>
-        <td><input type="text" id="txt_first_exam_mark" readonly></td>
-    </tr>
+<tr>
+<td>Subject</td>
+<td>
+<select id="sel_subject" name="sel_subject" required>
+<option value="">Select Subject</option>
+</select>
+</td>
+</tr>
 
-    <tr>
-        <td>Second Internal</td>
-        <td><input type="text" id="txt_second_exam_mark" readonly></td>
-    </tr>
+<tr>
+<td>Exam 1 (Out of 80)</td>
+<td><input type="text" id="txt_first_exam_mark" readonly></td>
+</tr>
 
-    <tr>
-        <td>Assignment Mark</td>
-        <td><input type="text" id="txt_assignment_mark" readonly></td>
-    </tr>
+<tr>
+<td>Exam 2 (Out of 80)</td>
+<td><input type="text" id="txt_second_exam_mark" readonly></td>
+</tr>
 
-    <tr>
-        <td>Attendance Percentage</td>
-        <td><input type="text" id="txt_percentage" readonly></td>
-    </tr>
+<tr>
+<td>Attendance %</td>
+<td><input type="text" id="txt_percentage" readonly></td>
+</tr>
 
-    <tr>
-        <td>Internal Mark</td>
-        <td><input type="text" name="txt_mark" required></td>
-    </tr>
+<tr>
+<td><b>Exam Mark (Out of 10)</b></td>
+<td><input type="text" id="txt_exam_mark10" readonly></td>
+</tr>
 
-    <tr>
-        <td colspan="2" align="center">
-            <input type="submit" value="Submit">
-        </td>
-    </tr>
-</table>
+<tr>
+<td>Assignment Mark (Out of 5)</td>
+<td><input type="text" id="txt_assign_mark5" readonly></td>
+</tr>
 
-<br>
+<tr>
+<td>Attendance Mark (Out of 5)</td>
+<td><input type="text" id="txt_att_mark" readonly></td>
+</tr>
 
-<table border="1">
-    <tr>
-        <td>SINO</td>
-        <td>Semester</td>
-        <td>Subject</td>
-        <td>Date</td>
-        <td>Mark</td>
-        <td>Action</td>
-    </tr>
+<tr>
+<td><b>Final Internal (Out of 20)</b></td>
+<td><input type="text" name="txt_mark" id="txt_final_mark" readonly></td>
+</tr>
 
-    {% for i in internalmark %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ i.subject.semester.semester_name }}</td>
-        <td>{{ i.subject.subject_name }}</td>
-        <td>{{ i.internalmark_date }}</td>
-        <td>{{ i.internalmark_mark }}</td>
-        <td><a href="{% url 'Staff:delinternalmark' i.id %}">Delete</a></td>
-    </tr>
-    {% endfor %}
+<tr>
+<td colspan="2" align="center">
+<input type="submit" value="Submit">
+</td>
+</tr>
+
 </table>
 
 </form>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-/* Load Subjects + Attendance */
+
+/* ---------- CONVERSION RULES ---------- */
+
+function attendanceToMark5(percent) {
+    if (percent >= 90) return 5;
+    if (percent >= 80) return 4;
+    if (percent >= 70) return 3;
+    if (percent >= 60) return 2;
+    if (percent >= 50) return 1;
+    return 0;
+}
+
+// exams out of 80 each → convert to /10
+function calcExamMark10(first, second) {
+    first = parseFloat(first) || 0;
+    second = parseFloat(second) || 0;
+
+    let total = first + second;   // out of 160
+    return ((total / 160) * 10).toFixed(2);
+}
+
+// assignment already out of 5 → use directly
+function assignmentMark5(mark) {
+    return (parseFloat(mark) || 0).toFixed(2);
+}
+
+function updateFinalInternal() {
+
+    let exam = parseFloat($("#txt_exam_mark10").val()) || 0;
+    let assign = parseFloat($("#txt_assign_mark5").val()) || 0;
+    let att = parseFloat($("#txt_att_mark").val()) || 0;
+
+    let total = exam + assign + att;
+
+    $("#txt_final_mark").val(total.toFixed(2));
+}
+
+
+/* ---------- SEMESTER CHANGE ---------- */
+
 $("#sel_semester").change(function () {
 
     let semid = $(this).val();
     let uid = $("#txt_id").val();
 
-    if (!semid) {
-        $("#sel_subject").html('<option value="">Select Subject</option>');
-        return;
-    }
-
-    // Load subjects
     $.ajax({
         url: "{% url 'Staff:AjaxSubjects' %}",
         data: { semid: semid },
@@ -113,57 +135,64 @@ $("#sel_semester").change(function () {
         }
     });
 
-    // Load attendance percentage
     $.ajax({
         url: "{% url 'Staff:AjaxAttendancePercentage' %}",
         data: { uid: uid, semid: semid },
         success: function (data) {
-            $("#txt_percentage").val(data.percentage.toFixed(2) + "%");
+
+            let p = parseFloat(data.percentage) || 0;
+
+            $("#txt_percentage").val(p.toFixed(2) + "%");
+
+            let att5 = attendanceToMark5(p);
+            $("#txt_att_mark").val(att5);
+
+            updateFinalInternal();
         }
     });
+
 });
 
 
-/* Load Assignment & Exam Marks */
+/* ---------- SUBJECT CHANGE ---------- */
+
 $("#sel_subject").change(function () {
 
     let subjectid = $(this).val();
     let uid = $("#txt_id").val();
 
-    if (!subjectid) {
-        $("#txt_first_exam_mark").val("");
-        $("#txt_second_exam_mark").val("");
-        $("#txt_assignment_mark").val("");
-        return;
-    }
-
-    // Assignment mark
+    // assignment (already /5)
     $.ajax({
         url: "{% url 'Staff:AjaxAssignmentMark' %}",
         data: { subjectid: subjectid, uid: uid },
         success: function (data) {
-            $("#txt_assignment_mark").val(data.mark);
+
+            let a5 = assignmentMark5(data.mark);
+            $("#txt_assign_mark5").val(a5);
+
+            updateFinalInternal();
         }
     });
 
-    // Exam marks
+    // exams
     $.ajax({
         url: "{% url 'Staff:AjaxExamMark' %}",
         data: { subjectid: subjectid, uid: uid },
         success: function (data) {
+
             $("#txt_first_exam_mark").val(data.first);
             $("#txt_second_exam_mark").val(data.second);
+
+            let e10 = calcExamMark10(data.first, data.second);
+            $("#txt_exam_mark10").val(e10);
+
+            updateFinalInternal();
         }
     });
-});
-</script>
 
-{% if msg %}
-<script>
-alert("{{ msg }}");
-window.location = "{% url 'Staff:InternalMark' uid %}";
+});
+
 </script>
-{% endif %}
 
 </body>
 </html>

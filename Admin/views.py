@@ -690,8 +690,11 @@ def FeeList(request, id):
     fees = tbl_fee.objects.filter(student=student)
 
     for fee in fees:
-        fee.paid = fee.payments.aggregate(total=Sum('amount'))['total'] or 0
-        fee.remaining = fee.total_amount - fee.paid
+        paid = fee.payments.aggregate(total=Sum('amount'))['total'] or 0
+
+        fee.total_with_addon = fee.total_amount + fee.add_on
+        fee.paid = paid
+        fee.remaining = fee.total_with_addon - paid
 
     return render(request, "Admin/FeeList.html", {
         'fees': fees,
@@ -701,11 +704,13 @@ def FeeList(request, id):
 def Payment(request, id):
     fee = tbl_fee.objects.get(id=id)
 
+    total_with_addon = fee.total_amount + fee.add_on
+
     if request.method == "POST":
         amount = int(request.POST.get("txt_amount"))
 
         paid = fee.payments.aggregate(total=Sum('amount'))['total'] or 0
-        remaining = fee.total_amount - paid
+        remaining = total_with_addon - paid
 
         if amount > remaining:
             return render(request, "Admin/Payment.html", {
@@ -725,5 +730,46 @@ def Payment(request, id):
 
     return render(request, "Admin/Payment.html", {'fee': fee})
 
-    
 
+def AddOn(request):
+    department = tbl_department.objects.all()
+    course = tbl_course.objects.all()
+    data = tbl_addon.objects.all()
+    academicyeardata = tbl_academicyear.objects.last()
+
+    if request.method == "POST":
+        departmentid = tbl_department.objects.get(id=request.POST.get("sel_department"))
+        courseid = tbl_course.objects.get(id=request.POST.get("sel_course"))
+        amount = int(request.POST.get("txt_amount"))
+
+        addon = tbl_addon.objects.create(
+            department=departmentid,
+            course=courseid,
+            addon_amount=amount
+        )
+
+        students = tbl_user.objects.filter(
+            assignclass__classid__course=courseid,
+            assignclass__academicyear=academicyeardata
+        )
+
+        for student in students:
+            fees = tbl_fee.objects.filter(student=student)
+
+            if student.user_addon == 1:
+                fees.update(add_on=addon.addon_amount)
+            else:
+                fees.update(add_on=0)
+
+        return render(request, "Admin/AddOn.html", {
+            'msg': "Addon Amount Applied",
+            'department': department,
+            'course': course,
+            'data': data
+        })
+
+    return render(request, "Admin/AddOn.html", {
+        'department': department,
+        'course': course,
+        'data': data
+    })
