@@ -297,9 +297,9 @@ def AjaxAssignmentMark(request):
 
     return JsonResponse({'mark': mark})
 
-def delinternalmark(request,did):
+def delinternalmark(request,did,uid):
     tbl_internalmark.objects.get(id=did).delete()
-    return redirect("Staff:ViewClass")
+    return redirect("Staff:InternalMark",uid)
 
 
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]

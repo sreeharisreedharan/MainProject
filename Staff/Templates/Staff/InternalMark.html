@@ -44,12 +44,12 @@
 </tr>
 
 <tr>
-<td>Attendance %</td>
+<td>Attendance Percentage</td>
 <td><input type="text" id="txt_percentage" readonly></td>
 </tr>
 
 <tr>
-<td><b>Exam Mark (Out of 10)</b></td>
+<td>Exam Mark (Out of 10)</td>
 <td><input type="text" id="txt_exam_mark10" readonly></td>
 </tr>
 
@@ -74,6 +74,23 @@
 </td>
 </tr>
 
+</table>
+
+<table border="1">
+    <tr>
+        <td>SINO</td>
+        <td>Student</td>
+        <td>Internal Mark</td>
+        <td>Action</td>
+    </tr>
+    {% for i in internalmark %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.student.user_name}}</td>
+        <td>{{i.internalmark_mark}}</td>
+        <td><a href="{% url 'Staff:delinternalmark'  i.id uid  %}">Delete</a></td>
+    </tr>
+    {% endfor %}
 </table>
 
 </form>
@@ -196,3 +213,9 @@ $("#sel_subject").change(function () {
 
 </body>
 </html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Staff:InternalMark' uid %}"
+</script>
+{% endif %}

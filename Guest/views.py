@@ -28,7 +28,11 @@ def Login(request):
             return render(request,"Guest/Login.html",{'msg':"Invalid Login"})
     else:
         return render(request,"Guest/Login.html")
+    
 
+def Index(request):
+
+    return render(request,"Guest/Index.html")
 
 
 

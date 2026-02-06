@@ -37,7 +37,7 @@ urlpatterns = [
     path('AjaxAssignmentMark/', views.AjaxAssignmentMark, name="AjaxAssignmentMark"),
     path('AjaxExamMark/', views.AjaxExamMark, name="AjaxExamMark"),
 
-    path('delinternalmark/<int:did>',views.delinternalmark,name="delinternalmark"),
+    path('delinternalmark/<int:did>/<int:uid>',views.delinternalmark,name="delinternalmark"),
 
     path("ViewTimeTable/", views.ViewTimeTable, name="ViewTimeTable"),
     path("staffattendance/", views.staff_attendance, name="staff_attendance"),
