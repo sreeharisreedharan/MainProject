@@ -83,11 +83,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'Staff:MyProfile' %}">My Profile</a>
                                 </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'Staff:Leave' %}">Leave Request</a>
+                                </li>
+
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Class Information
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {% if data.staff_role == 1 %}
+                                        <a class="dropdown-item" href="{% url 'Staff:StudentRegistration' %}">Student Registration</a>
                                         <a class="dropdown-item" href="{% url 'Staff:MyStudents' %}">My Students</a>
                                         <a class="dropdown-item" href="{% url 'Staff:ViewClass' %}">Internal mark</a>
                                         <a class="dropdown-item" href="{% url 'Staff:Assignments' %}">Assignments</a>
@@ -95,6 +101,7 @@
                                         <a class="dropdown-item" href="{% url 'Staff:ViewTimeTable' %}">View Timetable</a>
                                         <a class="dropdown-item" href="{% url 'Staff:staff_attendance' %}">Mark Attendance</a>
                                         <a class="dropdown-item" href="{% url 'Staff:ViewAssignedClass' %}">View Assigned Class</a>
+                                        {% endif %}
                                         {% if data.staff_role == 3 %}
                                         <a class="dropdown-item" href="{% url 'Staff:IssuedBooks' %}">Issued Books</a>
                                         <a class="dropdown-item" href="{% url 'Staff:ViewBooks' %}">Book List</a>
@@ -103,20 +110,13 @@
 
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Other
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
+                                <!-- <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Complaint & Feedback
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     </div>
-                                </li>
+                                </li> -->
                                 <li class="d-none d-lg-block">
                                     <a class="btn_1" href="#">Get a Quote</a>
                                 </li>

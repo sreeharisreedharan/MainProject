@@ -1,3 +1,6 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,3 +45,5 @@
     window.location="{% url 'Admin:Department' %}"
 </script>
 {% endif %}
+
+{% endblock content %}

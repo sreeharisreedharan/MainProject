@@ -1,3 +1,7 @@
+{% extends 'Staff/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +29,7 @@
                 <td>Academic Year</td>
                 <td><select  required name="sel_academicyear" id="sel_academicyear" onchange="getClass()">
                     <option value="">Select Academic year</option>
-                    {% for i in data %}
+                    {% for i in academicdata %}
                     <option value="{{i.id}}">{{i.academicyear_year}}</option>
                     {% endfor %}
                 </select></td>
@@ -64,4 +68,7 @@
       });
     }
   </script>
+  {% endblock content %}
+
+
   

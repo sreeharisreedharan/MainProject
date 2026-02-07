@@ -1,79 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AddON</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
 
-            <tr>
-            <td>Department</td>
-            <td><select  required name="sel_department" id="sel_department">
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <div class="card shadow">
+        <div class="card-header text-center">
+          <h4>AddON Course</h4>
+        </div>
+
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label>Department</label>
+              <select required name="sel_department" id="sel_department" class="form-control">
                 <option value="">Select Department</option>
                 {% for i in department %}
                 <option value="{{i.id}}">{{i.department_name}}</option>
                 {% endfor %}
-            </select></td>
-            </tr>
-            <tr>
-                <td>Course</td>
-                <td><select required name="sel_course" id="sel_course">
-                    <option value="">Select Course</option>
-                    <option></option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>AddON Course Amount</td>
-                <td><input type="text" name="txt_amount" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Department</td>
-                <td>Course</td>
-                <td>Amount</td>
-                <td>Action</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.department.department_name}}</td>
-                <td>{{i.course.course_name}}</td>
-                <td>{{i.addon_amount}}</td>
-                <td>Action</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Course</label>
+              <select required name="sel_course" id="sel_course" class="form-control">
+                <option value="">Select Course</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>AddON Course Amount</label>
+              <input type="text" name="txt_amount" class="form-control">
+            </div>
+
+            <div class="text-center mt-3">
+              <input type="submit" name="btn_submit" value="Submit" class="btn btn-primary">
+            </div>
+
+            <hr>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped text-center">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>SINO</th>
+                    <th>Department</th>
+                    <th>Course</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in data %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.department.department_name}}</td>
+                    <td>{{i.course.course_name}}</td>
+                    <td>{{i.addon_amount}}</td>
+                    <td>Action</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-    $("#sel_department").change(function () {
-      var dpid = $(this).val();
-      var ur = "{% url 'Admin:AjaxCourse' %}";
-      $.ajax({
-        url: ur,
-        data: { dpid: dpid },
-        success: function (data) {
-          $("#sel_course").html(data);
-        },
-      });
-    });
-  </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$("#sel_department").change(function () {
+  var dpid = $(this).val();
+  var ur = "{% url 'Admin:AjaxCourse' %}";
+  $.ajax({
+    url: ur,
+    data: { dpid: dpid },
+    success: function (data) {
+      $("#sel_course").html(data);
+    },
+  });
+});
+</script>
 
 {% if msg %}
 <script>
-    alert("{{msg}}");
-    window.location="{% url 'Admin:AddOn' %}"
+alert("{{msg}}");
+window.location="{% url 'Admin:AddOn' %}"
 </script>
 {% endif %}
+
+{% endblock content %}

@@ -1,17 +1,22 @@
+{% extends 'Staff/Header.html' %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave</title>
 </head>
+
 <body>
     <form method="POST">
         {% csrf_token %}
         <table border="1">
             <tr>
                 <td>From Date</td>
-                <td><input type="date"  required name="txt_date" id=""></td>
+                <td><input type="date" required name="txt_date" id=""></td>
             </tr>
             <tr>
                 <td>To Date</td>
@@ -35,7 +40,7 @@
                 <td>Status</td>
                 <td>Action</td>
             </tr>
-            {% for i in data %}
+            {% for i in leavedata %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.leave_fromdate}}</td>
@@ -57,10 +62,12 @@
         </table>
     </form>
 </body>
-</html>
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:Leave' %}"
+    window.location = "{% url 'Staff:Leave' %}"
 </script>
 {% endif %}
+</html>
+
+{% endblock content %}

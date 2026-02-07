@@ -57,21 +57,23 @@ def ChangePassword(request):
         if dbpass == oldpassword:
             passwordcount=tbl_staff.objects.filter(staff_password=repassword).exclude(id=data.id).count()
             if passwordcount > 0:
-                return render(request,"Staff/EditProfile.html",{'msg':"Password Already Exist"})
+                return render(request,"Staff/EditProfile.html",{'msg':"Password Already Exist",'data':data})
             else:
                 data.staff_password=repassword
                 data.save()
-                return render(request, 'Staff/ChangePassword.html', {'msg':"Password Updated"})
+                return render(request, 'Staff/ChangePassword.html', {'msg':"Password Updated" ,'data':data})
         else:
-            return render(request, 'Staff/ChangePassword.html' ,{'msg':"Password Incorrect"})
+            return render(request, 'Staff/ChangePassword.html' ,{'msg':"Password Incorrect",'data':data})
 
-    return render(request, 'Staff/ChangePassword.html')
+    return render(request, 'Staff/ChangePassword.html',{'data':data})
 
 def ViewAssignedClass(request):
+    staff=tbl_staff.objects.get(id=request.session['sid'])
     data=tbl_assignclass.objects.filter(staff=request.session['sid'])
-    return render(request,'Staff/ViewAssignedClass.html',{'data':data})
+    return render(request,'Staff/ViewAssignedClass.html',{'assigndata':data,'data':staff})
 
 def StudentRegistration(request):
+    data = tbl_staff.objects.get(id=request.session['sid'])
     assignclass = tbl_assignclass.objects.filter(staff=request.session['sid']).last()
     districtdata=tbl_district.objects.all()
     placedata=tbl_place.objects.all()
@@ -91,18 +93,18 @@ def StudentRegistration(request):
             usercount1=tbl_user.objects.filter(user_email=email).count()
             usercount2=tbl_user.objects.filter(user_contact=contact).count()
             if usercount1 > 0:
-                return render(request, "Staff/StudentRegistration.html",{'msg':"Email Already Exist"})
+                return render(request, "Staff/StudentRegistration.html",{'msg':"Email Already Exist",'data':data})
             elif usercount2 > 0:
-                return render(request,"Staff/StudentRegistration.html",{'msg':"Contact Already Exist"})
+                return render(request,"Staff/StudentRegistration.html",{'msg':"Contact Already Exist",'data':data})
             else:
                 tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,user_addon=addon,assignclass=assignclass,user_password=password)
 
-                return render(request, "Staff/StudentRegistration.html", {'msg':"Data Inserted"})
+                return render(request, "Staff/StudentRegistration.html", {'msg':"Data Inserted",'data':data})
         else:
-            return render(request, "Staff/StudentRegistration.html", {'msg':"Password Mismatched"})
+            return render(request, "Staff/StudentRegistration.html", {'msg':"Password Mismatched",'data':data})
 
     else:
-        return render(request, "Staff/StudentRegistration.html", {'dis':districtdata,'plc':placedata})
+        return render(request, "Staff/StudentRegistration.html", {'dis':districtdata,'plc':placedata,'data':data})
 
 def AjaxPlace(request):
     place=tbl_place.objects.filter(district=request.GET.get('disid'))
@@ -115,6 +117,7 @@ def ViewMySubject(request):
 def ClassSem(request, aid):
     semesterdata = tbl_semester.objects.all()
     classsemdata = tbl_classsem.objects.all()
+    data=tbl_staff.objects.get(id=request.session['sid'])
 
     if request.method == "POST":
         semester = tbl_semester.objects.get(id=request.POST.get('sel_semester'))
@@ -154,9 +157,9 @@ def Notes(request):
         subjectid=tbl_subject.objects.get(id=request.POST.get('sel_subject'))
         semesterid=tbl_semester.objects.get(id=request.POST.get('sel_semester'))
         tbl_notes.objects.create(notes_title=title,notes_file=file,subject=subjectid,staff=staff,semester=semesterid)
-        return render(request,'Staff/Notes.html',{'msg':"Notes Inserted"})
+        return render(request,'Staff/Notes.html',{'msg':"Notes Inserted",'data':staff})
     else:
-        return render(request, 'Staff/Notes.html',{'coursedata':coursedata,'semesterdata':semesterdata,'notesdata':notesdata})
+        return render(request, 'Staff/Notes.html',{'coursedata':coursedata,'semesterdata':semesterdata,'notesdata':notesdata,'data':staff})
 
 def AjaxSubject(request):
     subjectdata=tbl_assignsubject.objects.filter(subject__course=request.GET.get('cid'),subject__semester = request.GET.get("semid"),staff = request.session['sid'])
@@ -186,8 +189,9 @@ def delassignments(request,did):
     return redirect("Staff:Assignments")
 
 def ViewUploads(request,aid):
+    staff=tbl_staff.objects.get(id=request.session['sid'])
     assignmentbodydata=tbl_assignmentbody.objects.filter(assignment=aid)
-    return render(request,"Staff/ViewUploads.html",{'data':assignmentbodydata})  
+    return render(request,"Staff/ViewUploads.html",{'assignmentdata':assignmentbodydata,'data':staff})  
 
 def Mark(request,id):
     editdata=tbl_assignmentbody.objects.get(id=id)
@@ -202,8 +206,9 @@ def Mark(request,id):
 
 
 def MyStudents(request):
+    data = tbl_staff.objects.get(id=request.session['sid'])
     studentdata=tbl_user.objects.filter(assignclass__staff=request.session['sid'])
-    return render(request,"Staff/MyStudents.html",{'data':studentdata})
+    return render(request,"Staff/MyStudents.html",{'studentdata':studentdata,'data':data})
 
 def ViewStudents(request,id):
     studentdata=tbl_user.objects.filter(assignclass=id)
@@ -213,7 +218,7 @@ def ViewClass(request):
     staff=tbl_staff.objects.get(id=request.session['sid'])
     coursedata=tbl_course.objects.filter(department=staff.department.id)
     academicdata=tbl_academicyear.objects.all()
-    return render(request,"Staff/ViewClass.html",{'coursedata':coursedata,'data':academicdata})
+    return render(request,"Staff/ViewClass.html",{'coursedata':coursedata,'academicdata':academicdata,'data':staff})
 
 def AjaxClass(request):
     classdata=tbl_class.objects.filter(course=request.GET.get('cid'))
@@ -326,7 +331,8 @@ def ViewTimeTable(request):
         "timetable": timetable,
         "days": DAYS,
         "hours": HOURS,
-        "academicyear": academicyear
+        "academicyear": academicyear,
+        'data':staff
     })
 
 
@@ -369,9 +375,11 @@ def staff_mark_attendance(request):
 
     return render(request, "Staff/MarkAttendance.html", {
         "staff": staff,
+        "data": staff,
         "attendance_data": attendance_data,
         "current_hour": current_hour,
         "day": today_day
+        
     })
 
 
@@ -454,7 +462,8 @@ def staff_attendance(request):
             semester_id=selected_semester,
             hour=selected_hour,
             day=selected_day,
-            academicyear=academicyear
+            academicyear=academicyear,
+
         )
 
         for tt in timetable_entries:
@@ -487,6 +496,7 @@ def staff_attendance(request):
         "semesters": semesters,
         "days": DAYS,
         "hours": HOURS,
+        'data':staff,
 
         "selected_students": selected_students,
         "selected_department": selected_department,
@@ -554,9 +564,9 @@ def Leave(request):
         todate=request.POST.get('txt_date')
         reason=request.POST.get('txt_reason')
         tbl_leave.objects.create(leave_fromdate=fromdate,leave_todate=todate,leave_reason=reason,staff=staffid)
-        return render(request,"Staff/Leave.html",{'msg':"Leave request Submitted"})
+        return render(request,"Staff/Leave.html",{'msg':"Leave request Submitted",'leavedata':leavedata,'data':staffid})
     else:
-        return render(request,"Staff/Leave.html",{'data':leavedata})
+        return render(request,"Staff/Leave.html",{'leavedata':leavedata,'data':staffid})
 
 def delleave(request,did):
     tbl_leave.objects.get(id=did).delete()
@@ -612,6 +622,7 @@ def ViewBooks(request):
         return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':bookdata,'totalstock':total_stock,'totalissue':total_issue})
 
 def ExamMark(request,uid):
+    data=tbl_staff.objects.get(id=request.session['sid'])
     semesterdata=tbl_semester.objects.all()
     coursedata=tbl_course.objects.all()
     markdata=tbl_exammark.objects.filter(student=uid)
@@ -622,9 +633,9 @@ def ExamMark(request,uid):
         assign=tbl_assignsubject.objects.get(id=request.POST.get('sel_subject'))
         studentid=tbl_user.objects.get(id=uid)
         tbl_exammark.objects.create(subject=assign.subject,exammark_examtype=type,exammark_mark=mark,student=studentid)
-        return render(request,"Staff/ExamMark.html",{'msg':"Mark Inserted"})
+        return render(request,"Staff/ExamMark.html",{'msg':"Mark Inserted",'data':data})
     else:
-        return render(request,"Staff/ExamMark.html",{'semester':semesterdata,'course':coursedata,'markdata':markdata})
+        return render(request,"Staff/ExamMark.html",{'semester':semesterdata,'course':coursedata,'markdata':markdata,'data':data})
         
 def delExamMark(request,did):
     tbl_exammark.objects.get(id=did).delete()

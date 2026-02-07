@@ -1,3 +1,7 @@
+{% extends 'Staff/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +23,7 @@
                 <td>Course</td>
                 <td>Action</td>
             </tr>
-            {% for i in data %}
+            {% for i in studentdata %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.user_name}}</td>
@@ -35,3 +39,4 @@
     </form>
 </body>
 </html>
+{% endblock content %}

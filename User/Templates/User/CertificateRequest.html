@@ -1,3 +1,6 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,3 +63,4 @@
     window.location="{% url 'User:CertificateRequest' %}"
 </script>
 {% endif %}
+{% endblock content %}

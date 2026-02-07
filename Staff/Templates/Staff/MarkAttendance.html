@@ -1,4 +1,6 @@
-<h2>Mark Attendance</h2>
+{% extends 'Staff/Header.html' %}
+{% load static %}
+{% block content %}
 
 <form method="get">
     Department:
@@ -118,3 +120,4 @@
         });
     });
 </script>
+{% endblock content %}
