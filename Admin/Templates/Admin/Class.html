@@ -2,6 +2,109 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Scope styling only to content area */
+.content-wrapper form {
+    max-width: 650px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Page heading */
+.page-title {
+    text-align: center;
+    color: #90caf9;
+    font-weight: 600;
+    margin-bottom: 18px;
+    font-size: 22px;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Borders */
+.content-wrapper form table,
+.content-wrapper form table tr,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header row */
+.content-wrapper form table tr:first-child {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+.content-wrapper form table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #cfd8dc;
+}
+
+/* Inputs and selects */
+.content-wrapper form input[type="text"],
+.content-wrapper form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+    transition: 0.25s;
+}
+
+/* Focus */
+.content-wrapper form input:focus,
+.content-wrapper form select:focus {
+    border-color: #42a5f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(66,165,245,0.45);
+}
+
+/* Submit button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 26px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(66,165,245,0.35);
+}
+
+/* Links */
+.content-wrapper form a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.content-wrapper form a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+</style>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +114,7 @@
 </head>
 <body>
     <form method="POST">
+        <h3 class="page-title">Class Management</h3>
         {% csrf_token %}
         <table border="1">
             <tr>
@@ -19,24 +123,29 @@
             </tr>
             <tr>
                  <td>Department</td>
-                <td><select  required name="sel_department" id="sel_department">
-                    <option>Select Department</option>
-                    {% for i in departmentdata %}
-                    <option value="{{i.id}}">{{i.department_name}}</option>
-                    {% endfor %}
-                </select></td>
+                <td>
+                    <select required name="sel_department" id="sel_department">
+                        <option>Select Department</option>
+                        {% for i in departmentdata %}
+                        <option value="{{i.id}}">{{i.department_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Course</td>
-                <td><select  required name="sel_course" id="sel_course">
-                    <option>Select Course</option>
-                </select></td>
+                <td>
+                    <select required name="sel_course" id="sel_course">
+                        <option>Select Course</option>
+                    </select>
+                </td>
             </tr>
             
             <tr>
                 <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
             </tr>
         </table>
+
         <table border="1">
             <tr>
                 <td>SINO</td>
@@ -58,9 +167,10 @@
     </form>
 </body>
 </html>
+
 <!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
     $("#sel_department").change(function () {
       var dpid = $(this).val();
       var ur = "{% url 'Admin:AjaxCourse' %}";
@@ -72,8 +182,7 @@
         },
       });
     });
-  </script>
-
+</script>
 
 {% if msg %}
 <script>
@@ -81,4 +190,5 @@
     window.location="{% url 'Admin:Class' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

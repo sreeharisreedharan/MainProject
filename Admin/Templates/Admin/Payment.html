@@ -2,6 +2,93 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Page heading */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #90caf9;
+    margin-bottom: 25px;
+}
+
+/* Form container */
+.content-wrapper form {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Table borders */
+.content-wrapper form table,
+.content-wrapper form table th,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header row */
+.content-wrapper form table tr:first-child td {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Table cells */
+.content-wrapper form table td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Inputs */
+.content-wrapper form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+}
+
+/* Submit Button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    background: linear-gradient(45deg,#42a5f5,#1976d2);
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+    .content-wrapper form {
+        padding: 15px;
+    }
+    .content-wrapper form table td {
+        font-size: 14px;
+        padding: 6px;
+    }
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +98,9 @@
 </head>
 <body>
     <form method="POST">
+        <h3 class="page-title">Make Payment</h3>
         {% csrf_token %}
-        <h2>Payment</h2>
-        <table border="1">
+        <table>
             <tr>
                 <td>Amount</td>
                 <td><input type="text" name="txt_amount" id=""></td>
@@ -25,10 +112,12 @@
     </form>
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Admin:UserList' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

@@ -4,80 +4,211 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Registration</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" required placeholder="Enter Staff Name" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" id=""></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email" required placeholder="Enter Staff Email" name="txt_email" id=""></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input  type="text" required placeholder="Enter Phone Number" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id=""></td>
-            </tr>
-            <tr>
-                <td>Photo</td>
-                <td><input type="file" required placeholder="Upload Staff Photo" name="file_photo" id=""></td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td><input type="radio" required  name="txt_gender" id="" value="Male">Male<input type="radio" name="txt_gender" id="" value="Female">Female</td>
-            </tr>
-            <tr>
-               <td>DOB</td>
-                <td><input type="date" required name="txt_date" id=""></td>  
-            </tr>
-            <tr>
-                <td>Qualification</td>
-                <td><input type="text" required placeholder="Enter Qualification" name="txt_qualification" id=""></td>
-            </tr>
-            <tr>
-                <td>Role</td>
-                <td><input type="radio" required  name="txt_role" id="" value="1">Teacher<input type="radio" name="txt_role" id="" value="2">Office Staff<input type="radio" name="txt_role" id="" value="3">Librarian</td>
-            </tr>
-            <tr>
-                <td>Department</td>
-                <td><select  required name="sel_department" id="">
-                    <option value="">Select Department</option>
-                    {% for i in departmentdata %}
-                    <option value="{{i.id}}">{{i.department_name}}</option>
-                    {% endfor %}
+    <style>
+        /* Page Heading */
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #90caf9;
+            margin: 30px 0;
+        }
 
-                </select></td>
-            </tr>
+        /* Centered form container */
+        .form-wrapper {
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+        }
+
+        /* Form Table Styles */
+        .form-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center; /* Center content */
+            background: #0e1a2b; /* Added background color from staff table */
+            color: #e3f2fd;
+        }
+
+        .form-wrapper table td {
+            padding: 10px;
+            border: 1px solid #1e3a56;
+        }
+
+        .form-wrapper input[type="text"],
+        .form-wrapper input[type="email"],
+        .form-wrapper input[type="date"],
+        .form-wrapper select,
+        .form-wrapper input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #294b6e;
+            background: #0b1727;
+            color: #e3f2fd;
+        }
+
+        .form-wrapper input[type="submit"] {
+            background: linear-gradient(45deg, #1976d2, #42a5f5);
+            border: none;
+            padding: 10px 25px;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .form-wrapper input[type="submit"]:hover {
+            background: linear-gradient(45deg, #42a5f5, #1976d2);
+        }
+
+        /* Centered staff list table */
+        .staff-table-wrapper {
+            max-width: 95%;
+            margin: 0 auto 50px auto;
+        }
+
+        .staff-table-wrapper table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+        }
+
+        .staff-table-wrapper th,
+        .staff-table-wrapper td {
+            border: 1px solid #1e3a56;
+            padding: 8px;
+            background: #0e1a2b;
+            color: #e3f2fd;
+        }
+
+        .staff-table-wrapper th {
+            background: #0b1727;
+            color: #90caf9;
+            font-weight: 600;
+        }
+
+        .staff-table-wrapper img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .staff-table-wrapper a {
+            color: #4fc3f7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .staff-table-wrapper a:hover {
+            text-decoration: underline;
+            color: #81d4fa;
+        }
+
+        /* Responsive adjustments */
+        @media(max-width: 768px) {
+            .form-wrapper, .staff-table-wrapper {
+                width: 95%;
+            }
+            .form-wrapper table td, 
+            .staff-table-wrapper td, 
+            .staff-table-wrapper th {
+                font-size: 14px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="page-title">Staff Registration</h2>
+
+    <!-- Form Table -->
+    <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" required placeholder="Enter Staff Name" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" id=""></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="email" required placeholder="Enter Staff Email" name="txt_email" id=""></td>
+                </tr>
+                <tr>
+                    <td>Contact</td>
+                    <td><input  type="text" required placeholder="Enter Phone Number" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id=""></td>
+                </tr>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type="file" required placeholder="Upload Staff Photo" name="file_photo" id=""></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <input type="radio" required name="txt_gender" value="Male"> Male
+                        <input type="radio" name="txt_gender" value="Female"> Female
+                    </td>
+                </tr>
+                <tr>
+                   <td>DOB</td>
+                    <td><input type="date" required name="txt_date" id=""></td>  
+                </tr>
+                <tr>
+                    <td>Qualification</td>
+                    <td><input type="text" required placeholder="Enter Qualification" name="txt_qualification" id=""></td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td>
+                        <input type="radio" required name="txt_role" value="1"> Teacher
+                        <input type="radio" name="txt_role" value="2"> Office Staff
+                        <input type="radio" name="txt_role" value="3"> Librarian
+                    </td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>
+                        <select required name="sel_department">
+                            <option value="">Select Department</option>
+                            {% for i in departmentdata %}
+                            <option value="{{i.id}}">{{i.department_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="text" required placeholder="Enter Staff Password" name="txt_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Submit"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- Staff List Table -->
+    <div class="staff-table-wrapper">
+        <table>
             <tr>
-                <td>Password</td>
-                <td><input type="text" required placeholder="Enter Staff Password" name="txt_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table>
-        <table border="1"></table>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Contact</td>
-                <td>Photo</td>
-                <td>Gender</td>
-                <td>DOB</td>
-                <td>Qualification</td>
-                <td>Role</td>
-                <td>Department</td>
-                <td>Password</td>
-                <td>Action</td>
+                <th>SINO</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Photo</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Qualification</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Password</th>
+                <th>Action</th>
             </tr>
             {% for i in staff %}
             <tr>
@@ -85,7 +216,7 @@
                 <td>{{i.staff_name}}</td>
                 <td>{{i.staff_email}}</td>
                 <td>{{i.staff_contact}}</td>
-                <td  align="center"><img width="50" src="{{i.staff_photo.url}}" alt=""></td>
+                <td><img width="50" src="{{i.staff_photo.url}}" alt=""></td>
                 <td>{{i.staff_gender}}</td>
                 <td>{{i.staff_dob}}</td>
                 <td>{{i.staff_qualification}}</td>
@@ -96,14 +227,17 @@
             </tr>
             {% endfor %}
         </table>
-    </form>
-    
+    </div>
+
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Admin:StaffRegistration' %}"
 </script>
 {% endif %}
+
 {% endblock content %}
+

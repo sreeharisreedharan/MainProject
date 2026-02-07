@@ -2,6 +2,96 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Match admin dark theme */
+.content-wrapper .card {
+    background: #132238;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+.content-wrapper .card-header {
+    background: #0b1727;
+    border-bottom: 1px solid #1e3a56;
+    border-radius: 12px 12px 0 0;
+}
+
+.content-wrapper .card-header h4 {
+    color: #90caf9;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Labels */
+.content-wrapper label {
+    font-weight: 600;
+    color: #b0bec5;
+}
+
+/* Inputs & selects */
+.content-wrapper .form-control {
+    background: #0b1727;
+    border: 1px solid #294b6e;
+    color: #e3f2fd;
+    border-radius: 6px;
+    padding: 10px;
+    transition: 0.25s;
+}
+
+.content-wrapper .form-control:focus {
+    border-color: #42a5f5;
+    box-shadow: 0 0 8px rgba(66,165,245,0.45);
+    background: #0b1727;
+    color: #ffffff;
+}
+
+/* Button */
+.content-wrapper .btn-primary {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 28px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: 0.25s;
+}
+
+.content-wrapper .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66,165,245,0.35);
+}
+
+/* Table */
+.content-wrapper table {
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.content-wrapper .table-bordered th,
+.content-wrapper .table-bordered td {
+    border: 1px solid #1e3a56 !important;
+}
+
+.content-wrapper thead.thead-dark th {
+    background: #0b1727 !important;
+    color: #90caf9 !important;
+    font-weight: 600;
+}
+
+.content-wrapper tbody td {
+    color: #cfd8dc;
+}
+
+/* Divider */
+.content-wrapper hr {
+    border-color: #1e3a56;
+}
+</style>
+
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-8">

@@ -2,53 +2,173 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Form container styling */
+.content-wrapper form {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Page heading */
+.page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: #90caf9;
+    margin-bottom: 20px;
+}
+
+/* Form table */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* List table */
+.content-wrapper .list-table {
+    width: 50%; /* reduced width */
+    margin: 0 auto 40px auto; /* center horizontally */
+    border-collapse: collapse;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Table borders */
+.content-wrapper form table,
+.content-wrapper form table tr,
+.content-wrapper form table td,
+.content-wrapper .list-table,
+.content-wrapper .list-table tr,
+.content-wrapper .list-table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Table header row */
+.content-wrapper form table tr:first-child,
+.content-wrapper .list-table tr:first-child {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Table cells */
+.content-wrapper form table td,
+.content-wrapper .list-table td {
+    padding: 10px;
+    font-size: 14px;
+    color: #cfd8dc;
+    text-align: center;
+}
+
+/* Reduce widths of the columns in the second table */
+.content-wrapper .list-table td:nth-child(1) { width: 10%; }  /* SNO */
+.content-wrapper .list-table td:nth-child(2) { width: 45%; }  /* District Name */
+.content-wrapper .list-table td:nth-child(3) { width: 45%; }  /* Actions */
+
+/* Inputs */
+.content-wrapper form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+    transition: 0.25s;
+}
+
+/* Input focus */
+.content-wrapper form input:focus {
+    border-color: #42a5f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(66,165,245,0.45);
+}
+
+/* Submit button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(66,165,245,0.35);
+}
+
+/* Links */
+.content-wrapper form a,
+.content-wrapper .list-table a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+.content-wrapper form a:hover,
+.content-wrapper .list-table a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>District</title>
 </head>
-
 <body>
 
     <form method="post">
+        <h3 class="page-title">District Management</h3>
         {% csrf_token %}
         <table border="1">
             <tr>
                 <td>District</td>
-                <td><input type="text" required placeholder="Enter District Name" name="txt_district" id="" value="{{editdata.district_name}}"></td>
+                <td><input type="text" required placeholder="Enter District Name" name="txt_district" value="{{editdata.district_name}}"></td>
             </tr>
             <tr>
-                <td align="center" colspan="2"><input type="submit" name="btn_submit" value="submit"></td>
+                <td align="center" colspan="2"><input type="submit" name="btn_submit" value="Submit"></td>
             </tr>
         </table>
-
     </form>
 
-    <table border="1">
-
+    <table class="list-table" border="1">
         <tr>
             <td>SNO</td>
             <td>District Name</td>
-            <td>Action</td>
+            <td>Actions</td>
         </tr>
-
         {% for i in district %}
-
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.district_name}}</td>
-            <td> <a href="{% url 'Admin:deldistrict' i.id %}">Delete</a> </td>
-            <td><a href="{% url 'Admin:editdistrict' i.id %}">Edit</a></td>
+            <td>
+                <a href="{% url 'Admin:deldistrict' i.id %}">Delete</a>
+                <a href="{% url 'Admin:editdistrict' i.id %}">Edit</a>
+            </td>
         </tr>
-
-
         {% endfor %}
     </table>
-</body>
 
+</body>
 </html>
 
 {% if msg %}
@@ -57,4 +177,5 @@
     window.location="{% url 'Admin:District' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

@@ -2,6 +2,95 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Scope styling only to content area */
+.content-wrapper form {
+    max-width: 720px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 26px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Heading */
+.page-title {
+    text-align: center;
+    color: #90caf9;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Table */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Borders */
+.content-wrapper form table,
+.content-wrapper form table tr,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header-style first column cells */
+.content-wrapper form table td:first-child {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+    width: 40%;
+}
+
+/* Cells */
+.content-wrapper form table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #cfd8dc;
+}
+
+/* Selects */
+.content-wrapper form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+    transition: 0.25s;
+}
+
+/* Focus */
+.content-wrapper form select:focus {
+    border-color: #42a5f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(66,165,245,0.45);
+}
+
+/* Submit */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 26px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(66,165,245,0.35);
+}
+</style>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +100,7 @@
 </head>
 <body>
     <form method="POST">
+        <h3 class="page-title">Assign Class</h3>
         {% csrf_token %}
         <table border="1">
             <tr>
@@ -44,43 +134,46 @@
                 </select></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btn_submit" id="" value="Submit">
+                </td>
             </tr>
         </table>
     </form>
 </body>
 </html>
-<!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-    $("#sel_department").change(function () {
-      var dpid = $(this).val();
-      var ur = "{% url 'Admin:AjaxCourse' %}";
-      $.ajax({
-        url: ur,
-        data: { dpid: dpid },
-        success: function (data) {
-          $("#sel_course").html(data);
-        },
-      });
-    });
-  </script>
 
 <!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-    $("#sel_course").change(function () {
-      var cid = $(this).val();
-      var ur = "{% url 'Admin:AjaxClass' %}";
-      $.ajax({
-        url: ur,
-        data: { cid: cid },
-        success: function (data) {
-          $("#sel_class").html(data);
-        },
-      });
-    });
-  </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$("#sel_department").change(function () {
+  var dpid = $(this).val();
+  var ur = "{% url 'Admin:AjaxCourse' %}";
+  $.ajax({
+    url: ur,
+    data: { dpid: dpid },
+    success: function (data) {
+      $("#sel_course").html(data);
+    },
+  });
+});
+</script>
+
+<!-- jQuery & AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$("#sel_course").change(function () {
+  var cid = $(this).val();
+  var ur = "{% url 'Admin:AjaxClass' %}";
+  $.ajax({
+    url: ur,
+    data: { cid: cid },
+    success: function (data) {
+      $("#sel_class").html(data);
+    },
+  });
+});
+</script>
 
 {% if msg %}
 <script>
@@ -88,4 +181,5 @@
     window.location="{% url 'Admin:StaffList' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

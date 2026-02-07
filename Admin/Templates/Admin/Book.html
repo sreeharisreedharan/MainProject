@@ -2,6 +2,123 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Scoped to content only */
+.content-wrapper form {
+    max-width: 720px;   /* smaller */
+    margin: 30px auto;
+    background: #132238;
+    padding: 22px;      /* smaller padding */
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Heading */
+.page-title {
+    text-align: center;
+    color: #90caf9;
+    font-weight: 600;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 22px;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Borders */
+.content-wrapper form table,
+.content-wrapper form table tr,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header rows */
+.content-wrapper form table tr:first-child {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+.content-wrapper form table td {
+    padding: 10px;
+    font-size: 13px;
+    color: #cfd8dc;
+}
+
+/* Inputs */
+.content-wrapper form input[type="text"],
+.content-wrapper form input[type="file"],
+.content-wrapper form select {
+    width: 100%;
+    padding: 9px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+    transition: 0.25s;
+    font-size: 13px;
+}
+
+/* Focus */
+.content-wrapper form input:focus,
+.content-wrapper form select:focus {
+    border-color: #42a5f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(66,165,245,0.45);
+    background: #0b1727;
+}
+
+/* Submit button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 9px 24px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+    font-size: 13px;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(66,165,245,0.35);
+}
+
+/* Links */
+.content-wrapper form a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 10px;
+    font-size: 13px;
+}
+
+.content-wrapper form a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+
+/* Images */
+.content-wrapper form img {
+    border-radius: 4px;
+    border: 1px solid #1e3a56;
+    padding: 2px;
+    background: #0b1727;
+}
+</style>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +127,8 @@
     <title>Book</title>
 </head>
 <body>
-    <form method="POST"  enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
+        <h3 class="page-title">Book Registration</h3>
         {% csrf_token %}
         <table border="1">
             <tr>
@@ -19,7 +137,7 @@
             </tr>
             <tr>
                 <td>Details</td>
-                <td><input type="text"required placeholder="Enter Book Details" name="txt_details" id=""></td>
+                <td><input type="text" required placeholder="Enter Book Details" name="txt_details" id=""></td>
             </tr>
             <tr>
                 <td>Genre</td>
@@ -28,7 +146,6 @@
                     {% for i in genredata %}
                     <option value="{{i.id}}">{{i.genre_name}}</option>
                     {% endfor %}
-                 
                 </select></td>
             </tr>
             <tr>
@@ -40,9 +157,12 @@
                 <td><input type="text" required placeholder="Enter Author Name" name="txt_author" id=""></td>
             </tr>
             <tr>
-                <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+                <td align="center" colspan="2">
+                    <input type="submit" name="btn_submit" id="" value="Submit">
+                </td>
             </tr>
         </table>
+
         <table border="1">
             <tr>
                 <td>SINO</td>
@@ -61,13 +181,17 @@
                 <td>{{i.genre.genre_name}}</td>
                 <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
                 <td>{{i.book_author}}</td>
-                <td><a href="{% url 'Admin:delbook' i.id%}">Delete</a><a href="{% url 'Admin:BookStock' i.id%}">Book Stock</a></td>
+                <td>
+                    <a href="{% url 'Admin:delbook' i.id%}">Delete</a>
+                    <a href="{% url 'Admin:BookStock' i.id%}">Book Stock</a>
+                </td>
             </tr>
             {% endfor %}
         </table>
     </form>
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");

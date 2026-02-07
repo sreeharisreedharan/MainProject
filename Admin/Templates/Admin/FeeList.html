@@ -3,20 +3,116 @@
 {% block content %}
 
 {% load mathfilters %}
+
+<style>
+/* Page heading */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #90caf9;
+    margin-bottom: 30px;
+}
+
+/* Form container */
+.content-wrapper form {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+/* Table borders */
+.content-wrapper form table,
+.content-wrapper form table th,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header rows */
+.content-wrapper form table th {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* Cells */
+.content-wrapper form table td {
+    padding: 10px;
+    text-align: center;
+    color: #cfd8dc;
+}
+
+/* First small info table */
+.content-wrapper form table:first-of-type td {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 15px;
+}
+
+/* Table rows hover effect */
+.content-wrapper form table tr:hover {
+    background: rgba(66, 165, 245, 0.1);
+}
+
+/* Links */
+.content-wrapper form a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.content-wrapper form a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+
+/* Status styling */
+.content-wrapper form td:nth-child(8) {
+    font-weight: 600;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+    .content-wrapper form {
+        padding: 15px;
+    }
+
+    .content-wrapper form table th,
+    .content-wrapper form table td {
+        font-size: 13px;
+        padding: 6px;
+    }
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fee List</title>
+    <title>Student Fee List</title>
 </head>
 
 <body>
     <form method="POST">
+        <h3 class="page-title">Student Fee Details</h3>
         {% csrf_token %}
-        <h2>Student Fee List</h2>
-        <table border="1">
+
+        <!-- Student Info Table -->
+        <table>
             <tr>
                 <td>Student Name</td>
                 <td>{{student.user_name}}</td>
@@ -29,8 +125,10 @@
                 <td>Course</td>
                 <td>{{student.assignclass.classid.course.course_name}}</td>
             </tr>
-        </table><br><br>
-        <table border="1">
+        </table>
+
+        <!-- Fee Details Table -->
+        <table>
             <tr>
                 <th>Sl No</th>
                 <th>Semester</th>
@@ -65,16 +163,15 @@
                     {% if f.remaining > 0 %}
                     <a href="{% url 'Admin:Payment' f.id %}">Pay Fees</a>
                     {% else %}
-                    —
+                    — 
                     {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </table>
-
-
     </form>
 </body>
 
 </html>
+
 {% endblock content %}

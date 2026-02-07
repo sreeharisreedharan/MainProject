@@ -2,6 +2,115 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Scope styling only to content area */
+.content-wrapper form {
+    max-width: 620px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Page heading */
+.page-title {
+    text-align: center;
+    color: #90caf9;
+    font-weight: 600;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+
+/* Sub heading */
+.sub-title {
+    text-align: center;
+    color: #b0bec5;
+    margin: 18px 0 10px;
+    font-size: 18px;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #0e1a2b;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Borders */
+.content-wrapper form table,
+.content-wrapper form table tr,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header row */
+.content-wrapper form table tr:first-child {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+.content-wrapper form table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #cfd8dc;
+}
+
+/* Inputs */
+.content-wrapper form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+    transition: 0.25s;
+}
+
+/* Focus */
+.content-wrapper form input:focus {
+    border-color: #42a5f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(66,165,245,0.45);
+}
+
+/* Submit button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 26px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(66,165,245,0.35);
+}
+
+/* Links */
+.content-wrapper form a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.content-wrapper form a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+</style>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +120,7 @@
 </head>
 <body>
     <form method="POST">
+        <h3 class="page-title">Book Stock Management</h3>
         {% csrf_token %}
         <table border="1">
             <tr>
@@ -18,10 +128,14 @@
                 <td><input type="text" name="txt_stock" id=""></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btn_submit" id="" value="Submit">
+                </td>
             </tr>
         </table>
-        <h2>Book Stock</h2>
+
+        <h2 class="sub-title">Book Stock</h2>
+
         <table border="1">
             <tr>
                 <td>SINO</td>
@@ -39,10 +153,12 @@
     </form>
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Admin:Book' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

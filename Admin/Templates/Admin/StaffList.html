@@ -2,41 +2,115 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff List</title>
-</head>
-<body>
+<style>
+    /* Page Heading */
+    .page-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        color: #90caf9;
+        margin-bottom: 25px;
+    }
+
+    /* Table container */
+    .content-wrapper table {
+        max-width: 1000px;
+        margin: 0 auto 30px auto;
+        border-collapse: collapse;
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    /* Table header */
+    .content-wrapper table th {
+        background: #0b1727;
+        color: #90caf9;
+        font-weight: 600;
+        padding: 12px;
+        border: 1px solid #1e3a56;
+    }
+
+    /* Table body cells */
+    .content-wrapper table td {
+        padding: 10px;
+        border: 1px solid #1e3a56;
+        background: #0e1a2b;
+        color: #e3f2fd;
+        vertical-align: middle;
+    }
+
+    /* Image in table */
+    .content-wrapper table img {
+        border-radius: 4px;
+    }
+
+    /* Links in table */
+    .content-wrapper table a {
+        color: #4fc3f7;
+        text-decoration: none;
+        margin: 0 5px;
+        font-weight: 500;
+    }
+
+    .content-wrapper {
+        position: relative;
+        top: -20px;
+        /* Moves the content up by 50px */
+        left: -60px;
+        /* Moves the content left by 50px */
+    }
+
+    /* Responsive adjustments */
+    @media(max-width: 768px) {
+
+        .content-wrapper table td,
+        .content-wrapper table th {
+            font-size: 14px;
+            padding: 8px;
+        }
+
+        .content-wrapper table img {
+            width: 30px;
+        }
+    }
+</style>
+
+<div class="content-wrapper">
+    <h2 class="page-title">Staff List</h2>
     <form method="POST">
         {% csrf_token %}
-        <h2>Staff List</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Contact</td>
-                <td>Designation</td>
-                <td>Photo</td>
-                <td>Action</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.staff_name}}</td>
-                <td>{{i.staff_email}}</td>
-                <td>{{i.staff_contact}}</td>
-                <td>{{i.staff_role}}</td>
-                <td><img width="40" src="{{i.staff_photo.url}}" alt=""></td>
-                <td><a href="{% url 'Admin:AssignClass'  i.id %}"> Assign Class</a><a href="{% url 'Admin:AssignSubject'  i.id %}"> Assign Subject</a></td>
-            </tr>
-            {% endfor %}
-
+        <table>
+            <thead>
+                <tr>
+                    <th>SINO</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Designation</th>
+                    <th>Photo</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.staff_name}}</td>
+                    <td>{{i.staff_email}}</td>
+                    <td>{{i.staff_contact}}</td>
+                    <td>{{i.staff_role}}</td>
+                    <td><img width="40" src="{{i.staff_photo.url}}" alt=""></td>
+                    <td>
+                        <a href="{% url 'Admin:AssignClass'  i.id %}">Assign Class</a>
+                        <a href="{% url 'Admin:AssignSubject'  i.id %}">Assign Subject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </form>
-</body>
-</html>
+</div>
+
 {% endblock content %}

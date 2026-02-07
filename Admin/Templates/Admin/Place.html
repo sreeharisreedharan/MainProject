@@ -2,6 +2,110 @@
 {% load static %}
 {% block content %}
 
+<style>
+/* Page heading */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #90caf9;
+    margin-bottom: 25px;
+}
+
+/* Form container */
+.content-wrapper form {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+    color: #cfd8dc;
+}
+
+/* Tables */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Table borders */
+.content-wrapper form table,
+.content-wrapper form table th,
+.content-wrapper form table td {
+    border: 1px solid #1e3a56;
+}
+
+/* Header row */
+.content-wrapper form table tr:first-child td {
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Table cells */
+.content-wrapper form table td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Inputs and selects */
+.content-wrapper form input[type="text"],
+.content-wrapper form select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+}
+
+/* Submit and reset buttons */
+.content-wrapper form input[type="submit"],
+.content-wrapper form input[type="reset"] {
+    background: linear-gradient(45deg,#1976d2,#42a5f5);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover,
+.content-wrapper form input[type="reset"]:hover {
+    background: linear-gradient(45deg,#42a5f5,#1976d2);
+}
+
+/* Action links */
+.content-wrapper form a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.content-wrapper form a:hover {
+    color: #81d4fa;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media(max-width: 600px) {
+    .content-wrapper form {
+        padding: 15px;
+    }
+    .content-wrapper form table td {
+        font-size: 14px;
+        padding: 6px;
+    }
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,33 +115,40 @@
 </head>
 <body>
     <form method="post">
+        <h3 class="page-title">Manage Places</h3>
         {% csrf_token %}
-        <table border="1">
+        <table>
             <tr>
                 <td>District</td>
-                <td><select  required name="sel_district" id="">
-                    <option value="">Select District</option>
-                    {% for i in dis %}
-                    <option value="{{i.id}}"
-                    {% if i.id == editdata.district_id %} selected {% endif %}
-                    >{{i.district_name}}</option>
-                    {% endfor %}
-                </select></td>
+                <td>
+                    <select required name="sel_district" id="">
+                        <option value="">Select District</option>
+                        {% for i in dis %}
+                        <option value="{{i.id}}" {% if i.id == editdata.district_id %} selected {% endif %}>
+                            {{i.district_name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Place</td>
                 <td><input type="text" required placeholder="Enter Place Name" name="txt_place" id="" value="{{editdata.place_name}}"></td>
             </tr>
             <tr>
-                <td align="center" colspan="2"><input type="submit" name="btn_submit" value="Submit"><input type="reset" name="btn_submit" value="Clear"></td>
+                <td align="center" colspan="2">
+                    <input type="submit" name="btn_submit" value="Submit">
+                    <input type="reset" name="btn_submit" value="Clear">
+                </td>
             </tr>
         </table>
-        <table border="1">
+
+        <table>
             <tr>
                 <td>SI.NO</td>
                 <td>District</td>
                 <td>Place</td>
-                <td>Actions</td>
+                <td colspan="2">Actions</td>
             </tr>
             {% for i in plc %}
             <tr>
@@ -53,10 +164,12 @@
     </form>
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Admin:Place' %}"
 </script>
 {% endif %}
+
 {% endblock content %}

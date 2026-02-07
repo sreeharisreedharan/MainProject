@@ -2,46 +2,171 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semester</title>
-</head>
-<body>
+<style>
+/* Page Heading */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #90caf9;
+    margin-bottom: 25px;
+}
+
+/* Center wrapper for the content */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -20px; /* move up */
+    transform: translateX(-60px); /* move slightly left */
+}
+
+/* Form container */
+.content-wrapper form {
+    width: 100%;
+    max-width: 450px;
+    background: #132238;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    color: #cfd8dc;
+    margin-bottom: 30px;
+}
+
+/* Form table inside form */
+.content-wrapper form table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Form table cells */
+.content-wrapper form table td {
+    padding: 10px;
+    border: 1px solid #1e3a56;
+    text-align: center; /* Center contents */
+}
+
+/* Inputs */
+.content-wrapper form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #294b6e;
+    background: #0b1727;
+    color: #e3f2fd;
+}
+
+/* Submit button */
+.content-wrapper form input[type="submit"] {
+    background: linear-gradient(45deg, #1976d2, #42a5f5);
+    border: none;
+    padding: 10px 25px;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.content-wrapper form input[type="submit"]:hover {
+    background: linear-gradient(45deg, #42a5f5, #1976d2);
+}
+
+/* Second table styles */
+.content-wrapper .data-table {
+    width: 100%;
+    max-width: 700px;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center; /* Center all content */
+}
+
+/* Second table header */
+.content-wrapper .data-table th {
+    border: 1px solid #1e3a56;
+    background: #0b1727;
+    color: #90caf9;
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* Second table cells */
+.content-wrapper .data-table td {
+    border: 1px solid #1e3a56;
+    padding: 8px;
+    background: #0e1a2b;
+    color: #e3f2fd;
+}
+
+/* Links in table */
+.content-wrapper .data-table a {
+    color: #4fc3f7;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.content-wrapper .data-table a:hover {
+    text-decoration: underline;
+    color: #81d4fa;
+}
+
+/* Responsive adjustments */
+@media(max-width: 600px) {
+    .content-wrapper form {
+        padding: 15px;
+    }
+
+    .content-wrapper form table td,
+    .content-wrapper .data-table td,
+    .content-wrapper .data-table th {
+        font-size: 14px;
+        padding: 6px;
+    }
+}
+</style>
+
+<div class="content-wrapper">
+    <h3 class="page-title">Semester Management</h3>
+
     <form method="POST">
         {% csrf_token %}
-        <table border="1">
+        <table>
             <tr>
                 <td>Semester</td>
-                <td><input type="text" required placeholder="Enter Semester Name" name="txt_semester" id=""></td>
+                <td><input type="text" required placeholder="Enter Semester Name" name="txt_semester"></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Submit" id=""></td>
+                <td colspan="2">
+                    <input type="submit" name="btn_submit" value="Submit">
+                </td>
             </tr>
         </table>
     </form>
-    <table border="1">
+
+    <table class="data-table">
         <tr>
-            <td>SINO</td>
-            <td>Semester</td>
-            <td>Action</td>
+            <th>SINO</th>
+            <th>Semester</th>
+            <th>Action</th>
         </tr>
         {% for i in semester %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.semester_name}}</td>
-            <td><a href="{% url 'Admin:delsemester' i.id%}">Delete</a></td>
+            <td><a href="{% url 'Admin:delsemester' i.id %}">Delete</a></td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Admin:Semester' %}"
+    window.location = "{% url 'Admin:Semester' %}"
 </script>
 {% endif %}
+
 {% endblock content %}
+
