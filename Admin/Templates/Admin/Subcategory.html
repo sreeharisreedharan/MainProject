@@ -40,7 +40,7 @@
             {% for i in scat %}
             <tr>
                 <td>{{forloop.counter}}</td>
-                <td>{{i.category.category_name}}</td>
+                <td>{{i.category.category_name}}</td>abc
                 <td>{{i.subcategory_name}}</td>
                 <td><a href="{% url 'Admin:delsub' i.id %}">Delete</a>|<a href="{% url 'Admin:editsub' i.id %}">Edit</a></td>
                 
