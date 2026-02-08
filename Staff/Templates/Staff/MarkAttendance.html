@@ -2,100 +2,150 @@
 {% load static %}
 {% block content %}
 
-<form method="get">
-    Department:
-    <select  required name="department" id="sel_department">
-        <option value="">Select</option>
-        {% for d in departments %}
-        <option value="{{ d.id }}" {% if d.id|stringformat:"s" == selected_department %}selected{% endif %}>
-            {{ d.department_name }}
-        </option>
-        {% endfor %}
-    </select>
+<section class="section_padding" style="padding-top:120px; padding-bottom:110px;">
+    <div class="container">
 
-    Course:
-    <select required  name="course" id="sel_course">
-        <option value="">Select</option>
-        {% for c in courses %}
-        <option value="{{ c.id }}" {% if c.id|stringformat:"s" == selected_course %}selected{% endif %}>
-            {{ c.course_name }}
-        </option>
-        {% endfor %}
-    </select>
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Take Attendance</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Select department, course, semester, day and hour to load students
+                    </p>
+                </div>
+            </div>
+        </div>
 
-    Semester:
-    <select required  name="semester">
-        <option value="">Select</option>
-        {% for s in semesters %}
-        <option value="{{ s.id }}" {% if s.id|stringformat:"s" == selected_semester %}selected{% endif %}>
-            {{ s.semester_name }}
-        </option>
-        {% endfor %}
-    </select>
+        <!-- Attendance Selection Form Card -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-100px;">
+                    <div class="card-body p-4 p-lg-5">
 
-    Day:
-    <select required name="day">
-        {% for d in days %}
-        <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
-        {% endfor %}
-    </select>
+                        <form method="get" class="row g-3 align-items-end">
+                            <div class="col-md-2">
+                                <label for="sel_department" class="form-label">Department</label>
+                                <select required name="department" id="sel_department" class="form-select">
+                                    <option value="">Select</option>
+                                    {% for d in departments %}
+                                    <option value="{{ d.id }}" {% if d.id|stringformat:"s" == selected_department %}selected{% endif %}>
+                                        {{ d.department_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-    Hour:
-    <select  required name="hour">
-        {% for h in hours %}
-        <option value="{{ h.0 }}" {% if h.0 == selected_hour %}selected{% endif %}>
-            {{ h.1 }}
-        </option>
-        {% endfor %}
-    </select>
+                            <div class="col-md-2">
+                                <label for="sel_course" class="form-label">Course</label>
+                                <select required name="course" id="sel_course" class="form-select">
+                                    <option value="">Select</option>
+                                    {% for c in courses %}
+                                    <option value="{{ c.id }}" {% if c.id|stringformat:"s" == selected_course %}selected{% endif %}>
+                                        {{ c.course_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-    <button type="submit">Load Students</button>
-</form>
+                            <div class="col-md-2">
+                                <label for="sel_semester" class="form-label">Semester</label>
+                                <select required name="semester" id="sel_semester" class="form-select">
+                                    <option value="">Select</option>
+                                    {% for s in semesters %}
+                                    <option value="{{ s.id }}" {% if s.id|stringformat:"s" == selected_semester %}selected{% endif %}>
+                                        {{ s.semester_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-<hr>
+                            <div class="col-md-2">
+                                <label for="sel_day" class="form-label">Day</label>
+                                <select required name="day" id="sel_day" class="form-select">
+                                    {% for d in days %}
+                                    <option value="{{ d }}" {% if d == selected_day %}selected{% endif %}>{{ d }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-{% if selected_students %}
-<form method="post" action="{% url 'Staff:save_attendance_selection' %}">
-    {% csrf_token %}
+                            <div class="col-md-2">
+                                <label for="sel_hour" class="form-label">Hour</label>
+                                <select required name="hour" id="sel_hour" class="form-select">
+                                    {% for h in hours %}
+                                    <option value="{{ h.0 }}" {% if h.0 == selected_hour %}selected{% endif %}>
+                                        {{ h.1 }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-    <table border="1" cellpadding="10">
-        <tr>
-            <th>Student</th>
-            <th>Present</th>
-            <th>Absent</th>
-            <th>Subject</th>
-        </tr>
+                            <div class="col-md-2 text-center">
+                                <button type="submit" class="btn btn_1 px-4">Load Students</button>
+                            </div>
+                        </form>
 
-        {% for s in selected_students %}
-        <tr>
-            <td>{{ s.student.user_name }}</td>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <!-- PRESENT -->
-            <td align="center">
-                <input type="checkbox"  name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
-            </td>
+        {% if selected_students %}
+        <!-- Attendance Table Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
 
-            <!-- ABSENT -->
-            <td align="center">
-                <input type="checkbox" name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
-            </td>
+                        <form method="post" action="{% url 'Staff:save_attendance_selection' %}">
+                            {% csrf_token %}
 
-            <td>{{ s.subject.subject_name }}</td>
-        </tr>
-        {% endfor %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Present</th>
+                                            <th>Absent</th>
+                                            <th>Subject</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for s in selected_students %}
+                                        <tr>
+                                            <td>{{ s.student.user_name }}</td>
+                                            <td>
+                                                <input type="checkbox" name="attendance_{{ s.student.id }}" value="1" {% if s.attendance == 1 %}checked{% endif %} onclick="toggleAttendance(this)">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="attendance_{{ s.student.id }}" value="0" {% if s.attendance == 0 %}checked{% endif %} onclick="toggleAttendance(this)">
+                                            </td>
+                                            <td>{{ s.subject.subject_name }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
 
-    </table>
+                            <input type="hidden" name="hour" value="{{ selected_hour }}">
+                            <input type="hidden" name="day" value="{{ selected_day }}">
+                            <input type="hidden" name="course" value="{{ selected_course }}">
+                            <input type="hidden" name="semester" value="{{ selected_semester }}">
 
-    <input type="hidden" name="hour" value="{{ selected_hour }}">
-    <input type="hidden" name="day" value="{{ selected_day }}">
-    <input type="hidden" name="course" value="{{ selected_course }}">
-    <input type="hidden" name="semester" value="{{ selected_semester }}">
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn_1 px-5">Save Attendance</button>
+                            </div>
 
-    <br>
-    <button type="submit">Save Attendance</button>
+                        </form>
 
-</form>
-{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -120,4 +170,5 @@
         });
     });
 </script>
+
 {% endblock content %}

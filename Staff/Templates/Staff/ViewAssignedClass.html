@@ -2,35 +2,68 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Assigned Class</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Department</td>
-                <td>Course</td>
-                <td>Class</td>
-                <td>Academic Year</td>
-                <td>Action</td>
-            </tr>
-            {% for i in assigndata %}
-            <tr>
-                <td>{{i.classid.course.department.department_name}}</td>
-                <td>{{i.classid.course.course_name}}</td>
-                <td>{{i.classid.class_name}}</td>
-                <td>{{i.academicyear.academicyear_year}}</td>
-                <td><a href="{% url 'Staff:ClassSem' i.id %}">Add Semester</a></td>                
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:10px;">View Assigned Classes</h2>
+                    <p style="font-size:15px; color:#666;">Check the classes assigned to you by course, department, and academic year</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-110px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover align-middle text-center">
+
+                                    <thead style="background:#fff7ef;">
+                                        <tr>
+                                            <th>Department</th>
+                                            <th>Course</th>
+                                            <th>Class</th>
+                                            <th>Academic Year</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in assigndata %}
+                                        <tr>
+                                            <td>{{ i.classid.course.department.department_name }}</td>
+                                            <td>{{ i.classid.course.course_name }}</td>
+                                            <td>{{ i.classid.class_name }}</td>
+                                            <td>{{ i.academicyear.academicyear_year }}</td>
+                                            <td><a href="{% url 'Staff:ClassSem' i.id %}">Add Semester</a></td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                No classes assigned.
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}

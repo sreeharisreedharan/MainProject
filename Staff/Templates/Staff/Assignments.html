@@ -1,95 +1,159 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignments</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="1">
 
-            <tr>
-                <td>Semester</td>
-                <td><select name="sel_semester" id="sel_semester">
-                    <option value="">Select Semester</option>
-                    {% for i in semester %}
-                    <option value="{{i.id}}">{{i.semester_name}}</option>
-                    {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td>Subject</td>
-                <td><select name="sel_subject" id="sel_subject">
-                    <option value="">Select Subject</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>Title</td>
-                <td><input type="text" required placeholder="Enter Assignment Title " name="txt_title" id=""></td>
-            </tr>
-            <tr>
-                <td>Topic</td>
-                <td><input type="file" required name="file_topic" id=""></td>
-            </tr>
-            <tr>
-                <td>Last Date</td>
-                <td><input type="date" required name="txt_date" id=""></td>
-            </tr>
-            <tr>
-                <td align="center" colspan="2"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table> 
-        <h2>List</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Subject</td>
-                <td>Title</td>
-                <td>Topic</td>
-                <td>Date</td>
-                <td>Last Date</td>
-                <td>Action</td>
-            </tr>
-            {% for i in assignmentdata %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.subject.subject_name}}</td>
-                <td>{{i.assignments_title}}</td>
-                <td><a href="{{i.assignments_topic.url}}">view</a></td>
-                <td>{{i.assignments_date}}</td>
-                <td>{{i.assignments_duedate}}</td>
-                <td><a href="{% url 'Staff:delassignments' i.id %}">Delete</a>|<a href="{% url 'Staff:ViewUploads' i.id %}">View Uploads</a></td>
-            </tr>
-            {% endfor %}
-        </table>  
-    </form>
-</body>
-</html>
+<section class="section_padding" style="padding-top:90px; padding-bottom:110px;">
+    <div class="container-fluid"> <!-- changed from container to container-fluid for full width -->
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-5">
+                    <h2 style="margin-bottom:32px;">Assignments Management</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Add and view assignments semester and subject wise
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Assignment Card -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-weight:600;">Semester</label>
+                                    <select name="sel_semester" id="sel_semester" class="form-control">
+                                        <option value="">Select Semester</option>
+                                        {% for i in semester %}
+                                        <option value="{{i.id}}">{{i.semester_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-weight:600;">Subject</label>
+                                    <select name="sel_subject" id="sel_subject" class="form-control">
+                                        <option value="">Select Subject</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label style="font-weight:600;">Assignment Title</label>
+                                    <input type="text" required placeholder="Enter Assignment Title" name="txt_title" class="form-control">
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label style="font-weight:600;">Topic File</label>
+                                    <input type="file" required name="file_topic" class="form-control">
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label style="font-weight:600;">Last Date</label>
+                                    <input type="date" required name="txt_date" class="form-control">
+                                </div>
+
+                                <div class="col-12 text-center mt-3">
+                                    <input type="submit" name="btn_submit" value="Submit" class="btn btn_1 px-5">
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignments List Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12"> <!-- full width table -->
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <h5 style="font-weight:700; margin-bottom:22px;">
+                            Assignments List
+                        </h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle w-100"> <!-- full width -->
+                                <thead>
+                                    <tr style="background:#fff7ef;">
+                                        <th width="90">SINO</th>
+                                        <th>Subject</th>
+                                        <th>Title</th>
+                                        <th width="160">Topic</th>
+                                        <th>Date</th>
+                                        <th>Last Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for i in assignmentdata %}
+                                    <tr>
+                                        <td class="font-weight-bold">{{forloop.counter}}</td>
+                                        <td>{{i.subject.subject_name}}</td>
+                                        <td>{{i.assignments_title}}</td>
+                                        <td>
+                                            <a href="{{i.assignments_topic.url}}" class="btn btn-sm btn-info" target="_blank">View</a>
+                                        </td>
+                                        <td>{{i.assignments_date}}</td>
+                                        <td>{{i.assignments_duedate}}</td>
+                                        <td>
+                                            <a href="{% url 'Staff:delassignments' i.id %}" class="btn btn-sm btn-danger" style="margin-right:20px;">Delete</a>
+                                            <a href="{% url 'Staff:ViewUploads' i.id %}" class="btn btn-sm btn-primary">View Uploads</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">
+                                            No assignments available for selected filter
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- jQuery & AJAX (unchanged logic) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 <script>
     $("#sel_semester").change(function () {
-      var semid = $(this).val();
-      var ur = "{% url 'Staff:AjaxSubjects' %}";
-      $.ajax({
-        url: ur,
-        data: { semid: semid },
-        success: function (data) {
-          $("#sel_subject").html(data);
-        },
-      });
+        var semid = $(this).val();
+        var ur = "{% url 'Staff:AjaxSubjects' %}";
+        $.ajax({
+            url: ur,
+            data: { semid: semid },
+            success: function (data) {
+                $("#sel_subject").html(data);
+            },
+        });
     });
-  </script>
+</script>
 
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:Assignments' %}"
+    window.location="{% url 'Staff:Assignments' %}";
 </script>
 {% endif %}
+
 {% endblock content %}
+
+

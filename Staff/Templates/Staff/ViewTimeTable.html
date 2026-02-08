@@ -1,100 +1,120 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Timetable</title>
-</head>
-<body>
 
-<h2 align="center">
-    My Timetable<br>
-    <!-- <small>{{ staff.staff_name }}</small><br> -->
-    {% if academicyear %}
-        <small>Academic Year: {{ academicyear.academicyear_year }}</small>
-    {% endif %}
-</h2>
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
 
-<table border="1" cellpadding="10" cellspacing="0" align="center">
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:10px;">My Timetable</h2>
+                    {% if academicyear %}
+                        <p style="font-size:15px; color:#666;">Academic Year: {{ academicyear.academicyear_year }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-    <!-- HEADER -->
-    <tr>
-        <th>Day</th>
-        <th>10:00 - 10:55</th>
-        <th>10:55 - 11:50</th>
-        <th>12:05 - 01:00</th>
-        <th>LUNCH</th>
-        <th>02:00 - 03:00</th>
-        <th>03:00 - 04:00</th>
-    </tr>
+        <!-- Timetable Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-120px; ">
+                    <div class="card-body p-4 p-lg-5">
 
-    <!-- BODY -->
-    {% for day in days %}
-    <tr>
-        <td><b>{{ day }}</b></td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle text-center">
 
-        <!-- Hour 1 -->
-        <td>
-            {% for t in timetable %}
-                {% if t.day == day and t.hour == "1" %}
-                    {{ t.subject.subject_name }}<br>
-                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
-                {% endif %}
-            {% endfor %}
-        </td>
+                                <!-- HEADER -->
+                                <thead style="background:#fff7ef;">
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>10:00 - 10:55</th>
+                                        <th>10:55 - 11:50</th>
+                                        <th>12:05 - 01:00</th>
+                                        <th>LUNCH</th>
+                                        <th>02:00 - 03:00</th>
+                                        <th>03:00 - 04:00</th>
+                                    </tr>
+                                </thead>
 
-        <!-- Hour 2 -->
-        <td>
-            {% for t in timetable %}
-                {% if t.day == day and t.hour == "2" %}
-                    {{ t.subject.subject_name }}<br>
-                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
-                {% endif %}
-            {% endfor %}
-        </td>
+                                <!-- BODY -->
+                                <tbody>
+                                    {% for day in days %}
+                                    <tr>
+                                        <td class="fw-bold">{{ day }}</td>
 
-        <!-- Hour 3 -->
-        <td>
-            {% for t in timetable %}
-                {% if t.day == day and t.hour == "3" %}
-                    {{ t.subject.subject_name }}<br>
-                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
-                {% endif %}
-            {% endfor %}
-        </td>
+                                        <!-- Hour 1 -->
+                                        <td>
+                                            {% for t in timetable %}
+                                                {% if t.day == day and t.hour == "1" %}
+                                                    {{ t.subject.subject_name }}<br>
+                                                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
 
-        <!-- LUNCH -->
-        {% if forloop.first %}
-        <td rowspan="5" align="center">
-            <b>L<br>U<br>N<br>C<br>H</b>
-        </td>
-        {% endif %}
+                                        <!-- Hour 2 -->
+                                        <td>
+                                            {% for t in timetable %}
+                                                {% if t.day == day and t.hour == "2" %}
+                                                    {{ t.subject.subject_name }}<br>
+                                                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
 
-        <!-- Hour 4 -->
-        <td>
-            {% for t in timetable %}
-                {% if t.day == day and t.hour == "4" %}
-                    {{ t.subject.subject_name }}<br>
-                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
-                {% endif %}
-            {% endfor %}
-        </td>
+                                        <!-- Hour 3 -->
+                                        <td>
+                                            {% for t in timetable %}
+                                                {% if t.day == day and t.hour == "3" %}
+                                                    {{ t.subject.subject_name }}<br>
+                                                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
 
-        <!-- Hour 5 -->
-        <td>
-            {% for t in timetable %}
-                {% if t.day == day and t.hour == "5" %}
-                    {{ t.subject.subject_name }}<br>
-                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
-                {% endif %}
-            {% endfor %}
-        </td>
+                                        <!-- LUNCH -->
+                                        {% if forloop.first %}
+                                        <td rowspan="5" class="align-middle text-center fw-bold" style="background:#f8f9fa;">
+                                            L<br>U<br>N<br>C<br>H
+                                        </td>
+                                        {% endif %}
 
-    </tr>
-    {% endfor %}
-</table>
+                                        <!-- Hour 4 -->
+                                        <td>
+                                            {% for t in timetable %}
+                                                {% if t.day == day and t.hour == "4" %}
+                                                    {{ t.subject.subject_name }}<br>
+                                                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
 
-</body>
-</html>
+                                        <!-- Hour 5 -->
+                                        <td>
+                                            {% for t in timetable %}
+                                                {% if t.day == day and t.hour == "5" %}
+                                                    {{ t.subject.subject_name }}<br>
+                                                    <small>{{ t.course.course_name }} - Sem {{ t.semester.semester_name }}</small>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}

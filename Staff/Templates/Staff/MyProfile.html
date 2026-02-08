@@ -1,51 +1,81 @@
-
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Profile</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1" align="center">
-            <tr>
-                <td colspan="2" align="center"><img width="200" src="{{data.staff_photo.url}}" alt=""></td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{data.staff_name}}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{data.staff_email}}</td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td>{{data.staff_contact}}</td>
-            </tr>
-            <tr>
-                <td>Role</td>
-                <td>
-                    {% if data.staff_role == 1 %}
-                    Teacher
-                    {% elif data.staff_role == 2 %}
-                    Office Staff
-                    {% elif data.staff_role == 3 %}
-                    Librarian
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><a href="{% url 'Staff:EditProfile' %}">Edit Profile</a>&nbsp&nbsp&nbsp<a href="{% url 'Staff:ChangePassword' %}">Change Password</a></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Page Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-2" style="font-weight:700;">My Profile</h2>
+                <p style="font-size:16px; color:#555; margin-bottom:10px;">View and manage your profile information</p>
+                <hr style="width:80px; height:3px; background:#ff7f50; margin:auto; border:none; margin-bottom:25px;">
+            </div>
+        </div>
+
+        <!-- Profile Table -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6"> <!-- Reduced width -->
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-60px">
+                    <div class="card-body p-4 p-lg-5">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle mb-0 text-center">
+
+                                    <!-- Staff Photo -->
+                                    <tr>
+                                        <td colspan="2">
+                                            <img src="{{data.staff_photo.url}}" width="150" class="rounded-circle shadow-sm" alt="">
+                                        </td>
+                                    </tr>
+
+                                    <!-- Staff Info -->
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>{{data.staff_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>{{data.staff_email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Contact</td>
+                                        <td>{{data.staff_contact}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Role</td>
+                                        <td>
+                                            {% if data.staff_role == 1 %}
+                                                Teacher
+                                            {% elif data.staff_role == 2 %}
+                                                Office Staff
+                                            {% elif data.staff_role == 3 %}
+                                                Librarian
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    <!-- Actions -->
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <a href="{% url 'Staff:EditProfile' %}" class="btn btn-outline-primary px-4 me-2">Edit Profile</a>
+                                            <a href="{% url 'Staff:ChangePassword' %}" class="btn btn-outline-warning px-4">Change Password</a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}
+
+

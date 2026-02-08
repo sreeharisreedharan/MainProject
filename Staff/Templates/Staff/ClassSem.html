@@ -2,52 +2,101 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Semester</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Semester</td>
-                <td><select required name="sel_semester" id="">
-                    <option value="">Select Semester</option>
-                    {% for i in semesterdata %}
-                    <option value="{{i.id}}">{{i.semester_name}}</option>
-                    {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td  align="center" colspan="2"><input type="submit" name="btn_submit" value="Submit" id=""></td>
-            </tr>
-        </table>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Semester</td>
-                <td>Action</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.semester.semester_name}}</td>
-                <td><a href="{% url 'Staff:delclasssem' i.id%}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-    
-</body>
-</html>
+<section class="section_padding" style="padding-top:120px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Class Semester Management</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Assign and view semesters for your classes
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Semester Card -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-100px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label" style="font-weight:600;">Semester</label>
+                                <select required name="sel_semester" class="form-control">
+                                    <option value="">Select Semester</option>
+                                    {% for i in semesterdata %}
+                                    <option value="{{i.id}}">{{i.semester_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <input type="submit" name="btn_submit" value="Submit" class="btn btn_1 px-5">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semester List Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <h5 style="font-weight:700; margin-bottom:22px;">Assigned Semesters</h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle w-100">
+                                <thead style="background:#fff7ef;">
+                                    <tr>
+                                        <th width="80">SINO</th>
+                                        <th>Semester</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in classdata %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{i.semester.semester_name}}</td>
+                                        <td>
+                                            <a href="{% url 'Staff:delclasssem' i.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-4">
+                                            No semesters assigned yet
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:ViewAssignedClass' %}"
+    window.location="{% url 'Staff:ViewAssignedClass' %}";
 </script>
 {% endif %}
+
 {% endblock content %}
+

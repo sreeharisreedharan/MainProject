@@ -2,110 +2,148 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Internal Mark</title>
-</head>
-<body>
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
 
-<form method="POST">
-{% csrf_token %}
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Add Internal Mark</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Select semester and subject to view and submit internal marks for the student
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<input type="hidden" id="txt_id" value="{{uid}}">
+        <!-- Internal Mark Form Card -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-120px;">
+                    <div class="card-body p-4 p-lg-5">
 
-<table border="1">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" id="txt_id" value="{{uid}}">
 
-<tr>
-<td>Semester</td>
-<td>
-<select id="sel_semester" name="sel_semester" required>
-<option value="">Select Semester</option>
-{% for i in semester %}
-<option value="{{i.id}}">{{i.semester_name}}</option>
-{% endfor %}
-</select>
-</td>
-</tr>
+                            <div class="row g-3 mb-3">
 
-<tr>
-<td>Subject</td>
-<td>
-<select id="sel_subject" name="sel_subject" required>
-<option value="">Select Subject</option>
-</select>
-</td>
-</tr>
+                                <div class="col-md-6">
+                                    <label for="sel_semester" class="form-label fw-bold">Semester</label>
+                                    <select id="sel_semester" name="sel_semester" required class="form-control">
+                                        <option value="">Select Semester</option>
+                                        {% for i in semester %}
+                                        <option value="{{i.id}}">{{i.semester_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-<tr>
-<td>Exam 1 (Out of 80)</td>
-<td><input type="text" id="txt_first_exam_mark" readonly></td>
-</tr>
+                                <div class="col-md-6">
+                                    <label for="sel_subject" class="form-label fw-bold">Subject</label>
+                                    <select id="sel_subject" name="sel_subject" required class="form-control">
+                                        <option value="">Select Subject</option>
+                                    </select>
+                                </div>
 
-<tr>
-<td>Exam 2 (Out of 80)</td>
-<td><input type="text" id="txt_second_exam_mark" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Exam 1 (Out of 80)</label>
+                                    <input type="text" id="txt_first_exam_mark" readonly class="form-control">
+                                </div>
 
-<tr>
-<td>Attendance Percentage</td>
-<td><input type="text" id="txt_percentage" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Exam 2 (Out of 80)</label>
+                                    <input type="text" id="txt_second_exam_mark" readonly class="form-control">
+                                </div>
 
-<tr>
-<td>Exam Mark (Out of 10)</td>
-<td><input type="text" id="txt_exam_mark10" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Attendance Percentage</label>
+                                    <input type="text" id="txt_percentage" readonly class="form-control">
+                                </div>
 
-<tr>
-<td>Assignment Mark (Out of 5)</td>
-<td><input type="text" id="txt_assign_mark5" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Exam Mark (Out of 10)</label>
+                                    <input type="text" id="txt_exam_mark10" readonly class="form-control">
+                                </div>
 
-<tr>
-<td>Attendance Mark (Out of 5)</td>
-<td><input type="text" id="txt_att_mark" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Assignment Mark (Out of 5)</label>
+                                    <input type="text" id="txt_assign_mark5" readonly class="form-control">
+                                </div>
 
-<tr>
-<td><b>Final Internal (Out of 20)</b></td>
-<td><input type="text" name="txt_mark" id="txt_final_mark" readonly></td>
-</tr>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Attendance Mark (Out of 5)</label>
+                                    <input type="text" id="txt_att_mark" readonly class="form-control">
+                                </div>
 
-<tr>
-<td colspan="2" align="center">
-<input type="submit" value="Submit">
-</td>
-</tr>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Final Internal (Out of 20)</label>
+                                    <input type="text" name="txt_mark" id="txt_final_mark" readonly class="form-control">
+                                </div>
 
-</table>
+                                <div class="col-12 text-center mt-3">
+                                    <input type="submit" value="Submit" class="btn btn_1 px-5">
+                                </div>
 
-<table border="1">
-    <tr>
-        <td>SINO</td>
-        <td>Student</td>
-        <td>Internal Mark</td>
-        <td>Action</td>
-    </tr>
-    {% for i in internalmark %}
-    <tr>
-        <td>{{forloop.counter}}</td>
-        <td>{{i.student.user_name}}</td>
-        <td>{{i.internalmark_mark}}</td>
-        <td><a href="{% url 'Staff:delinternalmark'  i.id uid  %}">Delete</a></td>
-    </tr>
-    {% endfor %}
-</table>
+                            </div>
+                        </form>
 
-</form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Internal Marks List Table -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
 
+                        <h5 style="font-weight:700; margin-bottom:22px;">Internal Marks List</h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle w-100">
+                                <thead style="background:#fff7ef;">
+                                    <tr>
+                                        <th width="80">SINO</th>
+                                        <th>Student</th>
+                                        <th>Internal Mark</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in internalmark %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{i.student.user_name}}</td>
+                                        <td>{{i.internalmark_mark}}</td>
+                                        <td class="text-end">
+                                            <a href="{% url 'Staff:delinternalmark'  i.id uid  %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">
+                                            No internal marks available
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- jQuery & AJAX (original logic preserved) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 <script>
-
 /* ---------- CONVERSION RULES ---------- */
-
 function attendanceToMark5(percent) {
     if (percent >= 90) return 5;
     if (percent >= 80) return 4;
@@ -114,37 +152,25 @@ function attendanceToMark5(percent) {
     if (percent >= 50) return 1;
     return 0;
 }
-
-// exams out of 80 each → convert to /10
 function calcExamMark10(first, second) {
     first = parseFloat(first) || 0;
     second = parseFloat(second) || 0;
-
-    let total = first + second;   // out of 160
+    let total = first + second;
     return ((total / 160) * 10).toFixed(2);
 }
-
-// assignment already out of 5 → use directly
 function assignmentMark5(mark) {
     return (parseFloat(mark) || 0).toFixed(2);
 }
-
 function updateFinalInternal() {
-
     let exam = parseFloat($("#txt_exam_mark10").val()) || 0;
     let assign = parseFloat($("#txt_assign_mark5").val()) || 0;
     let att = parseFloat($("#txt_att_mark").val()) || 0;
-
     let total = exam + assign + att;
-
     $("#txt_final_mark").val(total.toFixed(2));
 }
 
-
 /* ---------- SEMESTER CHANGE ---------- */
-
 $("#sel_semester").change(function () {
-
     let semid = $(this).val();
     let uid = $("#txt_id").val();
 
@@ -160,67 +186,49 @@ $("#sel_semester").change(function () {
         url: "{% url 'Staff:AjaxAttendancePercentage' %}",
         data: { uid: uid, semid: semid },
         success: function (data) {
-
             let p = parseFloat(data.percentage) || 0;
-
             $("#txt_percentage").val(p.toFixed(2) + "%");
-
             let att5 = attendanceToMark5(p);
             $("#txt_att_mark").val(att5);
-
             updateFinalInternal();
         }
     });
-
 });
 
-
 /* ---------- SUBJECT CHANGE ---------- */
-
 $("#sel_subject").change(function () {
-
     let subjectid = $(this).val();
     let uid = $("#txt_id").val();
 
-    // assignment (already /5)
     $.ajax({
         url: "{% url 'Staff:AjaxAssignmentMark' %}",
         data: { subjectid: subjectid, uid: uid },
         success: function (data) {
-
             let a5 = assignmentMark5(data.mark);
             $("#txt_assign_mark5").val(a5);
-
             updateFinalInternal();
         }
     });
 
-    // exams
     $.ajax({
         url: "{% url 'Staff:AjaxExamMark' %}",
         data: { subjectid: subjectid, uid: uid },
         success: function (data) {
-
             $("#txt_first_exam_mark").val(data.first);
             $("#txt_second_exam_mark").val(data.second);
-
             let e10 = calcExamMark10(data.first, data.second);
             $("#txt_exam_mark10").val(e10);
-
             updateFinalInternal();
         }
     });
-
 });
-
 </script>
 
-</body>
-</html>
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Staff:InternalMark' uid %}"
 </script>
 {% endif %}
+
 {% endblock content %}

@@ -136,10 +136,11 @@ def ClassSem(request, aid):
 
         return render(request, 'Staff/ClassSem.html', {
             'msg': "Semester Updated",
-            'semesterdata': semesterdata
+            'semesterdata': semesterdata,
+            'data':data
         })
 
-    return render(request, 'Staff/ClassSem.html', {'semesterdata': semesterdata,'data':classsemdata})
+    return render(request, 'Staff/ClassSem.html', {'semesterdata': semesterdata,'classdata':classsemdata,'data':data})
 
 
 def delclasssem(request,did):
@@ -182,7 +183,7 @@ def Assignments(request):
         tbl_assignments.objects.create(assignments_title=title,assignments_topic=topic,assignments_duedate=lastdate,staff=staffid,subject=subjectid)
         return render(request,"Staff/Assignments.html",{'msg':"Assignment Inserted"})
     else:
-        return render(request,"Staff/Assignments.html",{'assignmentdata':assignmentdata,'semester':semesterdata,'subject':subjectdata})
+        return render(request,"Staff/Assignments.html",{'assignmentdata':assignmentdata,'semester':semesterdata,'subject':subjectdata,'data':staffid})
 
 def delassignments(request,did):
     tbl_assignments.objects.get(id=did).delete()
@@ -194,15 +195,16 @@ def ViewUploads(request,aid):
     return render(request,"Staff/ViewUploads.html",{'assignmentdata':assignmentbodydata,'data':staff})  
 
 def Mark(request,id):
+    data=tbl_staff.objects.get(id=request.session['sid'])
     editdata=tbl_assignmentbody.objects.get(id=id)
     if request.method =="POST":
         mark=request.POST.get('txt_mark')
         editdata.assignmentbody_status = 1
         editdata.assignmentbody_mark = mark
         editdata.save()
-        return render(request,"Staff/Mark.html",{'msg':"Mark Inserted"})  
+        return render(request,"Staff/Mark.html",{'msg':"Mark Inserted",'data':data})  
     else:
-        return render(request,"Staff/Mark.html")
+        return render(request,"Staff/Mark.html",{'data':data})
 
 
 def MyStudents(request):
@@ -211,8 +213,9 @@ def MyStudents(request):
     return render(request,"Staff/MyStudents.html",{'studentdata':studentdata,'data':data})
 
 def ViewStudents(request,id):
+    staff = tbl_staff.objects.get(id=request.session['sid'])
     studentdata=tbl_user.objects.filter(assignclass=id)
-    return render(request,"Staff/ViewStudents.html",{'data':studentdata})
+    return render(request,"Staff/ViewStudents.html",{'studentdata':studentdata,'data':staff})
 
 def ViewClass(request):
     staff=tbl_staff.objects.get(id=request.session['sid'])
@@ -222,16 +225,17 @@ def ViewClass(request):
 
 def AjaxClass(request):
     classdata=tbl_class.objects.filter(course=request.GET.get('cid'))
-    return render(request,"Staff/AjaxClass.html",{'data':classdata})
+    return render(request,"Staff/AjaxClass.html",{'classdata':classdata})
 
 def AjaxClasses(request):
     if request.GET.get('cid') !="" and request.GET.get('aid') !="":
         classdata=tbl_assignclass.objects.filter(classid=request.GET.get('cid'),academicyear=request.GET.get('aid'))
-        return render(request,"Staff/AjaxClasses.html",{'data':classdata})
+        return render(request,"Staff/AjaxClasses.html",{'classdata':classdata})
     else:
         return render(request,"Staff/AjaxClasses.html")
 
 def InternalMark(request,uid):
+    staff=tbl_staff.objects.get(id=request.session['sid'])
     semesterdata=tbl_semester.objects.all()
     subjectdata=tbl_subject.objects.all()
     markdata=tbl_exammark.objects.filter(student=uid)
@@ -245,9 +249,9 @@ def InternalMark(request,uid):
         subjectid=tbl_subject.objects.get(id=request.POST.get('sel_subject'))
         studentid=tbl_user.objects.get(id=uid)
         tbl_internalmark.objects.create(internalmark_mark=mark,subject=subjectid,student=studentid)
-        return render(request,"Staff/InternalMark.html",{'msg':"Internal Mark Inserted",'uid':uid})
+        return render(request,"Staff/InternalMark.html",{'msg':"Internal Mark Inserted",'uid':uid,'data':staff})
     else:
-        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata,'percentage':percentage,'assignment':assignment,'uid':uid,'markdata':markdata})
+        return render(request,"Staff/InternalMark.html",{'subject':subjectdata,'semester':semesterdata,'internalmark':internalmarkdata,'percentage':percentage,'assignment':assignment,'uid':uid,'markdata':markdata,'data':staff})
 
 def AjaxAttendancePercentage(request):
     total = tbl_attendance.objects.filter(student=request.GET.get("uid"),semester=request.GET.get("semid")).count()
@@ -573,8 +577,9 @@ def delleave(request,did):
     return redirect("Staff:Leave")
 
 def IssuedBooks(request):
+    data=tbl_staff.objects.get(id=request.session['sid'])
     issuedata=tbl_issue.objects.all()
-    return render(request,"Staff/IssuedBooks.html",{'data':issuedata})
+    return render(request,"Staff/IssuedBooks.html",{'issuedata':issuedata,'data':data})
 
 def returnbook(request,id):
     data = tbl_issue.objects.get(id=id)
@@ -584,6 +589,7 @@ def returnbook(request,id):
 
 def ViewBooks(request):
     genredata=tbl_genre.objects.all()
+    data=tbl_staff.objects.get(id=request.session['sid'])
 
     bookdata=tbl_book.objects.all()
     for i in bookdata:
@@ -617,9 +623,9 @@ def ViewBooks(request):
             ).count()
 
             i.total_stock = total_stock - total_issue
-        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':book,'totalstock':total_stock,'totalissue':total_issue})
+        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':book,'totalstock':total_stock,'totalissue':total_issue,'data':data})
     else:
-        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':bookdata,'totalstock':total_stock,'totalissue':total_issue})
+        return render(request,"Staff/ViewBooks.html",{'genredata':genredata,'book':bookdata,'totalstock':total_stock,'totalissue':total_issue,'data':data})
 
 def ExamMark(request,uid):
     data=tbl_staff.objects.get(id=request.session['sid'])

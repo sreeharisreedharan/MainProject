@@ -1,105 +1,165 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Exam Mark</title>
-</head>
-<body>
-    <form method="POST">
-        <h2>Exam Mark</h2>
 
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Semester</td>
-                <td><select name="sel_semester" id="sel_semester">
-                    <option value="">Select Semester</option>
-                    {% for i in semester %}
-                    <option value="{{i.id}}">{{i.semester_name}}</option>
-                    {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td>Course</td>
-                <td><select name="sel_course" id="sel_course" onchange="getsubject()" >
-                    <option value="">Select Course</option>
-                    {% for i in course %}
-                    <option value="{{i.id}}">{{i.course_name}}</option>
-                    {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td>Subject</td>
-                <td><select name="sel_subject" id="sel_subject">
-                    <option value="">Select Subject</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>Exam Type</td>
-                <td><input type="radio" required  name="txt_type" id="" value="First">First Internal<input type="radio" name="txt_type" id="" value="Second">Second Internal</td>
-            </tr>
-            <tr>
-                <td>Mark</td>
-                <td><input type="text" name="txt_mark" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Student Name</td>
-                <td>Semester</td>
-                <td>Course</td>
-                <td>Subject</td>
-                <td>Exam Type</td>
-                <td>Mark</td>
-                <td>Action</td>
-            </tr>
-            {% for i in markdata %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.student.user_name}}</td>
-                <td>{{i.subject.semester.semester_name}}</td>
-                <td>{{i.subject.course.course_name}}</td>
-                <td>{{i.subject.subject_name}}</td>
-                <td>{{i.exammark_examtype}}</td>
-                <td>{{i.exammark_mark}}</td>
-                <td><a href="{% url 'Staff:delExamMark' i.id %}">Delete</a></td>
-            </tr>
-            {% endfor %}
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
 
-        </table>
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Add Exam Mark</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#090101;">
+                        Enter and manage student exam marks by semester, course, and subject
+                    </p>
+                </div>
+            </div>
+        </div>
 
-    </form>
-</body>
-</html>
+        <!-- Exam Mark Form Card -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-120px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label" style="font-weight:600;">Semester</label>
+                                    <select name="sel_semester" id="sel_semester" class="form-control">
+                                        <option value="">Select Semester</option>
+                                        {% for i in semester %}
+                                        <option value="{{i.id}}">{{i.semester_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label" style="font-weight:600;">Course</label>
+                                    <select name="sel_course" id="sel_course" onchange="getsubject()" class="form-control">
+                                        <option value="">Select Course</option>
+                                        {% for i in course %}
+                                        <option value="{{i.id}}">{{i.course_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label" style="font-weight:600;">Subject</label>
+                                    <select name="sel_subject" id="sel_subject" class="form-control">
+                                        <option value="">Select Subject</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" style="font-weight:600;">Exam Type</label>
+                                    <div>
+                                        <input type="radio" required name="txt_type" value="First"> First Internal
+                                        <input type="radio" name="txt_type" value="Second"> Second Internal
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" style="font-weight:600;">Mark</label>
+                                    <input type="text" name="txt_mark" class="form-control">
+                                </div>
+
+                                <div class="col-12 text-center mt-3">
+                                    <input type="submit" name="btn_submit" value="Submit" class="btn btn_1 px-5">
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Mark List Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <h5 style="font-weight:700; margin-bottom:22px;">Exam Marks List</h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle w-100">
+                                <thead style="background:#fff7ef;">
+                                    <tr>
+                                        <th width="80">SINO</th>
+                                        <th>Student Name</th>
+                                        <th>Semester</th>
+                                        <th>Course</th>
+                                        <th>Subject</th>
+                                        <th>Exam Type</th>
+                                        <th>Mark</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in markdata %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{i.student.user_name}}</td>
+                                        <td>{{i.subject.semester.semester_name}}</td>
+                                        <td>{{i.subject.course.course_name}}</td>
+                                        <td>{{i.subject.subject_name}}</td>
+                                        <td>{{i.exammark_examtype}}</td>
+                                        <td>{{i.exammark_mark}}</td>
+                                        <td class="text-end">
+                                            <a href="{% url 'Staff:delExamMark' i.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted py-4">
+                                            No exam marks added yet
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- AJAX for Subject dropdown -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-     function getsubject() {
-        var semid = document.getElementById('sel_semester').value
-        var cid = document.getElementById('sel_course').value
-
-        var ur = "{% url 'Staff:AjaxSubject' %}";
-        $.ajax({
-            url: ur,
-            data: { semid: semid, cid: cid },
-            success: function (data) {
-                $("#sel_subject").html(data);
-            },
-        });
-    };
+<script>
+function getsubject() {
+    var semid = document.getElementById('sel_semester').value;
+    var cid = document.getElementById('sel_course').value;
+    var ur = "{% url 'Staff:AjaxSubject' %}";
+    $.ajax({
+        url: ur,
+        data: { semid: semid, cid: cid },
+        success: function (data) {
+            $("#sel_subject").html(data);
+        },
+    });
+};
 </script>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:ViewClass' %}"
+    window.location="{% url 'Staff:ViewClass' %}";
 </script>
 {% endif %}
+
 {% endblock content %}
+
 

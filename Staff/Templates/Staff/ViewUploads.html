@@ -1,37 +1,76 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Uploads</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data" >
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Student Name</td>
-                <td>Email</td>
-                <td>File</td>
-                <td>Submitted Date</td>
-                <td>Action</td>
-            </tr>
-            {% for i in assignmentdata %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user.user_name}}</td>
-                <td>{{i.user.user_email}}</td>
-                <td><a href="{{i.assignmentbody_file.url}}">view</a></td>
-                <td>{{i.assignmentbody_date}}</td>
-                <td><a href="{% url 'Staff:Mark' i.id %}">Enter Mark</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">View Uploads</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Review student submissions and enter marks
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Uploads Table Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-60px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>SINO</th>
+                                            <th>Student Name</th>
+                                            <th>Email</th>
+                                            <th>File</th>
+                                            <th>Submitted Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in assignmentdata %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ i.user.user_name }}</td>
+                                            <td>{{ i.user.user_email }}</td>
+                                            <td>
+                                                <a href="{{ i.assignmentbody_file.url }}" 
+                                                   class="btn btn-sm btn-info" target="_blank">
+                                                   View
+                                                </a>
+                                            </td>
+                                            <td>{{ i.assignmentbody_date }}</td>
+                                            <td>
+                                                <a href="{% url 'Staff:Mark' i.id %}" 
+                                                   class="btn btn-sm btn-success">
+                                                   Enter Mark
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}
+
+

@@ -1,45 +1,76 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EditProfile</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" required placeholder="Enter Your Name"  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" name="txt_name" id="" value="{{data.staff_name}}"></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email"  required placeholder="Enter Your Email" name="txt_email" id="" value="{{data.staff_email}}"></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text"  required pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9"  name="txt_contact" id="" value="{{data.staff_contact}}"></td>
-            </tr>
-            <tr>
-                <td>Choose Photo</td>
-                <td><input type="file" placeholder="Upload Photo" name="file_photo" value="{{data.staff_photo}}" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit"  value="Update" id=""></td>
-            </tr>
-        </table>
 
-    </form>
-</body>
-</html>
+<section class="section_padding" style="padding-top:120px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Edit Profile</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Update your personal information and profile photo
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-100px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="txt_name" class="form-label" style="font-weight:600;">Name</label>
+                                <input type="text" required placeholder="Enter Your Name"  
+                                       title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" 
+                                       pattern="^[A-Z]+[a-zA-Z ]*$" name="txt_name" id="txt_name" 
+                                       class="form-control" value="{{data.staff_name}}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txt_email" class="form-label" style="font-weight:600;">Email</label>
+                                <input type="email" required placeholder="Enter Your Email" name="txt_email" id="txt_email" 
+                                       class="form-control" value="{{data.staff_email}}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="txt_contact" class="form-label" style="font-weight:600;">Contact</label>
+                                <input type="text" required pattern="[7-9]{1}[0-9]{9}" 
+                                       title="Phone number with 7-9 and remaining 9 digits 0-9" name="txt_contact" id="txt_contact" 
+                                       class="form-control" value="{{data.staff_contact}}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="file_photo" class="form-label" style="font-weight:600;">Choose Photo</label>
+                                <input type="file" name="file_photo" id="file_photo" class="form-control" value="{{data.staff_photo}}">
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <input type="submit" name="btn_submit" value="Update" class="btn btn_1 px-5">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:MyProfile' %}"
+    window.location="{% url 'Staff:MyProfile' %}";
 </script>
 {% endif %}
+
 {% endblock content %}

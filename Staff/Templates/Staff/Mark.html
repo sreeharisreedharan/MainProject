@@ -1,34 +1,56 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment Mark</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Mark</td>
-                <td><input type="text" required placeholder="Enter Assignment Mark" name="txt_mark" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    
-    
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:100px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Enter Assignment Mark</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Enter the marks for the selected student assignment
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mark Form Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-60px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="txt_mark" class="form-label" style="font-weight:600;">Mark</label>
+                                <input type="text" required placeholder="Enter Assignment Mark" 
+                                       name="txt_mark" id="txt_mark" class="form-control">
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <input type="submit" name="btn_submit" value="Submit" class="btn btn_1 px-5">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location="{% url 'Staff:ViewUploads' %}"
+    window.location="{% url 'Staff:ViewUploads' %}";
 </script>
 {% endif %}
+
 {% endblock content %}

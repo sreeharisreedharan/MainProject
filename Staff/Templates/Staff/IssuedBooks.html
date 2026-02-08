@@ -1,46 +1,69 @@
 {% extends 'Staff/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issued Books</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <h2>Issued Books</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Student Name</td>
-                <td>Course</td>
-                <td>Class</td>
-                <td>Book Name</td>
-                <td>Date</td>
-                <td>Action</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.student.user_name}}</td>
-                <td>{{i.student.assignclass.classid.course.course_name}}</td>
-                <td>{{i.student.assignclass.classid.class_name}}</td>
-                <td>{{i.book.book_title}}</td>
-                <td>{{i.issue_date}}</td>
-                <td>
-                    {% if i.issue_status == 1 %}
-                    <a href="{% url 'Staff:returnbook' i.id %}">Return</a>
-                    {% elif i.issue_status == 0 %}
-                    Book Returned
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:120px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle">
+                    <h2 style="margin-bottom:32px;">Issued Books</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        View all issued books and manage returns
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issued Books Table Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm" style="border-radius:20px; margin-top:-80px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>SINO</th>
+                                        <th>Student Name</th>
+                                        <th>Course</th>
+                                        <th>Class</th>
+                                        <th>Book Name</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in issuedata %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.student.user_name }}</td>
+                                        <td>{{ i.student.assignclass.classid.course.course_name }}</td>
+                                        <td>{{ i.student.assignclass.classid.class_name }}</td>
+                                        <td>{{ i.book.book_title }}</td>
+                                        <td>{{ i.issue_date }}</td>
+                                        <td>
+                                            {% if i.issue_status == 1 %}
+                                            <a href="{% url 'Staff:returnbook' i.id %}" class="btn btn-sm btn-success">Return</a>
+                                            {% elif i.issue_status == 0 %}
+                                            <span class="badge bg-secondary">Book Returned</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}
