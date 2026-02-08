@@ -8,26 +8,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Feedback</title>
+
+<style>
+
+/* Heading style */
+.feedback-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 20px 0 25px 0;
+    color: #e3f2fd;
+}
+
+/* Table styling to match admin header theme */
+.feedback-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.92);
+    color: #e3f2fd;
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+}
+
+/* Header row */
+.feedback-table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+.feedback-table td {
+    border: 1px solid #3a6a8f;
+    padding: 12px 14px;
+}
+
+/* Row hover */
+.feedback-table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+</style>
+
 </head>
+
 <body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Name</td>
-                <td>Feedback</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user.user_name}}</td>
-                <td>{{i.feedback_content}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-    
+
+<form method="POST">
+    {% csrf_token %}
+
+    <h2 class="feedback-title">User Feedback</h2>
+
+    <table border="1" class="feedback-table">
+        <tr>
+            <td>SINO</td>
+            <td>Name</td>
+            <td>Feedback</td>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.feedback_content}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</form>
+
 </body>
 </html>
+
 {% endblock content %}

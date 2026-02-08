@@ -7,15 +7,86 @@
 <head>
     <title>Admin Timetable</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 25px 0;
+    color: #e3f2fd;
+}
+
+/* Center containers */
+.center-box {
+    width: 95%;
+    margin: auto;
+}
+
+/* Admin Theme Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.95);
+    color: #e3f2fd;
+    box-shadow: 0 0 14px rgba(0,0,0,0.35);
+}
+
+/* Header row */
+table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+table td, table th {
+    border: 1px solid #3a6a8f;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Hover */
+table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+/* Inputs & selects */
+select, button {
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid #3a6a8f;
+    background: #0b1727;
+    color: #e3f2fd;
+    font-weight: 500;
+}
+
+/* Buttons */
+button {
+    background: linear-gradient(45deg, #1976d2, #42a5f5);
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #42a5f5, #1976d2);
+}
+
+</style>
+
 </head>
 <body>
 
-<h2 align="center">
+<h2 class="page-title">
     Timetable
     {% if academicyear %}
         ({{ academicyear.academicyear_year }})
     {% endif %}
 </h2>
+
+<div class="center-box">
 
 <!-- FILTERS -->
 <form method="get">
@@ -33,7 +104,7 @@
 
             <td>Course</td>
             <td>
-                <select  required name="course" id="sel_course">
+                <select required name="course" id="sel_course">
                     <option value="">Select Course</option>
                 </select>
             </td>
@@ -57,7 +128,7 @@
 
 <!-- EDIT BUTTON -->
 {% if course_id and semester_id %}
-<div align="center" style="margin:10px;">
+<div align="center" style="margin:15px;">
     {% if not edit %}
         <a href="?course={{ course_id }}&semester={{ semester_id }}&edit=1">
             <button>Edit Timetable</button>
@@ -72,7 +143,7 @@
 
 <!-- TIMETABLE -->
 {% if course_id and semester_id %}
-<table border="1" cellpadding="10" cellspacing="0" align="center">
+<table border="1" cellpadding="10" cellspacing="0">
     <tr>
         <th>Day</th>
         <th>10:00 - 10:55</th>
@@ -86,10 +157,12 @@
     {% for day in days %}
     <tr>
         <td><b>{{ day }}</b></td>
+
         {% for h in hours %}
             {% if forloop.parentloop.first and h.0 == "4" %}
-                <td rowspan="5" align="center"><b>L<br>U<br>N<br>C<br>H</b></td>
+                <td rowspan="5"><b>L<br>U<br>N<br>C<br>H</b></td>
             {% endif %}
+
             <td>
             {% if edit %}
                 <select onchange="saveTimetable('{{ day }}','{{ h.0 }}',this.value)">
@@ -111,11 +184,14 @@
                 {% endfor %}
             {% endif %}
             </td>
+
         {% endfor %}
     </tr>
     {% endfor %}
 </table>
 {% endif %}
+
+</div>
 
 <script>
 $("#sel_department").change(function () {
@@ -145,3 +221,4 @@ function saveTimetable(day, hour, subject) {
 </body>
 </html>
 {% endblock content %}
+

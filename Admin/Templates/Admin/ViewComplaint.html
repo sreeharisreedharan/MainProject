@@ -8,59 +8,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaint</title>
+
+<style>
+
+/* Page headings */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 20px 0 25px 0;
+    color: #e3f2fd;
+}
+
+.sub-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+    color: #90caf9;
+}
+
+/* Table theme matching admin header */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.95);
+    color: #e3f2fd;
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+    margin-bottom: 30px;
+}
+
+/* Table header row */
+table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+table td {
+    border: 1px solid #3a6a8f;
+    padding: 12px 14px;
+}
+
+/* Hover effect */
+table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+/* Links */
+table a {
+    color: #4fc3f7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #81d4fa;
+}
+
+</style>
+
 </head>
+
 <body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Name</td>
-                <td>Title</td>
-                <td>Complaint</td>
-                <td>Reply</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user.user_name}}</td>
-                <td>{{i.complaint_title}}</td>
-                <td>{{i.complaint_content}}</td>
-                <td><a href="{% url 'Admin:Reply' i.id %}">Reply</a></td>
-            </tr>
-            {% endfor %}
 
-        </table>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Name</td>
-                <td>Title</td>
-                <td>Complaint</td>
-                <td>Reply</td>
-            </tr>
+<form method="POST">
+    {% csrf_token %}
 
-            <h2>Replied Complaints</h2>
+    <h2 class="page-title">User Complaints</h2>
 
-        
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user.user_name}}</td>
-                <td>{{i.complaint_title}}</td>
-                <td>{{i.complaint_content}}</td>
-                <td>{% if i.complaint_status == 0 %}
+    <table border="1">
+        <tr>
+            <td>SINO</td>
+            <td>Name</td>
+            <td>Title</td>
+            <td>Complaint</td>
+            <td>Reply</td>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.complaint_title}}</td>
+            <td>{{i.complaint_content}}</td>
+            <td><a href="{% url 'Admin:Reply' i.id %}">Reply</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <h2 class="sub-title">Replied Complaints</h2>
+
+    <table border="1">
+        <tr>
+            <td>SINO</td>
+            <td>Name</td>
+            <td>Title</td>
+            <td>Complaint</td>
+            <td>Reply</td>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.complaint_title}}</td>
+            <td>{{i.complaint_content}}</td>
+            <td>
+                {% if i.complaint_status == 0 %}
                     Not Replied
-                    {% else%}
+                {% else %}
                     {{i.complaint_reply}}
-                    {% endif %}
-                </td>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-    
+</form>
+
 </body>
 </html>
+
 {% endblock content %}
