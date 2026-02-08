@@ -160,7 +160,7 @@ def ViewBook(request):
             ).count()
 
             i.total_stock = total_stock - totak_issue
-        return render(request,"User/ViewBook.html",{'genredata':genredata,'book':book})
+        return render(request,"User/ViewBook.html",{'genredata':genredata,'book':book,'msg':"Book Taken"})
     else:
         return render(request,"User/ViewBook.html",{'genredata':genredata,'book':bookdata})
 

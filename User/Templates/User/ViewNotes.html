@@ -9,35 +9,65 @@
     <title>View Notes</title>
 </head>
 <body>
-    <h2>Notes</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <tr>
-            <td>Semester</td>
-            <td><select required name="sel_semester" id="sel_semester">
-                <option>Select Semester</option>
-                {% for i in semesterdata %}
-                <option value="{{i.id}}">{{i.semester_name}}</option>
-                {% endfor %}
-            </select></td><br>
-        </tr><br>
-    </form>
-    <div id="result"></div>
+    <section style="padding-top:90px; padding-bottom:100px; background:#f8f9fa;">
+        <div class="container">
+
+            <!-- Page Heading -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8 text-center">
+                    <h2 style="font-weight:700; margin-bottom:18px;">View Notes</h2>
+                    <p style="color:#6c757d; font-size:16px; margin-top:12px;">Select your semester to view notes</p>
+                    <div style="width:95px; height:4px; background:#ff7a00; margin:18px auto 0; border-radius:4px;"></div>
+                </div>
+            </div>
+
+            <!-- Semester Selection -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-6">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="sel_semester" style="font-weight:600; margin-bottom:8px;">Semester</label>
+                            <select required name="sel_semester" id="sel_semester" style="
+                                width:100%;
+                                height:50px;
+                                padding:10px;
+                                font-size:16px;
+                                border-radius:8px;
+                                border:1px solid #ced4da;
+                            ">
+                                <option value="">Select Semester</option>
+                                {% for i in semesterdata %}
+                                <option value="{{i.id}}">{{i.semester_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Result Table -->
+            <div id="result"></div>
+
+        </div>
+    </section>
 </body>
 </html>
+
 <!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
     $("#sel_semester").change(function () {
-      var semid = $(this).val();
-      var ur = "{% url 'User:AjaxNotes' %}";
-      $.ajax({
-        url: ur,
-        data: { semid: semid },
-        success: function (data) {
-          $("#result").html(data);
-        },
-      });
+        var semid = $(this).val();
+        var ur = "{% url 'User:AjaxNotes' %}";
+        $.ajax({
+            url: ur,
+            data: { semid: semid },
+            success: function (data) {
+                $("#result").html(data);
+            },
+        });
     });
-  </script>
-  {% endblock content %}
+</script>
+
+{% endblock content %}

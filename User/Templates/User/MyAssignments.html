@@ -1,35 +1,109 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Assignments</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data" >
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Assignment Title</td>
-                <td>Assignment Topic</td>
-                <td>assignment Submitted</td>
-                <td>Mark</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.assignment.assignments_title}}</td>
-                <td><a href="{{i.assignment.assignments_topic.url}}">view</a></td>
-                <td><a href="{{i.assignmentbody_file.url}}">view</a></td>
-                <td>{{i.assignmentbody_mark}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:90px; padding-bottom:80px;">
+    <div class="container">
+
+        <!-- Page Title -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle">
+                    <h2 style="font-weight:700; margin-bottom:12px;">
+                        My Assignments
+                    </h2>
+
+                    <!-- subtitle spacing same as previous pages -->
+                    <p style="margin-top:10px; font-size:15px; color:#666;">
+                        Track your assignment submissions and marks here
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignments Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+
+                <div class="card border-0 shadow" style="border-radius:16px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+
+                                    <thead>
+                                        <tr style="background:#f8f9fc;">
+                                            <th width="80" class="font-weight-bold">SINO</th>
+                                            <th class="font-weight-bold">Assignment Title</th>
+                                            <th width="180" class="font-weight-bold">Assignment Topic</th>
+                                            <th width="200" class="font-weight-bold">Assignment Submitted</th>
+                                            <th width="120" class="font-weight-bold">Mark</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in data %}
+                                        <tr>
+                                            <td class="font-weight-bold">
+                                                {{forloop.counter}}
+                                            </td>
+
+                                            <td>
+                                                {{i.assignment.assignments_title}}
+                                            </td>
+
+                                            <td>
+                                                <a href="{{i.assignment.assignments_topic.url}}"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   style="border-radius:20px;">
+                                                    View Topic
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="{{i.assignmentbody_file.url}}"
+                                                   class="btn btn-sm btn-outline-success"
+                                                   style="border-radius:20px;">
+                                                    View Submission
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                {% if i.assignmentbody_mark %}
+                                                    <span class="badge badge-success px-3 py-2">
+                                                        {{i.assignmentbody_mark}}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge badge-secondary px-3 py-2">
+                                                        Not Graded
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                No assignments found
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}

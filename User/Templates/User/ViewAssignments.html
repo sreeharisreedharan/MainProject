@@ -2,40 +2,139 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Assignments</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Faculty</td>
-                <td>Title</td>
-                <td>Topic</td>
-                <td>Date</td>
-                <td>Due Date</td>
-                <td>Action</td>
-            </tr>
-            {% for i in assignmentdata %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.staff.staff_name}}</td>
-                <td>{{i.assignments_title}}</td>
-                <td><a href="{{i.assignments_topic.url}}">view</a></td>
-                <td>{{i.assignments_date}}</td>
-                <td>{{i.assignments_duedate}}</td>
-                <td><a href="{% url 'User:UploadAssignment' i.id %}">Upload Assignment</a></td>
-            </tr>
-            {% endfor %}
-        </table>
+<section style="padding-top:90px; padding-bottom:110px;">
+    <div class="container">
 
-    </form>
+        <!-- Title Block -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-9 text-center">
+                <h2 style="font-weight:700; margin-bottom:18px;">
+                    Assignment Dashboard
+                </h2>
+                <p style="color:#6c757d; font-size:15px; margin-top:12px;">
+                    Check assignment details and upload your submissions
+                </p>
+                <div style="width:90px; height:4px; background:#ff7a00; margin:18px auto 0; border-radius:4px;"></div>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+
+                <div style="
+                    background:#ffffff;
+                    border-radius:20px;
+                    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+                    padding:28px;
+                ">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0"
+                                   style="border-radius:12px; overflow:hidden;">
+
+                                <!-- Table Header -->
+                                <thead>
+                                    <tr style="
+                                        background:linear-gradient(90deg,#ffecd2,#fcb69f);
+                                        font-weight:600;
+                                    ">
+                                        <td>SINO</td>
+                                        <td>Faculty</td>
+                                        <td>Title</td>
+                                        <td>Topic</td>
+                                        <td>Date</td>
+                                        <td>Due Date</td>
+                                        <td class="text-center">Action</td>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for i in assignmentdata %}
+                                    <tr style="background:#fff;">
+                                        <td>{{forloop.counter}}</td>
+                                        <td style="font-weight:500;">
+                                            {{i.staff.staff_name}}
+                                        </td>
+
+                                        <td>
+                                            <span style="
+                                                background:#f4f6f9;
+                                                padding:6px 10px;
+                                                border-radius:8px;
+                                                font-size:13px;
+                                            ">
+                                                {{i.assignments_title}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{i.assignments_topic.url}}"
+                                               style="
+                                                padding:6px 14px;
+                                                border-radius:8px;
+                                                border:1px solid #ddd;
+                                                text-decoration:none;
+                                                font-size:13px;
+                                                display:inline-block;
+                                               ">
+                                                View File
+                                            </a>
+                                        </td>
+
+                                        <td>{{i.assignments_date}}</td>
+
+                                        <td>
+                                            <span style="
+                                                background:#fff3e6;
+                                                color:#cc5a00;
+                                                padding:6px 10px;
+                                                border-radius:8px;
+                                                font-size:13px;
+                                            ">
+                                                {{i.assignments_duedate}}
+                                            </span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <a href="{% url 'User:UploadAssignment' i.id %}"
+                                               style="
+                                                background:#ff7a00;
+                                                color:white;
+                                                padding:8px 16px;
+                                                border-radius:10px;
+                                                text-decoration:none;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                display:inline-block;
+                                                box-shadow:0 4px 12px rgba(255,122,0,0.25);
+                                               ">
+                                                Upload
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 </body>
 </html>
 {% endblock content %}
+

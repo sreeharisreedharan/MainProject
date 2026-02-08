@@ -1,66 +1,148 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Book</title>
-</head>
+<section style="padding-top:95px; padding-bottom:110px;">
+    <div class="container">
 
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Name</td>
-                <td><input  type="text" name="txt_name" placeholder="Enter Book Name" id=""></td>
-                <td>Genre</td>
-                <td><select required name="sel_genre" id="">
-                        <option value="">Select Genre</option>
-                        {% for i in genredata %}
-                        <option value="{{i.id}}">{{i.genre_name}}</option>
-                        {% endfor %}
-                    </select></td>
-            </tr>
-            <tr>
-                <td align="center" colspan="4"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
+        <!-- Page Heading -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h2 style="font-weight:700; margin-bottom:18px;">Library Books</h2>
+                <p style="color:#6c757d; font-size:15px; margin-top:12px;">Search and borrow available books from the library</p>
+                <div style="width:95px; height:4px; background:#ff7a00; margin:18px auto 0; border-radius:4px;"></div>
+            </div>
+        </div>
 
-        </table>
-        <h2>Book List</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Title</td>
-                <td>Details</td>
-                <td>Genre</td>
-                <td>Photo</td>
-                <td>Author</td>
-                <td>Action</td>
-            </tr>
-            {% for i in book %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.book_title}}</td>
-                <td>{{i.book_details}}</td>
-                <td>{{i.genre.genre_name}}</td>
-                <td><img width="40" src="{{i.book_photo.url}}" alt=""></td>
-                <td>{{i.book_author}}</td>
-                <td>
-                    {% if i.total_stock > 0 %}
-                    <a href="{% url 'User:takebook' i.id %}">Take Book</a>
-                    {% else %} 
-                    Not Available
-                    {% endif %}   
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
+        <!-- Success Banner -->
+        <div id="take-book-msg" style="
+            display:none;
+            background:#d4edda;
+            color:#155724;
+            padding:14px 18px;
+            border-radius:12px;
+            font-weight:600;
+            box-shadow:0 6px 18px rgba(0,0,0,0.06);
+            text-align:center;
+            margin-bottom:25px;
+            transition: all 0.6s ease;
+        ">
+            ✅ Book Taken Successfully!
+        </div>
 
-</html>
+        <!-- Search Form -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-9">
+                <div style="
+                    background:#ffffff;
+                    border-radius:18px;
+                    padding:28px;
+                    box-shadow:0 10px 28px rgba(0,0,0,0.08);
+                ">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label style="font-weight:600;">Book Name</label>
+                                <input type="text" name="txt_name" class="form-control" placeholder="Enter Book Name">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label style="font-weight:600;">Genre</label>
+                                <select required name="sel_genre" class="form-control">
+                                    <option value="">Select Genre</option>
+                                    {% for i in genredata %}
+                                    <option value="{{i.id}}">{{i.genre_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-3 d-flex align-items-end">
+                                <input type="submit" name="btn_submit" value="Search" 
+                                       style="
+                                        width:100%;
+                                        background:#ff7a00;
+                                        color:white;
+                                        border:none;
+                                        padding:12px;
+                                        border-radius:10px;
+                                        font-weight:600;
+                                        box-shadow:0 6px 18px rgba(255,122,0,0.25);
+                                       ">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book List Table -->
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <div style="
+                    background:#ffffff;
+                    border-radius:18px;
+                    padding:30px;
+                    box-shadow:0 10px 28px rgba(0,0,0,0.08);
+                ">
+                    <h4 style="font-weight:700; margin-bottom:20px;">Book List</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <tr style="background:#f8f9fa;">
+                                <th>SINO</th>
+                                <th>Title</th>
+                                <th>Details</th>
+                                <th>Genre</th>
+                                <th>Photo</th>
+                                <th>Author</th>
+                                <th>Action</th>
+                            </tr>
+                            {% for i in book %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{i.book_title}}</td>
+                                <td>{{i.book_details}}</td>
+                                <td>{{i.genre.genre_name}}</td>
+                                <td><img width="50" style="border-radius:6px;" src="{{i.book_photo.url}}" alt=""></td>
+                                <td>{{i.book_author}}</td>
+                                <td>
+                                    {% if i.total_stock > 0 %}
+                                    <a href="{% url 'User:takebook' i.id %}" class="take-book-link" style="color:#ff7a00; font-weight:700;">Take Book</a>
+                                    {% else %}
+                                    <span style="color:#c82333; font-weight:600;">Not Available</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- JavaScript: Show banner and delay navigation -->
+<script>
+    document.querySelectorAll('.take-book-link').forEach(function(link){
+        link.addEventListener('click', function(e){
+            e.preventDefault(); // Stop immediate navigation
+
+            // Show the banner
+            var banner = document.getElementById('take-book-msg');
+            banner.style.display = 'block';
+            banner.style.opacity = '1';
+            banner.style.transform = 'translateY(0)';
+
+            // Delay navigation so user can see the message
+            var url = link.href;
+            setTimeout(function(){
+                window.location.href = url;
+            }, 2000); // 2 seconds delay
+        });
+    });
+</script>
+
 {% endblock content %}
+

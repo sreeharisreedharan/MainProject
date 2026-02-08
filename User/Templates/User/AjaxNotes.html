@@ -1,25 +1,28 @@
+<table class="table table-bordered table-striped" style="width:100%; border-radius:12px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+    <thead style="background:#ff7a00; color:#fff; font-weight:600;">
+        <tr>
+            <th style="text-align:center;">SINO</th>
+            <th style="text-align:center;">Faculty</th>
+            <th style="text-align:center;">Title</th>
+            <th style="text-align:center;">Notes</th>
+            <th style="text-align:center;">Course</th>
+            <th style="text-align:center;">Semester</th>
+            <th style="text-align:center;">Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in data %}
+        <tr>
+            <td style="text-align:center;">{{forloop.counter}}</td>
+            <td style="text-align:center;">{{i.staff.staff_name}}</td>
+            <td style="text-align:center;">{{i.notes_title}}</td>
+            <td style="text-align:center;"><a href="{{i.notes_file.url}}" style="color:#ff7a00; font-weight:500;">View</a></td>
+            <td style="text-align:center;">{{i.subject.course.course_name}}</td>
+            <td style="text-align:center;">{{i.subject.semester.semester_name}}</td>
+            <td style="text-align:center;">{{i.subject.subject_name}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Faculty</td>
-                <td>Title</td>
-                <td>Notes</td>
-                <td>Course</td>
-                <td>Semester</td>
-                <td>Subject</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.staff.staff_name}}</td>
-                <td>{{i.notes_title}}</td>
-                <td><a href="{{i.notes_file.url}}">view</a></td>
-                <td>{{i.subject.course.course_name}}</td>
-                <td>{{i.subject.semester.semester_name}}</td>
-                <td>{{i.subject.subject_name}}</td>
-
-            </tr>
-            {% endfor %}
-        </table>
     

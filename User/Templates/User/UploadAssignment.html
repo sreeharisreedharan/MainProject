@@ -1,34 +1,95 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Assignment</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data" >
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>File</td>
-                <td><input  required type="file" name="file_assignment" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit"  value="Submit" id=""></td>
-            </tr>
-        </table>
 
+<section style="padding-top:90px; padding-bottom:110px;">
+    <div class="container">
 
-    </form>
+        <!-- Title Block -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-7 text-center">
+                <h2 style="font-weight:700; margin-bottom:18px;">
+                    Upload Assignment
+                </h2>
+                <p style="color:#6c757d; font-size:15px; margin-top:12px;">
+                    Submit your assignment file before the due date
+                </p>
+                <div style="width:90px; height:4px; background:#ff7a00; margin:18px auto 0; border-radius:4px;"></div>
+            </div>
+        </div>
+
+        <!-- Upload Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+
+                <div style="
+                    background:#ffffff;
+                    border-radius:20px;
+                    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+                    padding:34px;
+                ">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label style="
+                                font-weight:600;
+                                margin-bottom:12px;
+                                display:block;
+                                font-size:16px;
+                            ">
+                                Choose Assignment File
+                            </label>
+
+                            <!-- Bigger File Input -->
+                            <input required type="file"
+                                   name="file_assignment"
+                                   class="form-control"
+                                   style="
+                                        padding:16px;
+                                        border-radius:12px;
+                                        font-size:15px;
+                                        height:60px;
+                                   ">
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <input type="submit"
+                                   name="btn_submit"
+                                   value="Submit Assignment"
+                                   style="
+                                    background:#ff7a00;
+                                    color:white;
+                                    padding:13px 28px;
+                                    border:none;
+                                    border-radius:12px;
+                                    font-weight:600;
+                                    letter-spacing:0.3px;
+                                    box-shadow:0 6px 18px rgba(255,122,0,0.25);
+                                   ">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'User:ViewAssignments' %}"
 </script>
 {% endif %}
+
 {% endblock content %}
+
+

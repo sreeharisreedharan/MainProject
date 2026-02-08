@@ -1,30 +1,79 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Books</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <h2>My Books</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Book Name</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.book.book_title}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+
+<section class="section_padding" style="padding-top:85px; padding-bottom:90px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-5">
+                    <h2 style="margin-bottom:14px;">My Books</h2>
+                    <p style="margin-top:8px;">
+                        View the list of books issued to your account
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="card shadow-sm border-0" style="border-radius:18px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="table-responsive">
+                                <table class="table align-middle table-hover">
+
+                                    <thead>
+                                        <tr style="background:#fff7ef;">
+                                            <th width="90" style="font-weight:600;">SINO</th>
+                                            <th style="font-weight:600;">Book Name</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in data %}
+                                        <tr>
+                                            <td>
+                                                <span class="font-weight-bold">
+                                                    {{forloop.counter}}
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span style="font-size:15px;">
+                                                    {{i.book.book_title}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="2" class="text-center text-muted py-4">
+                                                No books currently issued
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% endblock content %}
+

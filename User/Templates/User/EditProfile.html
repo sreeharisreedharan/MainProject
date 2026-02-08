@@ -2,49 +2,102 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-</head>
-<body>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Name</td>
-                <td><input required type="text" value="{{data.user_name}}" name="txt_name"  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" id=""></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input required type="email"  value="{{data.user_email}}" name="txt_email" id=""></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text" value="{{data.user_contact}}" name="txt_contact" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id=""></td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td><input  required type="text" value="{{data.user_address}}" name="txt_address" placeholder="Enter Your Address" id=""></td>
-            </tr>
-            <tr>
-                <td>Choose Photo</td>
-                <td><input  type="file" value="{{data.user_photo}}" name="file_photo" id=""></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="txt_submit" value="Update"></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+<section class="section_padding" style="padding-top:95px; padding-bottom:80px;">
+    <div class="container">
+
+        <!-- Title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-4">
+                    <h2>Edit Profile</h2>
+                    <p style="margin-top:15px;">
+                        Update your personal information
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="card border-0 shadow-lg" style="border-radius:12px;">
+                    <div class="card-body p-5">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Name</label>
+                                <input required
+                                       type="text"
+                                       class="form-control"
+                                       value="{{data.user_name}}"
+                                       name="txt_name"
+                                       title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter"
+                                       pattern="^[A-Z]+[a-zA-Z ]*$">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="font-weight-bold">Email</label>
+                                <input required
+                                       type="email"
+                                       class="form-control"
+                                       value="{{data.user_email}}"
+                                       name="txt_email">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="font-weight-bold">Contact</label>
+                                <input type="text"
+                                       class="form-control"
+                                       value="{{data.user_contact}}"
+                                       name="txt_contact"
+                                       pattern="[7-9]{1}[0-9]{9}"
+                                       title="Phone number with 7-9 and remaining 9 digit with 0-9">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="font-weight-bold">Address</label>
+                                <input required
+                                       type="text"
+                                       class="form-control"
+                                       value="{{data.user_address}}"
+                                       name="txt_address"
+                                       placeholder="Enter Your Address">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="font-weight-bold">Choose Photo</label>
+                                <input type="file"
+                                       class="form-control-file"
+                                       name="file_photo">
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <input type="submit"
+                                       name="txt_submit"
+                                       value="Update"
+                                       class="btn btn_1 px-5">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'User:MyProfile' %}"
 </script>
 {% endif %}
+
 {% endblock content %}
+

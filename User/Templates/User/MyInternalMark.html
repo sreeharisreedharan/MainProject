@@ -1,68 +1,147 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Internal Mark</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Semester</td>
-                <td><select name="sel_semester" id="sel_semester">
-                    <option value="">Select Semester</option>
-                    {% for i in semester %}
-                    <option value="{{i.id}}">{{i.semester_name}}</option>
-                    {% endfor %}
-                </select></td>
-                <td>Subject</td>
-                <td><select name="sel_subject" id="sel_subject">
-                    <option value="">Select Subject</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td colspan="4" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
-            </tr>
-        </table>
-        <h2>INTERNAL MARK</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Semester</td>
-                <td>Subject</td>
-                <td>Internal Mark</td>
-                
-            </tr>
-            {% for i in internalmark %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.subject.semester.semester_name}}</td>
-                <td>{{i.subject.subject_name}}</td>
-                <td>{{i.internalmark_mark}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
-<!-- jQuery & AJAX -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-    $("#sel_semester").change(function () {
-      var semid = $(this).val();
-      var ur = "{% url 'User:AjaxSubject' %}";
-      $.ajax({
-        url: ur,
-        data: { semid: semid },
-        success: function (data) {
-          $("#sel_subject").html(data);
-        },
-      });
-    });
-  </script>
-  {% endblock content %}
+
+<section class="section_padding" style="padding-top:90px; padding-bottom:110px;">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-5">
+                    <h2 style="margin-bottom:32px;">Internal Marks</h2>
+                    <p style="margin-top:-20px; font-size:15px; color:#666;">
+                        Check your semester and subject wise internal scores
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+
+                <div class="card border-0 shadow-sm" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-weight:600;">Semester</label>
+                                    <select name="sel_semester" id="sel_semester" class="form-control">
+                                        <option value="">Select Semester</option>
+                                        {% for i in semester %}
+                                        <option value="{{i.id}}">{{i.semester_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-weight:600;">Subject</label>
+                                    <select name="sel_subject" id="sel_subject" class="form-control">
+                                        <option value="">Select Subject</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 text-center mt-3">
+                                    <input type="submit"
+                                           name="btn_submit"
+                                           value="View Marks"
+                                           class="btn btn_1 px-5">
+                                </div>
+
+                            </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <div class="card border-0 shadow" style="border-radius:20px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <h5 style="font-weight:700; margin-bottom:22px;">
+                            Internal Mark Details
+                        </h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+                                    <tr style="background:#fff7ef;">
+                                        <th width="90">SINO</th>
+                                        <th>Semester</th>
+                                        <th>Subject</th>
+                                        <th width="160">Internal Mark</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for i in internalmark %}
+                                    <tr>
+                                        <td class="font-weight-bold">
+                                            {{forloop.counter}}
+                                        </td>
+
+                                        <td>
+                                            {{i.subject.semester.semester_name}}
+                                        </td>
+
+                                        <td>
+                                            {{i.subject.subject_name}}
+                                        </td>
+
+                                        <td>
+                                            <span class="badge badge-primary px-3 py-2">
+                                                {{i.internalmark_mark}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">
+                                            No marks available for selected filter
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- jQuery & AJAX (unchanged logic) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$("#sel_semester").change(function () {
+  var semid = $(this).val();
+  var ur = "{% url 'User:AjaxSubject' %}";
+  $.ajax({
+    url: ur,
+    data: { semid: semid },
+    success: function (data) {
+      $("#sel_subject").html(data);
+    },
+  });
+});
+</script>
+
+{% endblock content %}

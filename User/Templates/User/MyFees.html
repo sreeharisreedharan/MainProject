@@ -1,49 +1,90 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Fees</title>
-</head>
-<body>
 
-{% for f in fees %}
-<h3>
-    Semester: {{ f.semester.semester_name }} |
-    Total: {{ f.total_amount }} |
-    Paid: {{ f.paid }} |
-    Remaining: {{ f.remaining }} |
-    Status:
-    {% if f.remaining == 0 %}
-        Completed
-    {% else %}
-        Pending
-    {% endif %}
-</h3>
+<section class="section_padding" style="padding-top:90px; padding-bottom:90px;">
+    <div class="container">
 
-<table border="1" width="70%">
-    <tr>
-        <th>Sl No</th>
-        <th>Payment Date</th>
-        <th>Amount Paid</th>
-    </tr>
+        <!-- Section Title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="section_tittle mb-5">
+                    <h2 style="margin-bottom:28px;">My Fees</h2>
+                    <p style="margin-top:-12px;">
+                        View semester-wise fee status and payment history
+                    </p>
+                </div>
+            </div>
+        </div>
 
-    {% for p in f.payments.all %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ p.payment_date }}</td>
-        <td>{{ p.amount }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="3">No payments done yet</td>
-    </tr>
-    {% endfor %}
-</table>
-<br>
-{% endfor %}
+        {% for f in fees %}
 
-</body>
-</html>
+        <!-- Semester Fee Card -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10">
+
+                <div class="card border-0 shadow-sm" style="border-radius:18px;">
+                    <div class="card-body p-4 p-lg-5">
+
+                        <!-- Fee Summary -->
+                        <h5 style="font-weight:600; margin-bottom:18px;">
+                            Semester: {{ f.semester.semester_name }}
+                        </h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3"><strong>Total:</strong> {{ f.total_amount }}</div>
+                            <div class="col-md-3"><strong>Paid:</strong> {{ f.paid }}</div>
+                            <div class="col-md-3"><strong>Remaining:</strong> {{ f.remaining }}</div>
+                            <div class="col-md-3">
+                                <strong>Status:</strong>
+                                {% if f.remaining == 0 %}
+                                    <span class="badge badge-success px-3 py-2">Completed</span>
+                                {% else %}
+                                    <span class="badge badge-warning px-3 py-2">Pending</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Payments Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+
+                                <thead>
+                                    <tr style="background:#fff7ef;">
+                                        <th width="90">Sl No</th>
+                                        <th>Payment Date</th>
+                                        <th>Amount Paid</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for p in f.payments.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ p.payment_date }}</td>
+                                        <td>{{ p.amount }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-3">
+                                            No payments done yet
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</section>
+
 {% endblock content %}

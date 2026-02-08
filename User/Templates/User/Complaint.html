@@ -1,63 +1,141 @@
 {% extends 'User/Header.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Complaint</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Title</td>
-                <td><input  required type="text" name="txt_title" placeholder="Eneter Complaint Title" id="" value="{{editdata.complaint_title}}"></td>
-            </tr>
-            <tr>
-                <td>Content</td>
-                <td><input required type="text" name="txt_content" placeholder="Eneter Complaint Content" id="" value="{{editdata.complaint_content}}"></td>
-            </tr>
-            <tr> 
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Submit"></td>
-            </tr>
 
-        </table>
+<section class="section_padding" style="padding-top:120px; padding-bottom:80px;">
+    <div class="container">
 
-        <h2>Complaints Registered</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Title</td>
-                <td>Complaint</td>
-                <td>Reply</td>
-                <td>Action</td>
-            </tr>
-            {% for i in complaintdata %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.complaint_title}}</td>
-                <td>{{i.complaint_content}}</td>
-                <td>{% if i.complaint_status == 0 %}
-                    Pending
-                    {% else %}
-                    {{i.complaint_reply}}
-                    {% endif %}
-                </td>
-                <td><a href="{% url 'User:delcomplaint' i.id %}">Delete</a>||<a href="{% url 'User:editcomplaint' i.id %}">Edit</a></td>
-                
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+        <!-- Title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-4">
+                    <h2>Complaint & Support</h2>
+                    <p style="margin-top:15px;">
+                        Submit your complaints and track responses
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <!-- Complaint Form Card -->
+                    <div class="card border-0 shadow-lg mb-5" style="border-radius:12px;">
+                        <div class="card-body p-4">
+
+                            <h5 class="mb-4 font-weight-bold">
+                                Submit Complaint
+                            </h5>
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">
+                                    Title
+                                </label>
+                                <input required
+                                       type="text"
+                                       name="txt_title"
+                                       class="form-control"
+                                       placeholder="Enter Complaint Title"
+                                       value="{{editdata.complaint_title}}">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="font-weight-bold">
+                                    Content
+                                </label>
+                                <input required
+                                       type="text"
+                                       name="txt_content"
+                                       class="form-control"
+                                       placeholder="Enter Complaint Content"
+                                       value="{{editdata.complaint_content}}">
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <input type="submit"
+                                       name="btn_submit"
+                                       value="Submit"
+                                       class="btn btn_1 px-5">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Complaint List Card -->
+                    <div class="card border-0 shadow-lg" style="border-radius:12px;">
+                        <div class="card-body p-4">
+
+                            <h5 class="mb-4 font-weight-bold">
+                                Complaints Registered
+                            </h5>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered align-middle">
+                                    <thead style="background:#f7f7f7;">
+                                        <tr>
+                                            <th>SINO</th>
+                                            <th>Title</th>
+                                            <th>Complaint</th>
+                                            <th>Reply</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in complaintdata %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{i.complaint_title}}</td>
+                                            <td>{{i.complaint_content}}</td>
+
+                                            <td>
+                                                {% if i.complaint_status == 0 %}
+                                                    <span class="badge badge-warning px-3 py-2">
+                                                        Pending
+                                                    </span>
+                                                {% else %}
+                                                    {{i.complaint_reply}}
+                                                {% endif %}
+                                            </td>
+
+                                            <td>
+                                                <a href="{% url 'User:delcomplaint' i.id %}"
+                                                   class="btn btn-sm btn-outline-danger">
+                                                   Delete
+                                                </a>
+
+                                                <a href="{% url 'User:editcomplaint' i.id %}"
+                                                   class="btn btn-sm btn-outline-primary ml-2">
+                                                   Edit
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'User:Complaint' %}"
 </script>
 {% endif %}
+
 {% endblock content %}
