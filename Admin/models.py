@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class tbl_district(models.Model):
@@ -95,10 +96,12 @@ class tbl_timetable(models.Model):
     subject = models.ForeignKey(tbl_subject,on_delete=models.CASCADE)
     staff = models.ForeignKey(tbl_staff,on_delete=models.CASCADE)
 
-class tbl_info(models.Model):
-    info_title=models.CharField(max_length=50)
-    info_details=models.CharField(max_length=200)
-    info_file=models.FileField(upload_to="Assets/Admin/Photo")
+class tbl_announcement(models.Model):
+    announcement_title=models.CharField(max_length=50)
+    announcement_details=models.CharField(max_length=200)
+    announcement_date=models.DateField(auto_now_add=True)
+    announcement_status=models.IntegerField(default=0)
+    announcement_file=models.FileField(upload_to="Assets/Admin/Photo")
 
 
 class tbl_stock(models.Model):
@@ -110,3 +113,4 @@ class tbl_addon(models.Model):
     course=models.ForeignKey(tbl_course,on_delete=models.CASCADE)
     addon_amount=models.CharField(max_length=200)
     
+

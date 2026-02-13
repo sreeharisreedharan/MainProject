@@ -102,135 +102,143 @@
 
 <body>
 
-<h2 class="page-title">Staff Registration</h2>
+    <h2 class="page-title">Staff Registration</h2>
 
-<div class="form-wrapper">
-<form method="POST" enctype="multipart/form-data">
-{% csrf_token %}
+    <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-<table>
-<tr>
-<td>Name</td>
-<td><input type="text" required name="txt_name" pattern="^[A-Z]+[a-zA-Z ]*$"></td>
-</tr>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" required name="txt_name" pattern="^[A-Z]+[a-zA-Z ]*$"></td>
+                </tr>
 
-<tr>
-<td>Email</td>
-<td><input type="email" required name="txt_email"></td>
-</tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="email" required name="txt_email"></td>
+                </tr>
 
-<tr>
-<td>Contact</td>
-<td><input type="text" required pattern="[7-9]{1}[0-9]{9}" name="txt_contact"></td>
-</tr>
+                <tr>
+                    <td>Contact</td>
+                    <td><input type="text" required pattern="[7-9]{1}[0-9]{9}" name="txt_contact"></td>
+                </tr>
 
-<tr>
-<td>Photo</td>
-<td><input type="file" required name="file_photo"></td>
-</tr>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type="file" required name="file_photo"></td>
+                </tr>
 
-<!-- Gender LEFT aligned with more spacing -->
-<tr>
-<td>Gender</td>
-<td style="text-align:left" class="radio-group">
-<label><input type="radio" required name="txt_gender" value="Male"> Male</label>
-<label><input type="radio" name="txt_gender" value="Female"> Female</label>
-</td>
-</tr>
+                <!-- Gender LEFT aligned with more spacing -->
+                <tr>
+                    <td>Gender</td>
+                    <td style="text-align:left" class="radio-group">
+                        <label><input type="radio" required name="txt_gender" value="Male"> Male</label>
+                        <label><input type="radio" name="txt_gender" value="Female"> Female</label>
+                    </td>
+                </tr>
 
-<tr>
-<td>DOB</td>
-<td><input type="date" required name="txt_date"></td>
-</tr>
+                <tr>
+                    <td>DOB</td>
+                    <td><input type="date" required name="txt_date"></td>
+                </tr>
 
-<tr>
-<td>Qualification</td>
-<td><input type="text" required name="txt_qualification"></td>
-</tr>
+                <tr>
+                    <td>Qualification</td>
+                    <td><input type="text" required name="txt_qualification"></td>
+                </tr>
 
-<!-- Role LEFT aligned with more spacing -->
-<tr>
-<td>Role</td>
-<td style="text-align:left" class="radio-group">
-<label><input type="radio" required name="txt_role" value="1"> Teacher</label>
-<label><input type="radio" name="txt_role" value="2"> Office Staff</label>
-<label><input type="radio" name="txt_role" value="3"> Librarian</label>
-</td>
-</tr>
+                <!-- Role LEFT aligned with more spacing -->
+                <tr>
+                    <td>Role</td>
+                    <td style="text-align:left" class="radio-group">
+                        <label><input type="radio" required name="txt_role" value="1"> Teacher</label>
+                        <label><input type="radio" name="txt_role" value="2"> Office Staff</label>
+                        <label><input type="radio" name="txt_role" value="3"> Librarian</label>
+                    </td>
+                </tr>
 
-<tr>
-<td>Department</td>
-<td>
-<select required name="sel_department">
-<option value="">Select Department</option>
-{% for i in departmentdata %}
-<option value="{{i.id}}">{{i.department_name}}</option>
-{% endfor %}
-</select>
-</td>
-</tr>
+                <tr>
+                    <td>Department</td>
+                    <td>
+                        <select required name="sel_department">
+                            <option value="">Select Department</option>
+                            {% for i in departmentdata %}
+                            <option value="{{i.id}}">{{i.department_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
 
-<tr>
-<td>Password</td>
-<td>
-<input type="text" required name="txt_password"
-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-</td>
-</tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input type="text" required name="txt_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                    </td>
+                </tr>
 
-<tr>
-<td colspan="2" align="center">
-<input type="submit" name="btn_submit" value="Submit">
-</td>
-</tr>
-</table>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" name="btn_submit" value="Submit">
+                    </td>
+                </tr>
+            </table>
 
-</form>
-</div>
+        </form>
+    </div>
 
-<div class="staff-table-wrapper">
-<table>
-<tr>
-<th>SINO</th>
-<th>Name</th>
-<th>Email</th>
-<th>Contact</th>
-<th>Photo</th>
-<th>Gender</th>
-<th>DOB</th>
-<th>Qualification</th>
-<th>Role</th>
-<th>Department</th>
-<th>Password</th>
-<th>Action</th>
-</tr>
+    <div class="staff-table-wrapper">
+        <table>
+            <tr>
+                <th>SINO</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Photo</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Qualification</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Password</th>
+                <th>Action</th>
+            </tr>
 
-{% for i in staff %}
-<tr>
-<td>{{forloop.counter}}</td>
-<td>{{i.staff_name}}</td>
-<td>{{i.staff_email}}</td>
-<td>{{i.staff_contact}}</td>
-<td><img width="50" src="{{i.staff_photo.url}}"></td>
-<td>{{i.staff_gender}}</td>
-<td>{{i.staff_dob}}</td>
-<td>{{i.staff_qualification}}</td>
-<td>{{i.staff_role}}</td>
-<td>{{i.department.department_name}}</td>
-<td>{{i.staff_password}}</td>
-<td><a href="{% url 'Admin:delstaff' i.id%}">Delete</a></td>
-</tr>
-{% endfor %}
-</table>
-</div>
+            {% for i in staff %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.staff_name}}</td>
+                <td>{{i.staff_email}}</td>
+                <td>{{i.staff_contact}}</td>
+                <td><img width="50" src="{{i.staff_photo.url}}"></td>
+                <td>{{i.staff_gender}}</td>
+                <td>{{i.staff_dob}}</td>
+                <td>{{i.staff_qualification}}</td>
+                <td>
+                    {% if i.staff_role == 1 %}
+                    Teacher
+                    {% elif i.staff_role == 2 %}
+                    Office Staff
+                    {% elif i.staff_role == 3 %}
+                    Librarian
+                    {% endif %}
+                </td>
+                <td>{{i.department.department_name}}</td>
+                <td>{{i.staff_password}}</td>
+                <td><a href="{% url 'Admin:delstaff' i.id%}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 
 </body>
+
 </html>
 
 {% if msg %}
 <script>
-alert("{{msg}}");
-window.location="{% url 'Admin:StaffRegistration' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:StaffRegistration' %}"
 </script>
 {% endif %}
 

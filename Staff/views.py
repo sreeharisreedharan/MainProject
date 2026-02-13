@@ -646,3 +646,7 @@ def ExamMark(request,uid):
 def delExamMark(request,did):
     tbl_exammark.objects.get(id=did).delete()
     return redirect("Staff:ViewClass")
+
+def ViewAnnouncement(request):
+    data=tbl_announcement.objects.all()
+    return render(request,"Staff/ViewAnnouncement.html",{'data':data})

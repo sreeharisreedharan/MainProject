@@ -1,54 +1,178 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>information</title>
+    <title>Announcements</title>
+
+<style>
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 25px 0;
+    color: #e3f2fd;
+}
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+    color: #90caf9;
+}
+
+/* Center wrapper (prevents sidebar overlap) */
+.center-box {
+    width: 92%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* Admin styled tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.95);
+    color: #e3f2fd;
+    box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    margin-bottom: 25px;
+}
+
+/* Header row */
+table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+table td {
+    border: 1px solid #3a6a8f;
+    padding: 12px;
+    text-align: center;
+}
+
+/* Hover */
+table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+/* Inputs */
+input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #3a6a8f;
+    background: #0b1727;
+    color: #e3f2fd;
+}
+
+/* Button */
+input[type="submit"] {
+    background: linear-gradient(45deg, #1976d2, #42a5f5);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    width: 180px;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(45deg, #42a5f5, #1976d2);
+}
+
+/* Links */
+table a {
+    color: #4fc3f7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #81d4fa;
+}
+
+</style>
+
 </head>
+
 <body>
+
+<h2 class="page-title">Manage Announcements</h2>
+
+<div class="center-box">
+
+    <h3 class="section-title">Add New Announcement</h3>
+
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <table border="1">
+        <table>
             <tr>
                 <td>Title</td>
-                <td><input type="text" placeholder="Enter Title" required name="txt_title" id=""></td>
+                <td><input type="text" placeholder="Enter Title" required name="txt_title"></td>
             </tr>
             <tr>
                 <td>Details</td>
-                <td><input type="text" required placeholder="Enter Details" name="txt_details" id=""></td>
+                <td><input type="text" required placeholder="Enter Details" name="txt_details"></td>
             </tr>
             <tr>
                 <td>File</td>
-                <td><input type="file" required placeholder="Upload File" name="file_information" id=""></td>
+                <td><input type="file" required name="file_information"></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" id="" value="Submit"></td>
+                <td colspan="2">
+                    <input type="submit" name="btn_submit" value="Submit">
+                </td>
             </tr>
         </table>
     </form>
-    <table border="1">
+
+    <h3 class="section-title">Existing Announcements</h3>
+
+    <table>
         <tr>
             <td>SINO</td>
             <td>Title</td>
             <td>Details</td>
+            <td>Date</td>
             <td>File</td>
             <td>Action</td>
         </tr>
+
         {% for i in data %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{i.info_title}}</td>
-            <td>{{i.info_details}}</td>
-            <td><a href="{{i.info_file.url}}">view</a></td>
-            <td><a href="{% url 'Admin:delinfo' i.id %}">Delete</a></td>
+            <td>{{i.announcement_title}}</td>
+            <td>{{i.announcement_details}}</td>
+            <td>{{i.announcement_date}}</td>
+            <td><a href="{{i.announcement_file.url}}">View</a></td>
+            <td><a href="{% url 'Admin:delannouncement' i.id %}">Delete</a></td>
         </tr>
         {% endfor %}
     </table>
+
+</div>
+
 </body>
 </html>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location="{% url 'Admin:Announcement' %}"
 </script>
 {% endif %}
+
+{% endblock content %}

@@ -70,10 +70,13 @@ urlpatterns = [
     path('Accept/<int:aid>',views.Accept,name="Accept"),
     path('Reject/<int:rid>',views.Reject,name="Reject"),
     path('Announcement/',views.Announcement,name="Announcement"),
-    path('delinfo/<int:did>',views.delinfo,name="delinfo"),
+    path('delannouncement/<int:did>',views.delannouncement,name="delannouncement"),
     path('FeeList/<int:id>',views.FeeList,name="FeeList"),
     path('Payment/<int:id>',views.Payment,name="Payment"),
     path('AddOn/',views.AddOn,name="AddOn"),
+    path('Notification/<int:uid>',views.Notification,name="Notification"),
+     path('delnotification/<int:did>',views.delnotification,name='delnotification'),
+
     
 
 

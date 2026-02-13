@@ -1,0 +1,60 @@
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section_padding" style="padding-top:100px; padding-bottom:80px;">
+    <div class="container">
+
+        <!-- Title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-4">
+                    <h2>Notifications</h2>
+                    <p style="margin-top:10px;">
+                        Stay updated with your latest notifications
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="card border-0 shadow-lg" style="border-radius:12px;">
+                    <div class="card-body p-4">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover mb-0">
+                                    <tr style="background:#f7f9fc; font-weight:600;">
+                                        <td width="10%">SINO</td>
+                                        <td width="25%">Date</td>
+                                        <td>Notification</td>
+                                    </tr>
+
+                                    {% for i in data %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{i.notification_date}}</td>
+                                        <td>{{i.notification_content}}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </table>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}

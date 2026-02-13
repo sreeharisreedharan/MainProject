@@ -1,30 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Announcement</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        <h2>Announcements</h2>
-        <table border="1">
-            <tr>
-                <td>SINO</td>
-                <td>Title</td>
-                <td>Details</td>
-                <td>File</td>
-            </tr>
-            {% for i in data %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.info_title}}</td>
-                <td>{{i.info_details}}</td>
-                <td><a href="{{i.info_file.url}}">view</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-</body>
-</html>
+{% extends 'User/Header.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section_padding" style="padding-top:100px; padding-bottom:80px;">
+    <div class="container">
+
+        <!-- Title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section_tittle mb-4">
+                    <h2>Announcements</h2>
+                    <p style="margin-top:10px;">
+                        Latest announcements and shared files
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="card border-0 shadow-lg" style="border-radius:12px;">
+                    <div class="card-body p-4">
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover text-center mb-0">
+                                    <thead style="background:#f7f9ff;">
+                                        <tr>
+                                            <th>SINO</th>
+                                            <th>Title</th>
+                                            <th>Details</th>
+                                            <th>Date</th>
+                                            <th>File</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in data %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{i.announcement_title}}</td>
+                                            <td>{{i.announcement_details}}</td>
+                                            <td>{{i.announcement_date}}</td>
+                                            <td>
+                                                <a href="{{i.announcement_file.url}}" class="btn btn-sm btn-outline-primary">
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}

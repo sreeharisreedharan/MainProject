@@ -50,6 +50,7 @@ urlpatterns = [
     path('ViewBooks/',views.ViewBooks,name="ViewBooks"),
     path('ExamMark/<int:uid>',views.ExamMark,name="ExamMark"),
     path('delExamMark/<int:did>',views.delExamMark,name="delExamMark"),
+    path('ViewAnnouncement/', views.ViewAnnouncement, name="ViewAnnouncement"),
 
 
 

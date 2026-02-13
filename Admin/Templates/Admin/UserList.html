@@ -192,7 +192,7 @@ table img {
             <td>{{i.place.district.district_name}}</td>
             <td>{{i.place.place_name}}</td>
             <td><img width="40" src="{{i.user_photo.url}}" alt=""></td>
-            <td><a href="{% url 'Admin:FeeList' i.id %}">Fee List</a></td>
+            <td><a href="{% url 'Admin:FeeList' i.id %}">Fee List</a> <a href="{% url 'Admin:Notification' i.id %}">Message</a></td>
         </tr>
         {% endfor %}
     </table>

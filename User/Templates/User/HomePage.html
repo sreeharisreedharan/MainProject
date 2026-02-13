@@ -58,7 +58,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
-                        <a class="navbar-brand" href="index.html"> <img src="{%static 'User/img/logo.png' %}" alt="logo"> </a>
+                        <a class="navbar-brand" href="index.html"> <img src="{%static 'User/img/logo.png' %}"
+                                alt="logo"> </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -75,29 +76,91 @@
                                     <a class="nav-link" href="{% url 'User:MyProfile' %}">My Profile</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Student Information
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{% url 'User:MyFees' %}">View Fee Status</a>
-                                        <a class="dropdown-item" href="{% url 'User:MyInternalMark' %}">View Internal mark</a>
+                                        <a class="dropdown-item" href="{% url 'User:MyInternalMark' %}">View Internal
+                                            mark</a>
                                         <a class="dropdown-item" href="{% url 'User:MyBooks' %}">My Books</a>
-                                        <a class="dropdown-item" href="{% url 'User:CertificateRequest' %}">Certificates</a>
+                                        <a class="dropdown-item"
+                                            href="{% url 'User:CertificateRequest' %}">Certificates</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Other
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{% url 'User:ViewBook' %}">Library</a>
-                                        <a class="dropdown-item" href="{% url 'User:ViewTimeTable' %}">View Timetable</a>
-                                        <a class="dropdown-item" href="{% url 'User:ViewAssignments' %}">View Assignments</a>
-                                        <a class="dropdown-item" href="{% url 'User:ViewNotes' %}">View Notes</a>   
+                                        <a class="dropdown-item" href="{% url 'User:ViewTimeTable' %}">View
+                                            Timetable</a>
+                                        <a class="dropdown-item" href="{% url 'User:ViewAssignments' %}">View
+                                            Assignments</a>
+                                        <a class="dropdown-item" href="{% url 'User:ViewNotes' %}">View Notes</a>
+                                        <a class="dropdown-item notification-link"
+                                            href="{% url 'User:ViewNotification' %}">
+                                            View Notifications
+                                            {% if count > 0 %}
+                                            <span class="notify-badge">{{count}}</span>
+                                            {% endif %}
+                                        </a>
+
+                                        <style>
+                                            /* Notification dropdown item */
+                                            .notification-link {
+                                                display: flex;
+                                                justify-content: space-between;
+                                                align-items: center;
+                                            }
+
+                                            /* Count badge */
+                                            .notify-badge {
+                                                background: #e53935;
+                                                color: #fff;
+                                                font-size: 12px;
+                                                font-weight: 700;
+                                                padding: 3px 8px;
+                                                border-radius: 12px;
+                                                min-width: 22px;
+                                                text-align: center;
+                                                box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+                                            }
+                                        </style>
+
+                                        <style>
+                                            /* unread badge */
+                                            .announce-badge {
+                                                background: #ff5252;
+                                                color: #fff;
+                                                font-size: 11px;
+                                                font-weight: 700;
+                                                padding: 3px 8px;
+                                                border-radius: 50px;
+                                                margin-left: 8px;
+                                                vertical-align: middle;
+                                                display: inline-block;
+                                                line-height: 1;
+                                            }
+                                        </style>
+
+                                        <a class="dropdown-item" href="{% url 'User:ViewAnnouncement' %}">
+                                            View Announcements
+                                            {% if announcement > 0 %}
+                                            <span class="announce-badge">{{announcement}}</span>
+                                            {% endif %}
+                                        </a>
+
+
+
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Complaint & Feedback
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -269,7 +332,9 @@
                         <div class="special_cource_text">
                             <a href="course-details.html" class="btn_4">Web Development</a>
                             <h4>$130.00</h4>
-                            <a href="course-details.html"><h3>Web Development</h3></a>
+                            <a href="course-details.html">
+                                <h3>Web Development</h3>
+                            </a>
                             <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
                             <div class="author_info">
                                 <div class="author_img">
@@ -300,7 +365,9 @@
                         <div class="special_cource_text">
                             <a href="course-details.html" class="btn_4">design</a>
                             <h4>$160.00</h4>
-                            <a href="course-details.html"> <h3>Web UX/UI Design </h3></a>
+                            <a href="course-details.html">
+                                <h3>Web UX/UI Design </h3>
+                            </a>
                             <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
                             <div class="author_info">
                                 <div class="author_img">
@@ -331,7 +398,9 @@
                         <div class="special_cource_text">
                             <a href="course-details.html" class="btn_4">Wordpress</a>
                             <h4>$140.00</h4>
-                            <a href="course-details.html">  <h3>Wordpress Development</h3> </a> 
+                            <a href="course-details.html">
+                                <h3>Wordpress Development</h3>
+                            </a>
                             <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
                             <div class="author_info">
                                 <div class="author_img">
@@ -540,7 +609,8 @@
                                 <a href="blog.html">
                                     <h5 class="card-title">Dry beginning sea over tree</h5>
                                 </a>
-                                <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
+                                <p>Which whose darkness saying were life unto fish wherein all fish of together called
+                                </p>
                                 <ul>
                                     <li> <span class="ti-comments"></span>2 Comments</li>
                                     <li> <span class="ti-heart"></span>2k Like</li>
@@ -558,7 +628,8 @@
                                 <a href="blog.html">
                                     <h5 class="card-title">All beginning air two likeness</h5>
                                 </a>
-                                <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
+                                <p>Which whose darkness saying were life unto fish wherein all fish of together called
+                                </p>
                                 <ul>
                                     <li> <span class="ti-comments"></span>2 Comments</li>
                                     <li> <span class="ti-heart"></span>2k Like</li>
@@ -576,7 +647,8 @@
                                 <a href="blog.html">
                                     <h5 class="card-title">Form day seasons sea hand</h5>
                                 </a>
-                                <p>Which whose darkness saying were life unto fish wherein all fish of together called</p>
+                                <p>Which whose darkness saying were life unto fish wherein all fish of together called
+                                </p>
                                 <ul>
                                     <li> <span class="ti-comments"></span>2 Comments</li>
                                     <li> <span class="ti-heart"></span>2k Like</li>
@@ -646,9 +718,14 @@
                     <div class="copyright_part_text text-center">
                         <div class="row">
                             <div class="col-lg-12">
-                                <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                                <p class="footer-text m-0">
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;
+                                    <script>document.write(new Date().getFullYear());</script> All rights reserved |
+                                    This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a
+                                        href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </p>
                             </div>
                         </div>
                     </div>

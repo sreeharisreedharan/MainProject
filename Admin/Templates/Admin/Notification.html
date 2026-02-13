@@ -1,0 +1,171 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Management</title>
+
+<style>
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 25px 0;
+    color: #e3f2fd;
+}
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+    color: #90caf9;
+}
+
+/* Center container */
+.center-box {
+    width: 95%;
+    margin: auto;
+}
+
+/* Admin styled tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.95);
+    color: #e3f2fd;
+    box-shadow: 0 0 14px rgba(0,0,0,0.35);
+    margin-bottom: 25px;
+}
+
+/* Header row */
+table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+table td {
+    border: 1px solid #3a6a8f;
+    padding: 12px;
+}
+
+/* Hover effect */
+table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+/* Text input */
+input[type="text"] {
+    width: 100%;
+    padding: 9px;
+    border-radius: 6px;
+    border: 1px solid #3a6a8f;
+    background: #0b1727;
+    color: #e3f2fd;
+}
+
+/* Submit button */
+input[type="submit"] {
+    width: 200px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(45deg, #1976d2, #42a5f5);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(45deg, #42a5f5, #1976d2);
+}
+
+/* Links */
+table a {
+    color: #4fc3f7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #81d4fa;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2 class="page-title">Student Notification Panel</h2>
+
+<form method="POSt">
+{% csrf_token %}
+
+<div class="center-box">
+
+    <h3 class="section-title">Create Notification</h3>
+
+    <table border="1">
+        <tr>
+            <td>Content</td>
+            <td><input type="text" name="txt_content" id=""></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" name="btn_submit" value="Submit" id="">
+            </td>
+        </tr>
+    </table>
+
+    <h3 class="section-title">Notification History</h3>
+
+    <table border="1">
+        <tr>
+            <td>SINO</td>
+            <td>Student</td>
+            <td>Departmet</td>
+            <td>Date</td>
+            <td>Message</td>
+            <td>Action</td>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.student.user_name}}</td>
+            <td>{{i.student.assignclass.classid.course.department.department_name}}</td>
+            <td>{{i.notification_date}}</td>
+            <td>{{i.notification_content}}</td>
+            <td>
+                <a href="{% url 'Admin:delnotification' i.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</form>
+
+</body>
+</html>
+
+{% if msg %}
+<script>
+alert("{{msg}}");
+window.location="{% url 'Admin:UserList' %}"
+</script>
+{% endif %}
+
+{% endblock content %}

@@ -372,8 +372,15 @@ def delclass(request,did):
     return redirect("Admin:Class")
 
 def StaffList(request):
-    data=tbl_staff.objects.all()
-    return render(request, "Admin/StaffList.html", {'data':data})
+    departmentdata=tbl_department.objects.all()
+    if request.method == "POST":
+        departmentid=request.POST.get('sel_department')
+        data=tbl_staff.objects.filter(department=departmentid)
+        return render(request, "Admin/StaffList.html", {'data':data,'departmentdata':departmentdata})
+    else:
+        return render(request,"Admin/StaffList.html",{'departmentdata':departmentdata})
+
+
 
 def AssignClass(request,aid):
     departmentdata=tbl_department.objects.all()
@@ -671,18 +678,18 @@ def Reject(request,rid):
     return redirect("Admin:ViewLeaveRequest")
 
 def Announcement(request):
-    data=tbl_info.objects.all()
+    data=tbl_announcement.objects.all()
     if request.method =="POST":
         title=request.POST.get("txt_title")
         details=request.POST.get("txt_details")
         file=request.FILES.get("file_information")
-        tbl_info.objects.create(info_title=title,info_details=details,info_file=file)
+        tbl_announcement.objects.create(announcement_title=title,announcement_details=details,announcement_file=file)
         return render(request,"Admin/Announcement.html",{'msg':"Data Inserted"})
     else:
         return render(request,"Admin/Announcement.html",{'data':data})
 
-def delinfo(request,did):
-    tbl_info.objects.get(id=did).delete()
+def delannouncement(request,did):
+    tbl_announcement.objects.get(id=did).delete()
     return redirect("Admin:Announcement")
  
 def FeeList(request, id):
@@ -773,3 +780,19 @@ def AddOn(request):
         'course': course,
         'data': data
     })
+
+
+def Notification(request,uid):
+    data=tbl_notification.objects.filter(student=uid)
+    if request.method == "POST":
+        content=request.POST.get("txt_content")
+        studentid=tbl_user.objects.get(id=uid)
+        tbl_notification.objects.create(notification_content=content,student=studentid)
+        return render(request,"Admin/Notification.html",{'msg':"Message Passed",'data':data})
+    else:
+        return render(request,"Admin/Notification.html",{'data':data})
+    
+def delnotification(request,did):
+    tbl_notification.objects.get(id=did).delete()
+    return redirect("Admin:UserList")
+

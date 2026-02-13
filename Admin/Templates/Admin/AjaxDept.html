@@ -1,0 +1,145 @@
+{% extends 'Admin/Header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff List</title>
+
+<style>
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 25px 0;
+    color: #e3f2fd;
+}
+
+/* ✅ Match dropdown section width */
+.center-box {
+    width: 95%;
+    max-width: 95%;
+    margin: auto;
+}
+
+/* Ensure form does not shrink content */
+form {
+    width: 100%;
+}
+
+/* Admin styled tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(10, 25, 45, 0.95);
+    color: #e3f2fd;
+    box-shadow: 0 0 14px rgba(0,0,0,0.35);
+}
+
+/* Header row */
+table tr:first-child {
+    background: rgba(0,0,0,0.45);
+    color: #90caf9;
+    font-weight: 600;
+}
+
+/* Cells */
+table td, table th {
+    border: 1px solid #3a6a8f;
+    padding: 12px;
+    text-align: center;
+}
+
+/* Keep action links in one line */
+table td:last-child {
+    white-space: nowrap;
+}
+
+/* Hover */
+table tr:hover {
+    background: rgba(66,165,245,0.08);
+}
+
+/* Links */
+table a {
+    color: #4fc3f7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+    color: #81d4fa;
+}
+
+/* Images center */
+table img {
+    display: block;
+    margin: auto;
+    border-radius: 4px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2 class="page-title">Staff List</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="center-box">
+
+<table border="1">
+    <tr>
+        <th>SINO</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Designation</th>
+        <th>Photo</th>
+        <th>Action</th>
+    </tr>
+
+    {% for i in data %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.staff_name}}</td>
+        <td>{{i.staff_email}}</td>
+        <td>{{i.staff_contact}}</td>
+        <td>
+            {% if i.staff_role == 1 %}
+                Teacher
+            {% elif i.staff_role == 2 %}
+                Office Staff
+            {% elif i.staff_role == 3 %}
+                Librarian
+            {% endif %}
+        </td>
+        <td>
+            <img width="40" src="{{i.staff_photo.url}}" alt="">
+        </td>
+        <td>
+            <a href="{% url 'Admin:AssignClass' i.id %}">Assign Class</a>
+            <a href="{% url 'Admin:AssignSubject' i.id %}">Assign Subject</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+</form>
+
+</body>
+</html>
+
+{% endblock content %}
+

@@ -7,7 +7,11 @@ from django.db.models import Sum
 # Create your views here.
 
 def HomePage(request):
-    return render(request, 'User/HomePage.html')
+    data=tbl_notification.objects.filter(student=request.session['uid'],notification_status=0).count()
+    announcementdata=tbl_announcement.objects.filter(announcement_status=0).count()
+    return render(request, 'User/HomePage.html',{'count':data,'announcement':announcementdata})
+  
+
 
 def MyProfile(request):
     data=tbl_user.objects.get(id=request.session['uid'])
@@ -267,7 +271,10 @@ def ViewTimeTable(request):
     })
 
 def ViewAnnouncement(request):
-    data=tbl_info.objects.all()
+    data=tbl_announcement.objects.all()
+    for i in data:
+        i.announcement_status=1
+        i.save()
     return render(request,"User/ViewAnnouncement.html",{'data':data})
 
 def MyFees(request):
@@ -282,3 +289,10 @@ def MyFees(request):
     return render(request, "User/MyFees.html", {
         'fees': fees
     })
+
+def ViewNotification(request):
+    data=tbl_notification.objects.filter(student=request.session['uid'])
+    for i in data:
+        i.notification_status=1
+        i.save()
+    return render(request,"User/ViewNotification.html",{'data':data})

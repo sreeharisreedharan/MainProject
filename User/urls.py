@@ -31,6 +31,8 @@ urlpatterns = [
     path("ViewTimeTable/", views.ViewTimeTable, name="ViewTimeTable"),
     path("ViewAnnouncement/",views.ViewAnnouncement,name="ViewAnnouncement"),
     path("MyFees/",views.MyFees,name="MyFees"),
+    path("ViewNotification/",views.ViewNotification,name="ViewNotification"),
+
 
 ]
     
