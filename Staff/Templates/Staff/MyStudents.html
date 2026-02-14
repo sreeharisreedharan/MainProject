@@ -43,7 +43,7 @@
                                         <td>{{i.assignclass.classid.class_name}}</td>
                                         <td>{{i.assignclass.academicyear.academicyear_year}}</td>
                                         <td>{{i.assignclass.classid.course.course_name}}</td>
-                                        <td>action</td>
+                                        <td><a href="{% url 'Staff:ExamResult' i.id  %}">Student Result</a> <a href="{% url 'Staff:AddSCPA' i.id  %}">Add SCPA</a></td>
                                     </tr>
                                     {% empty %}
                                     <tr>

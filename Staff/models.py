@@ -74,3 +74,16 @@ class tbl_exammark(models.Model):
     exammark_mark = models.CharField(max_length=200)
     subject = models.ForeignKey(tbl_subject, on_delete=models.CASCADE)
     student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+
+class tbl_examresult(models.Model):
+    examresult_status = models.CharField(200)
+    semester = models.ForeignKey(tbl_semester, on_delete=models.CASCADE)
+    subject = models.ForeignKey(tbl_subject, on_delete=models.CASCADE)
+    student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+
+class tbl_scpa(models.Model):
+    scpa_mark = models.CharField(200)
+    scpa_status = models.CharField(200)
+    student = models.ForeignKey(tbl_user, on_delete=models.CASCADE)
+    semester = models.ForeignKey(tbl_semester, on_delete=models.CASCADE)
+    

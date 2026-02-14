@@ -796,3 +796,9 @@ def delnotification(request,did):
     tbl_notification.objects.get(id=did).delete()
     return redirect("Admin:UserList")
 
+def StudentsReport(request,uid):
+    student=tbl_user.objects.get(id=uid)
+    examresultdata=tbl_examresult.objects.filter(student=uid)
+    scpadata=tbl_scpa.objects.filter(student=uid)
+    return render(request,"Admin/StudentsReport.html",{'examresultdata':examresultdata,'scpadata':scpadata,'student':student})
+

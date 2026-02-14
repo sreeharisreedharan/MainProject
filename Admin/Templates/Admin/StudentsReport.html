@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Students Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            padding: 30px;
+        }
+
+        .report-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #444;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #219150;
+        }
+    </style>
+</head>
+
+<body>
+
+<button class="btn" onclick="downloadPDF()">Download PDF</button>
+
+<br><br>
+
+<div id="reportArea" class="report-box">
+
+    <h2>Student Academic Report</h2>
+
+    <table>
+        <tr>
+            <td><b>Student Name</b></td>
+            <td>{{student.user_name}}</td>
+        </tr>
+        <tr>
+            <td><b>Course</b></td>
+            <td>{{student.assignclass.classid.course.course_name}}</td>
+        </tr>
+    </table>
+
+    <h3>Exam Results</h3>
+
+    <table>
+        <tr>
+            <th>Semester</th>
+            <th>Subject</th>
+            <th>Status</th>
+        </tr>
+        {% for i in examresultdata %}
+        <tr>
+            <td>{{i.semester.semester_name}}</td>
+            <td>{{i.subject.subject_name}}</td>
+            <td>{{i.examresult_status}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>SCPA Details</h3>
+
+    <table>
+        <tr>
+            <th>SCPA</th>
+            <th>Remark</th>
+        </tr>
+        {% for i in scpadata %}
+        <tr>
+            <td>{{i.scpa_mark}}</td>
+            <td>{{i.scpa_status}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+<!-- PDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+function downloadPDF() {
+    var element = document.getElementById("reportArea");
+
+    var opt = {
+        margin: 0.5,
+        filename: 'student_report.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
+</script>
+
+</body>
+</html>

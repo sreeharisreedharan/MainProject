@@ -51,6 +51,11 @@ urlpatterns = [
     path('ExamMark/<int:uid>',views.ExamMark,name="ExamMark"),
     path('delExamMark/<int:did>',views.delExamMark,name="delExamMark"),
     path('ViewAnnouncement/', views.ViewAnnouncement, name="ViewAnnouncement"),
+    path('ExamResult/<int:uid>', views.ExamResult,name="ExamResult"),
+    path('AjaxExamSubjects/', views.AjaxExamSubjects,name="AjaxExamSubjects"),
+    path('AddSCPA/<int:uid>', views.AddSCPA,name="AddSCPA"),
+    path('delscpa/<int:id>/', views.delscpa,name="delscpa"),
+    path('delexamresult/<int:did>',views.delexamresult,name="delexamresult"),
 
 
 

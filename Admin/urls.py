@@ -75,7 +75,8 @@ urlpatterns = [
     path('Payment/<int:id>',views.Payment,name="Payment"),
     path('AddOn/',views.AddOn,name="AddOn"),
     path('Notification/<int:uid>',views.Notification,name="Notification"),
-     path('delnotification/<int:did>',views.delnotification,name='delnotification'),
+    path('delnotification/<int:did>',views.delnotification,name='delnotification'),
+    path('StudentsReport/<int:uid>',views.StudentsReport,name='StudentsReport'),
 
     
 

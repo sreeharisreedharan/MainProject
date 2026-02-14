@@ -14,7 +14,11 @@ from django.http import JsonResponse
 
 def HomePage(request):
     staffdata=tbl_staff.objects.get(id=request.session['sid'])
-    return render(request,'Staff/HomePage.html',{'data':staffdata})
+    department=tbl_department.objects.count()
+    course=tbl_course.objects.count()
+    student=tbl_user.objects.count()
+    staff=tbl_staff.objects.count()
+    return render(request,'Staff/HomePage.html',{'data':staffdata,'department':department,'course':course,'student':student,'staff':staff})
 
 def MyProfile(request):
     data=tbl_staff.objects.get(id=request.session['sid'])
@@ -648,5 +652,55 @@ def delExamMark(request,did):
     return redirect("Staff:ViewClass")
 
 def ViewAnnouncement(request):
+    staffid = tbl_staff.objects.get(id=request.session['sid'])
     data=tbl_announcement.objects.all()
-    return render(request,"Staff/ViewAnnouncement.html",{'data':data})
+    return render(request,"Staff/ViewAnnouncement.html",{'announcementdata':data,'data':staffid})
+
+def ExamResult(request,uid):
+    semesterdata=tbl_semester.objects.all()
+    subjectdata=tbl_subject.objects.all()
+    examresult=tbl_examresult.objects.filter(student=uid)
+
+    if request.method == "POST":
+        semesterid=tbl_semester.objects.get(id=request.POST.get("sel_semester"))
+        subjectid=tbl_subject.objects.get(id=request.POST.get("sel_subject"))
+        status=request.POST.get("txt_status")
+        studentid=tbl_user.objects.get(id=uid)
+        tbl_examresult.objects.create(semester=semesterid,subject=subjectid,examresult_status=status,student=studentid)
+        return render(request,"Staff/ExamResult.html",{'semester':semesterdata,'msg':"EXamination Status Updated",'examresult':examresult})
+    else:
+        return render(request,"Staff/ExamResult.html",{'semester':semesterdata,'subjectdata':subjectdata,'examresult':examresult})
+    
+def AjaxExamSubjects(request):
+    data=tbl_subject.objects.filter(semester=request.GET.get('semid'))
+    return render(request,"Staff/AjaxExamSubjects.html",{'data':data})
+
+def delexamresult(request,did):
+    tbl_examresult.objects.get(id=did).delete()
+    return redirect("Staff:MyStudents")
+
+def AddSCPA(request,uid):
+    staffid = tbl_staff.objects.get(id=request.session['sid'])
+    semesterdata=tbl_semester.objects.all()
+    scpadata=tbl_scpa.objects.filter(student=uid)
+    if request.method == "POST":
+        semesterid=tbl_semester.objects.get(id=request.POST.get("sel_semester"))
+        scpa=request.POST.get("txt_scpa")
+        remark=request.POST.get("txt_remark")
+        studentid=tbl_user.objects.get(id=uid)
+        tbl_scpa.objects.create(scpa_mark=scpa,scpa_status=remark,student=studentid,semester=semesterid)
+        return render(request,"Staff/AddSCPA.html",{'msg':"SCPA Inserted",'semesterdata':semesterdata,'scpadata':scpadata,'data':staffid})
+    else:
+        return render(request,"Staff/AddSCPA.html",{'semesterdata':semesterdata,'scpadata':scpadata,'data':staffid})
+    
+def delscpa(request,id):
+    tbl_scpa.objects.get(id=id).delete()
+    return redirect("Staff:MyStudents")
+
+
+
+
+
+    
+
+    

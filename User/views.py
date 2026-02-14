@@ -9,7 +9,11 @@ from django.db.models import Sum
 def HomePage(request):
     data=tbl_notification.objects.filter(student=request.session['uid'],notification_status=0).count()
     announcementdata=tbl_announcement.objects.filter(announcement_status=0).count()
-    return render(request, 'User/HomePage.html',{'count':data,'announcement':announcementdata})
+    department=tbl_department.objects.count()
+    student=tbl_user.objects.count()
+    staff=tbl_staff.objects.count()
+    course=tbl_course.objects.count()
+    return render(request, 'User/HomePage.html',{'count':data,'announcement':announcementdata,'department':department,'student':student,'staff':staff,'course':course})
   
 
 
